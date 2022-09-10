@@ -47,6 +47,8 @@ dependencies:
 
   io: ^1.0.3
 
+  flutter_svg: ^1.1.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -98,3 +100,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - assets/
