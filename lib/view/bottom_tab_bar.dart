@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
+import 'package:flutter_pi_memorization/view/multiplication.dart';
+import 'package:flutter_pi_memorization/view/pi_memorization.dart';
+import 'package:flutter_pi_memorization/view/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BottomTabBar extends ConsumerStatefulWidget {
@@ -13,7 +17,9 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
   late CupertinoTabController _controller;
 
   final List<Tabs> _tabsList = [
-    /// TODO create Tab list
+    const Tabs(Multiprication(), "掛け算", Icon(Icons.close)),
+    const Tabs(PiMemorization(), "円周率", Icon(Icons.close)),
+    const Tabs(ProgressRecord(), "記録", Icon(Icons.close)),
   ];
 
   List<GlobalKey<NavigatorState>> _globalKeyList = [];
