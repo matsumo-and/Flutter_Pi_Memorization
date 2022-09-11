@@ -22,12 +22,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          child: child!,
+        );
+      },
       title: 'Pi_Memorization',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: appBarTheme,
-        canvasColor: canvasColor,
-      ),
+          primarySwatch: Colors.blue,
+          appBarTheme: appBarTheme,
+          canvasColor: canvasColor,
+          textTheme: const TextTheme(
+            headline1: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          )),
       home: const BottomTabBar(),
       debugShowCheckedModeBanner: false,
     );
