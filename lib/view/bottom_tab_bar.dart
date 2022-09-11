@@ -19,7 +19,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
   final List<Tabs> _tabsList = [
     const Tabs(
       widget: Multiplication(),
-      label: "掛け算",
+      label: "かけ算",
       inactiveIcon: Icon(Icons.close),
       activeIcon: Icon(Icons.close),
     ),
