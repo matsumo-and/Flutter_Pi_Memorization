@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'view/bottom_tab_bar.dart';
 
@@ -33,11 +34,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           appBarTheme: appBarTheme,
           canvasColor: canvasColor,
-          textTheme: const TextTheme(
-            headline1: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          textTheme: TextTheme(
+            headline1: GoogleFonts.notoSansJavanese(
+              textStyle: const TextStyle(
+                color: Color.fromRGBO(33, 33, 33, 1),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           )),
       home: const BottomTabBar(),
