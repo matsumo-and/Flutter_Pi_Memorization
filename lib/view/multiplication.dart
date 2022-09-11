@@ -5,6 +5,14 @@ class Multiplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('掛け算'),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.menu),
+        ),
+      ),
+    );
   }
 }

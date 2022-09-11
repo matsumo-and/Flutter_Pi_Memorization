@@ -5,6 +5,14 @@ class PiMemorization extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('円周率'),
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.menu),
+        ),
+      ),
+    );
   }
 }

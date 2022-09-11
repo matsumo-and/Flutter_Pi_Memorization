@@ -14,8 +14,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pi_Memorization',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue,
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ))),
       home: const BottomTabBar(),
       debugShowCheckedModeBanner: false,
     );
