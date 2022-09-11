@@ -7,7 +7,7 @@ class Multiplication extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('掛け算'),
+        title: const Text('かけ算'),
         leading: IconButton(
           onPressed: () {},
           icon: const Icon(Icons.menu),
