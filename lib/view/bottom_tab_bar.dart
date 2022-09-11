@@ -5,7 +5,6 @@ import 'package:flutter_pi_memorization/view/multiplication.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization.dart';
 import 'package:flutter_pi_memorization/view/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomTabBar extends ConsumerStatefulWidget {
   const BottomTabBar({Key? key}) : super(key: key);
@@ -17,40 +16,25 @@ class BottomTabBar extends ConsumerStatefulWidget {
 class BottomBarState extends ConsumerState<BottomTabBar> {
   late CupertinoTabController _controller;
 
-  final SvgPicture piIcon = SvgPicture.asset(
-    'assets/pi.svg',
-    semanticsLabel: 'shopping',
-    width: 14,
-    height: 14,
-  );
-
-  SvgPicture recordIcon = SvgPicture.asset(
-    'assets/record.svg',
-    semanticsLabel: 'shopping',
-    width: 14,
-    height: 14,
-  );
-
   final List<Tabs> _tabsList = [
-    const Tabs(Multiprication(), "掛け算", Icon(Icons.close)),
+    const Tabs(
+      widget: Multiplication(),
+      label: "掛け算",
+      inactiveIcon: Icon(Icons.close),
+      activeIcon: Icon(Icons.close),
+    ),
     Tabs(
-        const PiMemorization(),
-        "円周率",
-        SvgPicture.asset(
-          'assets/pi.svg',
-          semanticsLabel: 'shopping',
-          width: 20,
-          height: 20,
-        )),
+      widget: const PiMemorization(),
+      label: "円周率",
+      inactiveIcon: Tabs.inactiveSvgIcon(fileName: "pi.svg"),
+      activeIcon: Tabs.activeSvgIcon(fileName: "pi.svg"),
+    ),
     Tabs(
-        const ProgressRecord(),
-        "記録",
-        SvgPicture.asset(
-          'assets/record.svg',
-          semanticsLabel: 'shopping',
-          width: 20,
-          height: 20,
-        )),
+      widget: const ProgressRecord(),
+      label: "記録",
+      inactiveIcon: Tabs.inactiveSvgIcon(fileName: "record.svg"),
+      activeIcon: Tabs.activeSvgIcon(fileName: "record.svg"),
+    ),
   ];
 
   List<GlobalKey<NavigatorState>> _globalKeyList = [];
@@ -85,8 +69,12 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
               _tabsList.length,
               (index) => BottomNavigationBarItem(
                   icon: Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: _tabsList[index].icon),
+                      padding: const EdgeInsets.all(5),
+                      child: _tabsList[index].inactiveIcon),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: _tabsList[index].activeIcon,
+                  ),
                   label: _tabsList[index].label)),
           onTap: (index) async {
             if (exSelectedIndex == index) {
