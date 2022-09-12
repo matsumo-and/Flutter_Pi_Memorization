@@ -42,6 +42,18 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            headline2: GoogleFonts.notoSansJavanese(
+              textStyle: const TextStyle(
+                color: Color.fromRGBO(33, 33, 33, 1),
+                fontSize: 16,
+              ),
+            ),
+            caption: GoogleFonts.notoSansJavanese(
+              textStyle: const TextStyle(
+                color: Color.fromRGBO(158, 158, 158, 1),
+                fontSize: 14,
+              ),
+            ),
           )),
       home: const BottomTabBar(),
       debugShowCheckedModeBanner: false,

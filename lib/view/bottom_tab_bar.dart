@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
-import 'package:flutter_pi_memorization/view/multiplication.dart';
+import 'package:flutter_pi_memorization/view/multiplication/multiplication.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization.dart';
 import 'package:flutter_pi_memorization/view/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
