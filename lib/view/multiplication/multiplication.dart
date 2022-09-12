@@ -33,7 +33,7 @@ class Multiplication extends StatelessWidget {
             title: '99x99までのかけ算をランダムで出題',
             caption: '11x18     99x14     32x32',
             onTap: () {
-              //onTap
+              ///TODO onTap
             },
           ),
           const SizedBox(height: 30),
@@ -47,6 +47,8 @@ class Multiplication extends StatelessWidget {
               ),
             ),
           ),
+
+          ///TODO delete Sample Widget
           for (int i = 0; i < 10; i++)
             CourseCard(
               title: 'title',

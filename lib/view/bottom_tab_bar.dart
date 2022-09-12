@@ -94,6 +94,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
           return CupertinoTabView(
             navigatorKey: _globalKeyList[index],
             builder: (context) {
+              //TabBarで最後までスクロールが見えなくなるのを防ぐ
               return Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom),
