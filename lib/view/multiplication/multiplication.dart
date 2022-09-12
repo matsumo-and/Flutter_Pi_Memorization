@@ -47,6 +47,12 @@ class Multiplication extends StatelessWidget {
               ),
             ),
           ),
+          for (int i = 0; i < 10; i++)
+            CourseCard(
+              title: 'title',
+              caption: 'caption',
+              onTap: () {},
+            )
         ]),
       ),
     );

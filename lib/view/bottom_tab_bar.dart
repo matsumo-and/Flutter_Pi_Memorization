@@ -62,6 +62,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+        resizeToAvoidBottomInset: false,
         controller: _controller,
         tabBar: CupertinoTabBar(
           height: 60,
@@ -93,7 +94,11 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
           return CupertinoTabView(
             navigatorKey: _globalKeyList[index],
             builder: (context) {
-              return _tabsList[index].widget;
+              return Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom),
+                child: _tabsList[index].widget,
+              );
             },
           );
         });
