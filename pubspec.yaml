@@ -50,6 +50,9 @@ dependencies:
 
   google_fonts: ^3.0.1
 
+  #store data to local
+  hive: ^2.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
