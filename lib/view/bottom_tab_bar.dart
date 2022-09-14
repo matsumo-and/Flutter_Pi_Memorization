@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
-import 'package:flutter_pi_memorization/view/multiplication.dart';
+import 'package:flutter_pi_memorization/view/multiplication/multiplication.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization.dart';
 import 'package:flutter_pi_memorization/view/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,6 +62,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+        resizeToAvoidBottomInset: false,
         controller: _controller,
         tabBar: CupertinoTabBar(
           height: 60,
@@ -93,7 +94,12 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
           return CupertinoTabView(
             navigatorKey: _globalKeyList[index],
             builder: (context) {
-              return _tabsList[index].widget;
+              //TabBarで最後までスクロールが見えなくなるのを防ぐ
+              return Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom),
+                child: _tabsList[index].widget,
+              );
             },
           );
         });
