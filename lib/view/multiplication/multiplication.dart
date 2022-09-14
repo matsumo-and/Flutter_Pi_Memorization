@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/model/exercise_course.dart';
 import 'package:flutter_pi_memorization/model/medal.dart';
 import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 
@@ -47,12 +48,10 @@ class Multiplication extends StatelessWidget {
               ),
             ),
           ),
-
-          ///TODO delete Sample Widget
-          for (int i = 0; i < 10; i++)
+          for (int i = 0; i < ExcersiseCourse.list().length; i++)
             CourseCard(
-              title: 'title',
-              caption: 'caption',
+              title: ExcersiseCourse.list()[i].title,
+              caption: ExcersiseCourse.list()[i].caption,
               onTap: () {},
             )
         ]),
