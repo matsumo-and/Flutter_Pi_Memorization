@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/model/exercise_course.dart';
+import 'package:flutter_pi_memorization/model/multiplication/exercise_course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/multiplication_store.dart';
-import '../../model/medal.dart';
-import '../../model/multiplication_store.dart';
+import '../../model/multiplication/medal.dart';
+import '../../model/multiplication/multiplication_store.dart';
 
 class ModeSelect extends StatelessWidget {
   final int id;

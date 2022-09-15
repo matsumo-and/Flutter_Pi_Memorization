@@ -1,4 +1,4 @@
-import 'package:flutter_pi_memorization/model/multiplication_store.dart';
+import 'package:flutter_pi_memorization/model/multiplication/multiplication_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 

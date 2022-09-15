@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/model/exercise_course.dart';
+import 'package:flutter_pi_memorization/model/multiplication/exercise_course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 
 class Multiplication extends StatelessWidget {
