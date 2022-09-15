@@ -10,9 +10,9 @@ class TappableCard extends StatelessWidget {
 
   const TappableCard({
     Key? key,
-    this.height = 80,
     required this.child,
     required this.onTap,
+    this.height = 80,
     this.margin = const EdgeInsets.all(0),
     this.border = const RoundedRectangleBorder(),
     this.ignoring = true,
@@ -24,6 +24,7 @@ class TappableCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      customBorder: border,
       onTap: onTap,
       child: IgnorePointer(
         ignoring: ignoring,
