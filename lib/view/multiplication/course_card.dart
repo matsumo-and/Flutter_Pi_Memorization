@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
+import 'package:flutter_pi_memorization/model/exercise_course.dart';
+import 'package:flutter_pi_memorization/model/multiplication_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/medal.dart';
 
 class CourseCard extends StatelessWidget {
   final double height;
-  final Medal medal;
-  final String title;
-  final String caption;
   final Function onTap;
+  final int id;
 
   const CourseCard(
-      {Key? key,
-      this.medal = Medal.none,
-      required this.title,
-      required this.caption,
-      required this.onTap,
-      this.height = 80})
+      {Key? key, required this.onTap, required this.id, this.height = 80})
       : super(key: key);
 
   //card shape
@@ -46,22 +42,32 @@ class CourseCard extends StatelessWidget {
             height: height,
             width: MediaQuery.of(context).size.width,
             child: Row(children: [
-              Container(
-                padding: medalPadding,
-                height: height,
-                width: height,
-                child: medal.icon,
-              ),
+              Consumer(builder: (context, ref, _) {
+                final multiplicationState =
+                    ref.read(multiplicationProvider.notifier);
+                final Multiplication multiplication =
+                    multiplicationState.find(id);
+                return Container(
+                  padding: medalPadding,
+                  height: height,
+                  width: height,
+                  child: multiplication.professionalDone
+                      ? Medal.professional.icon
+                      : multiplication.beginnerDone
+                          ? Medal.beginner.icon
+                          : Medal.none.icon,
+                );
+              }),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    ExcersiseCourse.find(id).title,
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   Text(
-                    caption,
+                    ExcersiseCourse.find(id).caption,
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ],

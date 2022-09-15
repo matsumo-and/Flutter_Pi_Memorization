@@ -30,9 +30,9 @@ class Multiplication extends StatelessWidget {
               ),
             ),
           ),
+          //本番用のかけ算コース
           CourseCard(
-            title: '99x99までのかけ算をランダムで出題',
-            caption: '11x18     99x14     32x32',
+            id: 1000,
             onTap: () {
               ///TODO onTap
             },
@@ -50,8 +50,7 @@ class Multiplication extends StatelessWidget {
           ),
           for (int i = 0; i < ExcersiseCourse.list().length; i++)
             CourseCard(
-              title: ExcersiseCourse.list()[i].title,
-              caption: ExcersiseCourse.list()[i].caption,
+              id: ExcersiseCourse.list()[i].id,
               onTap: () {},
             )
         ]),

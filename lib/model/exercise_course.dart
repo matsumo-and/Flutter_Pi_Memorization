@@ -16,6 +16,16 @@ class ExcersiseCourse {
     required this.multiplicandList,
   });
 
+  //本番用のかけ算コース
+  static ExcersiseCourse act = ExcersiseCourse(
+    id: 1000,
+    title: '99x99までのかけ算をランダムで出題',
+    caption: '11x18     99x14     32x32',
+    multiplierList: List<int>.generate(99, (index) => index),
+    multiplicandList: List<int>.generate(99, (index) => index),
+  );
+
+  //演習用のかけ算コース
   static List<ExcersiseCourse> list() {
     final List<ExcersiseCourse> tmpList = [];
 
@@ -31,5 +41,20 @@ class ExcersiseCourse {
     }
 
     return tmpList;
+  }
+
+  static ExcersiseCourse find(int id) {
+    switch (id) {
+      case 1000:
+        return act;
+      default:
+        return list().firstWhere((element) => element.id == id,
+            orElse: () => const ExcersiseCourse(
+                id: 0,
+                title: 'title',
+                caption: 'caption',
+                multiplierList: [],
+                multiplicandList: []));
+    }
   }
 }
