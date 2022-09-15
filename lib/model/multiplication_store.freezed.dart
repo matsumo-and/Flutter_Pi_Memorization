@@ -23,7 +23,11 @@ mixin _$Multiplication {
   @HiveField(2)
   bool get professionalDone => throw _privateConstructorUsedError;
   @HiveField(3)
-  int get tryTimes => throw _privateConstructorUsedError;
+  int get practiceNum => throw _privateConstructorUsedError;
+  @HiveField(4)
+  int get beginnerNum => throw _privateConstructorUsedError;
+  @HiveField(5)
+  int get professionalNum => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MultiplicationCopyWith<Multiplication> get copyWith =>
@@ -39,7 +43,9 @@ abstract class $MultiplicationCopyWith<$Res> {
       {@HiveField(0) int id,
       @HiveField(1) bool beginnerDone,
       @HiveField(2) bool professionalDone,
-      @HiveField(3) int tryTimes});
+      @HiveField(3) int practiceNum,
+      @HiveField(4) int beginnerNum,
+      @HiveField(5) int professionalNum});
 }
 
 /// @nodoc
@@ -56,7 +62,9 @@ class _$MultiplicationCopyWithImpl<$Res>
     Object? id = freezed,
     Object? beginnerDone = freezed,
     Object? professionalDone = freezed,
-    Object? tryTimes = freezed,
+    Object? practiceNum = freezed,
+    Object? beginnerNum = freezed,
+    Object? professionalNum = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -71,9 +79,17 @@ class _$MultiplicationCopyWithImpl<$Res>
           ? _value.professionalDone
           : professionalDone // ignore: cast_nullable_to_non_nullable
               as bool,
-      tryTimes: tryTimes == freezed
-          ? _value.tryTimes
-          : tryTimes // ignore: cast_nullable_to_non_nullable
+      practiceNum: practiceNum == freezed
+          ? _value.practiceNum
+          : practiceNum // ignore: cast_nullable_to_non_nullable
+              as int,
+      beginnerNum: beginnerNum == freezed
+          ? _value.beginnerNum
+          : beginnerNum // ignore: cast_nullable_to_non_nullable
+              as int,
+      professionalNum: professionalNum == freezed
+          ? _value.professionalNum
+          : professionalNum // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -90,7 +106,9 @@ abstract class _$$_MultiplicationCopyWith<$Res>
       {@HiveField(0) int id,
       @HiveField(1) bool beginnerDone,
       @HiveField(2) bool professionalDone,
-      @HiveField(3) int tryTimes});
+      @HiveField(3) int practiceNum,
+      @HiveField(4) int beginnerNum,
+      @HiveField(5) int professionalNum});
 }
 
 /// @nodoc
@@ -109,7 +127,9 @@ class __$$_MultiplicationCopyWithImpl<$Res>
     Object? id = freezed,
     Object? beginnerDone = freezed,
     Object? professionalDone = freezed,
-    Object? tryTimes = freezed,
+    Object? practiceNum = freezed,
+    Object? beginnerNum = freezed,
+    Object? professionalNum = freezed,
   }) {
     return _then(_$_Multiplication(
       id: id == freezed
@@ -124,9 +144,17 @@ class __$$_MultiplicationCopyWithImpl<$Res>
           ? _value.professionalDone
           : professionalDone // ignore: cast_nullable_to_non_nullable
               as bool,
-      tryTimes: tryTimes == freezed
-          ? _value.tryTimes
-          : tryTimes // ignore: cast_nullable_to_non_nullable
+      practiceNum: practiceNum == freezed
+          ? _value.practiceNum
+          : practiceNum // ignore: cast_nullable_to_non_nullable
+              as int,
+      beginnerNum: beginnerNum == freezed
+          ? _value.beginnerNum
+          : beginnerNum // ignore: cast_nullable_to_non_nullable
+              as int,
+      professionalNum: professionalNum == freezed
+          ? _value.professionalNum
+          : professionalNum // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -140,7 +168,9 @@ class _$_Multiplication implements _Multiplication {
       {@HiveField(0) this.id = 0,
       @HiveField(1) this.beginnerDone = false,
       @HiveField(2) this.professionalDone = false,
-      @HiveField(3) this.tryTimes = 0});
+      @HiveField(3) this.practiceNum = 0,
+      @HiveField(4) this.beginnerNum = 0,
+      @HiveField(5) this.professionalNum = 0});
 
   @override
   @JsonKey()
@@ -157,11 +187,19 @@ class _$_Multiplication implements _Multiplication {
   @override
   @JsonKey()
   @HiveField(3)
-  final int tryTimes;
+  final int practiceNum;
+  @override
+  @JsonKey()
+  @HiveField(4)
+  final int beginnerNum;
+  @override
+  @JsonKey()
+  @HiveField(5)
+  final int professionalNum;
 
   @override
   String toString() {
-    return 'Multiplication(id: $id, beginnerDone: $beginnerDone, professionalDone: $professionalDone, tryTimes: $tryTimes)';
+    return 'Multiplication(id: $id, beginnerDone: $beginnerDone, professionalDone: $professionalDone, practiceNum: $practiceNum, beginnerNum: $beginnerNum, professionalNum: $professionalNum)';
   }
 
   @override
@@ -174,7 +212,12 @@ class _$_Multiplication implements _Multiplication {
                 .equals(other.beginnerDone, beginnerDone) &&
             const DeepCollectionEquality()
                 .equals(other.professionalDone, professionalDone) &&
-            const DeepCollectionEquality().equals(other.tryTimes, tryTimes));
+            const DeepCollectionEquality()
+                .equals(other.practiceNum, practiceNum) &&
+            const DeepCollectionEquality()
+                .equals(other.beginnerNum, beginnerNum) &&
+            const DeepCollectionEquality()
+                .equals(other.professionalNum, professionalNum));
   }
 
   @override
@@ -183,7 +226,9 @@ class _$_Multiplication implements _Multiplication {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(beginnerDone),
       const DeepCollectionEquality().hash(professionalDone),
-      const DeepCollectionEquality().hash(tryTimes));
+      const DeepCollectionEquality().hash(practiceNum),
+      const DeepCollectionEquality().hash(beginnerNum),
+      const DeepCollectionEquality().hash(professionalNum));
 
   @JsonKey(ignore: true)
   @override
@@ -196,7 +241,9 @@ abstract class _Multiplication implements Multiplication {
       {@HiveField(0) final int id,
       @HiveField(1) final bool beginnerDone,
       @HiveField(2) final bool professionalDone,
-      @HiveField(3) final int tryTimes}) = _$_Multiplication;
+      @HiveField(3) final int practiceNum,
+      @HiveField(4) final int beginnerNum,
+      @HiveField(5) final int professionalNum}) = _$_Multiplication;
 
   @override
   @HiveField(0)
@@ -209,7 +256,13 @@ abstract class _Multiplication implements Multiplication {
   bool get professionalDone;
   @override
   @HiveField(3)
-  int get tryTimes;
+  int get practiceNum;
+  @override
+  @HiveField(4)
+  int get beginnerNum;
+  @override
+  @HiveField(5)
+  int get professionalNum;
   @override
   @JsonKey(ignore: true)
   _$$_MultiplicationCopyWith<_$_Multiplication> get copyWith =>

@@ -19,7 +19,7 @@ class ExcersiseCourse {
   //本番用のかけ算コース
   static ExcersiseCourse act = ExcersiseCourse(
     id: 1000,
-    title: '99x99までのかけ算をランダムで出題',
+    title: '99x99までのランダムなかけ算',
     caption: '11x18     99x14     32x32',
     multiplierList: List<int>.generate(99, (index) => index),
     multiplicandList: List<int>.generate(99, (index) => index),

@@ -10,6 +10,8 @@ abstract class Multiplication with _$Multiplication {
     @HiveField(0) @Default(0) int id,
     @HiveField(1) @Default(false) bool beginnerDone,
     @HiveField(2) @Default(false) bool professionalDone,
-    @HiveField(3) @Default(0) int tryTimes,
+    @HiveField(3) @Default(0) int practiceNum,
+    @HiveField(4) @Default(0) int beginnerNum,
+    @HiveField(5) @Default(0) int professionalNum,
   }) = _Multiplication;
 }

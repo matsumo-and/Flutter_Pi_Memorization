@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/exercise_course.dart';
-import 'package:flutter_pi_memorization/model/medal.dart';
 import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 
 class Multiplication extends StatelessWidget {
@@ -31,11 +30,8 @@ class Multiplication extends StatelessWidget {
             ),
           ),
           //本番用のかけ算コース
-          CourseCard(
+          const CourseCard(
             id: 1000,
-            onTap: () {
-              ///TODO onTap
-            },
           ),
           const SizedBox(height: 30),
           Padding(
@@ -51,7 +47,6 @@ class Multiplication extends StatelessWidget {
           for (int i = 0; i < ExcersiseCourse.list().length; i++)
             CourseCard(
               id: ExcersiseCourse.list()[i].id,
-              onTap: () {},
             )
         ]),
       ),
