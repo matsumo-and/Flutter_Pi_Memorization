@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/model/multiplication/exercise_course.dart';
+import 'package:flutter_pi_memorization/model/multiplication/course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/multiplication_store.dart';
 import '../../model/multiplication/medal.dart';
-import '../../model/multiplication/multiplication_store.dart';
+import '../../model/multiplication/.dart';
 
 class ModeSelect extends ConsumerWidget {
   final int id;
@@ -24,7 +24,7 @@ class ModeSelect extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ExcersiseCourse course = ExcersiseCourse.find(id);
+    final Course course = Course.find(id);
     final multiplication = ref.watch(multiplicationProvider).firstWhere(
         (element) => element.id == id,
         orElse: (() => const Multiplication()));

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '.dart';
+part of 'multiplication_archivement.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

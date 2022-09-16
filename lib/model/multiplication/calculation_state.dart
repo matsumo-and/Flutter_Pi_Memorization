@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'multiplication_state.freezed.dart';
+part 'calculation_state.freezed.dart';
 
 @freezed
 abstract class MultiplicationState with _$MultiplicationState {
