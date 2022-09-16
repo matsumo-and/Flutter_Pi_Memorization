@@ -8,7 +8,7 @@ import 'view/bottom_tab_bar.dart';
 
 void main() async {
   await Hive.initFlutter();
-  Hive.registerAdapter(MultiplicationAdopter());
+  Hive.registerAdapter<Multiplication>(MultiplicationAdopter());
   runApp(const ProviderScope(child: MyApp()));
 }
 
