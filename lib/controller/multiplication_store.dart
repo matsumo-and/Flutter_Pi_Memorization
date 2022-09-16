@@ -11,17 +11,58 @@ final multiplicationProvider =
 class MultiplicationStore extends StateNotifier<List<Multiplication>> {
   MultiplicationStore(List<Multiplication> list) : super(list);
 
-  late Box box;
+  late Box<List<Multiplication>> box;
 
   ///ローカルストレージから掛け算の成績を取得し、Riverpodによる状態管理をする
   Future<void> initialize() async {
-    box = await Hive.openBox('box');
+    box = await Hive.openBox<List<Multiplication>>('MultiplicationAdopter');
 
-    List<Multiplication> list = box.get('MultiplicationAdopter') ?? [];
+    List<Multiplication>? rawData =
+        box.get('MultiplicationAdopter')?.cast<Multiplication>();
+    print(rawData);
 
-    if (list.isNotEmpty) {
-      state = list;
+    // if (rawData != null) {
+    //   print('state update');
+    //   state = rawData;
+    // }
+  }
+
+  Future<void> add(
+      {required int id,
+      bool? beginnerDone,
+      bool? professionalDone,
+      int? practiceNum,
+      int? beginnerNum,
+      int? professionalNum}) async {
+    final Multiplication currentStatus = find(id);
+
+    final List<Multiplication> newState = state;
+
+    if (currentStatus.id == 0) {
+      newState.add(Multiplication(
+        id: id,
+        beginnerDone: beginnerDone ?? false,
+        professionalDone: professionalDone ?? false,
+        practiceNum: practiceNum ?? 0,
+        beginnerNum: beginnerNum ?? 0,
+        professionalNum: professionalNum ?? 0,
+      ));
+    } else {
+      newState.removeWhere(
+        (element) => element.id == id,
+      );
+      newState.add(currentStatus.copyWith(
+        beginnerDone: beginnerDone ?? currentStatus.beginnerDone,
+        professionalDone: professionalDone ?? currentStatus.professionalDone,
+        practiceNum: practiceNum ?? currentStatus.practiceNum,
+        beginnerNum: beginnerNum ?? currentStatus.beginnerNum,
+        professionalNum: professionalNum ?? currentStatus.professionalNum,
+      ));
     }
+
+    await box.delete('MultiplicationAdopter');
+    await box.put('MultiplicationAdopter', newState);
+    state = newState;
   }
 
   ///unique id をキーとしてどの掛け算の問題か区別する。

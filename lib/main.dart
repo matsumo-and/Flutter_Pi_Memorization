@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'model/multiplication/multiplication_store.dart';
 import 'view/bottom_tab_bar.dart';
 
 void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(MultiplicationAdopter());
   runApp(const ProviderScope(child: MyApp()));
 }
 
