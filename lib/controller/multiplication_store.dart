@@ -11,15 +11,13 @@ final multiplicationProvider =
 class MultiplicationStore extends StateNotifier<List<Multiplication>> {
   MultiplicationStore(List<Multiplication> list) : super(list);
 
-  late Box<List<Multiplication>> box;
+  late Box<Multiplication> box;
 
   ///ローカルストレージから掛け算の成績を取得し、Riverpodによる状態管理をする
   Future<void> initialize() async {
-    box = await Hive.openBox<List<Multiplication>>('MultiplicationAdopter');
-
-    List<Multiplication>? rawData =
-        box.get('MultiplicationAdopter')?.cast<Multiplication>();
-    print(rawData);
+    box = await Hive.openBox<Multiplication>('MultiplicationAdopter');
+    print(box);
+    //final rawData = box.values.cast();
 
     // if (rawData != null) {
     //   print('state update');
@@ -60,8 +58,9 @@ class MultiplicationStore extends StateNotifier<List<Multiplication>> {
       ));
     }
 
-    await box.delete('MultiplicationAdopter');
-    await box.put('MultiplicationAdopter', newState);
+    // await box.delete('MultiplicationAdopter');
+    // await box.put('MultiplicationAdopter', newState);
+    state = [];
     state = newState;
   }
 

@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../model/multiplication/medal.dart';
 import 'mode_select.dart';
 
-class CourseCard extends ConsumerWidget {
+class CourseCard extends StatelessWidget {
   final int id;
 
   const CourseCard({Key? key, required this.id}) : super(key: key);
@@ -27,7 +27,7 @@ class CourseCard extends ConsumerWidget {
   static const TextStyle style = TextStyle(color: Colors.black);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return TappableCard(
       border: border,
       margin: cardMargin,
@@ -37,8 +37,10 @@ class CourseCard extends ConsumerWidget {
       },
       child: Row(children: [
         Consumer(builder: (context, ref, _) {
-          final multiplicationState = ref.read(multiplicationProvider.notifier);
-          final Multiplication multiplication = multiplicationState.find(id);
+          final Multiplication multiplication = ref
+              .watch(multiplicationProvider)
+              .firstWhere((element) => element.id == id,
+                  orElse: () => const Multiplication());
           return Container(
             padding: medalPadding,
             height: height,

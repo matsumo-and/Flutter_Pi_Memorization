@@ -25,12 +25,11 @@ class ModeSelect extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ExcersiseCourse course = ExcersiseCourse.find(id);
-    final multiplicationState = ref.watch(multiplicationProvider);
-    final multiplicationStateNotifier =
-        ref.read(multiplicationProvider.notifier);
-    final Multiplication multiplication = multiplicationState.firstWhere(
+    final multiplication = ref.watch(multiplicationProvider).firstWhere(
         (element) => element.id == id,
         orElse: (() => const Multiplication()));
+    final multiplicationStateNotifier =
+        ref.read(multiplicationProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
