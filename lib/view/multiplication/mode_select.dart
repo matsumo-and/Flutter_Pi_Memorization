@@ -79,7 +79,7 @@ class ModeSelect extends ConsumerWidget {
         ),
         TappableCard(
             onTap: () {
-              multiplicationStateNotifier.add(
+              multiplicationStateNotifier.set(
                 id: id,
                 practiceNum: multiplication.practiceNum + 1,
               );
@@ -133,7 +133,7 @@ class ModeSelect extends ConsumerWidget {
                   ),
                   TappableCard(
                       onTap: () {
-                        multiplicationStateNotifier.add(
+                        multiplicationStateNotifier.set(
                           id: id,
                           beginnerNum: multiplication.beginnerNum + 1,
                           beginnerDone: true,
@@ -199,7 +199,7 @@ class ModeSelect extends ConsumerWidget {
                       )),
                   TappableCard(
                       onTap: () {
-                        multiplicationStateNotifier.add(
+                        multiplicationStateNotifier.set(
                           id: id,
                           professionalNum: multiplication.professionalNum + 1,
                           professionalDone: true,

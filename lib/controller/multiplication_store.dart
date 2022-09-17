@@ -17,54 +17,44 @@ class MultiplicationStore extends StateNotifier<List<Multiplication>> {
   Future<void> initialize() async {
     box = await Hive.openBox<Multiplication>('MultiplicationAdopter');
 
-    //magic word ↓
+    //以下コマンドでBoxを初期化できる。
     //box.deleteAll(box.keys);
 
-    final List<Multiplication> list = box.values.toList();
-    print(list);
+    final List<Multiplication> fetchedList = box.values.toList();
 
-    if (list.isNotEmpty) {
-      print('state update');
-      state = list;
+    //Boxが空でなければRiverpodに渡す
+    if (fetchedList.isNotEmpty) {
+      state = fetchedList;
     }
   }
 
-  Future<void> add(
+  ///任意のパラメータを受け取ってRiverpodとローカルストレージを更新する。
+  Future<void> set(
       {required int id,
       bool? beginnerDone,
       bool? professionalDone,
       int? practiceNum,
       int? beginnerNum,
       int? professionalNum}) async {
+    //現在のIDのオブジェクトを取得し任意のパラメータを変更する
     final Multiplication currentStatus = _find(id);
-
-    final List<Multiplication> newState = state;
-
-    newState.removeWhere(
-      (element) => element.id == id,
-    );
-
-    newState.add(currentStatus.copyWith(
+    final Multiplication addedStatus = currentStatus.copyWith(
       id: id,
       beginnerDone: beginnerDone ?? currentStatus.beginnerDone,
       professionalDone: professionalDone ?? currentStatus.professionalDone,
       practiceNum: practiceNum ?? currentStatus.practiceNum,
       beginnerNum: beginnerNum ?? currentStatus.beginnerNum,
       professionalNum: professionalNum ?? currentStatus.professionalNum,
-    ));
+    );
 
-    // await box.delete('MultiplicationAdopter');
+    //Riverpodから引数のIDを持つオブジェクトを削除してから新たなオブジェクトを格納
+    final List<Multiplication> newState = state;
+    newState.removeWhere((element) => element.id == id);
+    newState.add(addedStatus);
+
+    //idをキーとしてboxに格納。もし既にオブジェクトが格納されていれば消してから格納
     await box.delete(id);
-    await box.put(
-        id,
-        currentStatus.copyWith(
-          id: id,
-          beginnerDone: beginnerDone ?? currentStatus.beginnerDone,
-          professionalDone: professionalDone ?? currentStatus.professionalDone,
-          practiceNum: practiceNum ?? currentStatus.practiceNum,
-          beginnerNum: beginnerNum ?? currentStatus.beginnerNum,
-          professionalNum: professionalNum ?? currentStatus.professionalNum,
-        ));
+    await box.put(id, addedStatus);
 
     //state=newStateだけだとStateに更新があったと判断してくれないらしい
     state = [];
