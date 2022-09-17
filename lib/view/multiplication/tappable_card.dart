@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+///Inkwell,Card,Sizedboxを一緒くたにしただけのクラス
 class TappableCard extends StatelessWidget {
   final Widget child;
   final void Function()? onTap;

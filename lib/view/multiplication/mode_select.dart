@@ -5,26 +5,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/multiplication_store.dart';
 import '../../model/multiplication/medal.dart';
-import '../../model/multiplication/.dart';
+import '../../model/multiplication/multiplication_archivement.dart';
 
 class ModeSelect extends ConsumerWidget {
   final int id;
 
   const ModeSelect({Key? key, required this.id}) : super(key: key);
 
-  //card shape
-  static const double height = 80;
-  static const EdgeInsets cardMargin =
-      EdgeInsets.symmetric(vertical: 7, horizontal: 12);
-  static final RoundedRectangleBorder border =
-      RoundedRectangleBorder(borderRadius: BorderRadius.circular(7));
-
-  static const EdgeInsets _padding =
-      EdgeInsets.symmetric(vertical: 7, horizontal: 12);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //card shape
+    const double height = 80;
+    const EdgeInsets cardMargin =
+        EdgeInsets.symmetric(vertical: 7, horizontal: 12);
+    final RoundedRectangleBorder border =
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(7));
+
+    const EdgeInsets padding =
+        EdgeInsets.symmetric(vertical: 7, horizontal: 12);
+    //引数のIDを持つコースを探す
     final Course course = Course.find(id);
+
+    //RiverpodのListの中で引数のIDを持つ掛け算成績を探す
     final multiplication = ref.watch(multiplicationProvider).firstWhere(
         (element) => element.id == id,
         orElse: (() => const Multiplication()));
@@ -37,7 +39,7 @@ class ModeSelect extends ConsumerWidget {
       ),
       body: Column(children: [
         Padding(
-          padding: _padding,
+          padding: padding,
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -46,6 +48,7 @@ class ModeSelect extends ConsumerWidget {
             ),
           ),
         ),
+
         //チュートリアル
         TappableCard(
           border: border,
@@ -55,7 +58,7 @@ class ModeSelect extends ConsumerWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: _padding,
+              padding: padding,
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text(
@@ -66,9 +69,11 @@ class ModeSelect extends ConsumerWidget {
             ),
           ),
         ),
+
         const SizedBox(height: 30),
+
         Padding(
-          padding: _padding,
+          padding: padding,
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -77,6 +82,8 @@ class ModeSelect extends ConsumerWidget {
             ),
           ),
         ),
+
+        //練習モード
         TappableCard(
             onTap: () {
               multiplicationStateNotifier.set(
@@ -115,6 +122,8 @@ class ModeSelect extends ConsumerWidget {
                 ],
               ),
             )),
+
+        //本番モード
         TappableCard(
             margin: cardMargin,
             border: border,
@@ -131,6 +140,8 @@ class ModeSelect extends ConsumerWidget {
                     '本番モード',
                     style: Theme.of(context).textTheme.headline2,
                   ),
+
+                  //初心者コース
                   TappableCard(
                       onTap: () {
                         multiplicationStateNotifier.set(
@@ -147,19 +158,22 @@ class ModeSelect extends ConsumerWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  height: height,
-                                  width: height,
-                                  child: multiplication.beginnerDone
-                                      ? Medal.beginner.icon
-                                      : Medal.none.icon,
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: SizedBox(
+                                    height: height,
+                                    width: height,
+                                    child: multiplication.beginnerDone
+                                        ? Medal.beginner.icon
+                                        : Medal.none.icon,
+                                  ),
                                 ),
                                 Column(
                                   mainAxisAlignment:
@@ -197,6 +211,8 @@ class ModeSelect extends ConsumerWidget {
                           ],
                         ),
                       )),
+
+                  //達人コース
                   TappableCard(
                       onTap: () {
                         multiplicationStateNotifier.set(
@@ -213,8 +229,7 @@ class ModeSelect extends ConsumerWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
