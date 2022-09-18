@@ -158,7 +158,7 @@ class ModeSelect extends ConsumerWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -229,7 +229,7 @@ class ModeSelect extends ConsumerWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
