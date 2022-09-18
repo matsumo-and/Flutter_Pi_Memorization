@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/model/medal.dart';
+import 'package:flutter_pi_memorization/model/multiplication/course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 
-class Multiplication extends StatelessWidget {
-  const Multiplication({Key? key}) : super(key: key);
+class MultiplicationHome extends StatelessWidget {
+  const MultiplicationHome({Key? key}) : super(key: key);
 
   static const EdgeInsets _padding =
       EdgeInsets.symmetric(vertical: 7, horizontal: 12);
@@ -29,12 +29,9 @@ class Multiplication extends StatelessWidget {
               ),
             ),
           ),
-          CourseCard(
-            title: '99x99までのかけ算をランダムで出題',
-            caption: '11x18     99x14     32x32',
-            onTap: () {
-              ///TODO onTap
-            },
+          //本番用のかけ算コース
+          const CourseCard(
+            id: 1000,
           ),
           const SizedBox(height: 30),
           Padding(
@@ -47,13 +44,9 @@ class Multiplication extends StatelessWidget {
               ),
             ),
           ),
-
-          ///TODO delete Sample Widget
-          for (int i = 0; i < 10; i++)
+          for (int i = 0; i < Course.exercise().length; i++)
             CourseCard(
-              title: 'title',
-              caption: 'caption',
-              onTap: () {},
+              id: Course.exercise()[i].id,
             )
         ]),
       ),

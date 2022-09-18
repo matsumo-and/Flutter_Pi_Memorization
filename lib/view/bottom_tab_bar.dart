@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
-import 'package:flutter_pi_memorization/view/multiplication/multiplication.dart';
+import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization.dart';
 import 'package:flutter_pi_memorization/view/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
 
   final List<Tabs> _tabsList = [
     const Tabs(
-      widget: Multiplication(),
+      widget: MultiplicationHome(),
       label: "かけ算",
       inactiveIcon: Icon(Icons.close),
       activeIcon: Icon(Icons.close),
@@ -48,7 +49,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
         List.generate(_tabsList.length, (_) => GlobalKey<NavigatorState>());
 
     //Provider初期化用
-    // ref.read(weightProvider.notifier).initialize();
+    ref.read(multiplicationProvider.notifier).initialize();
     // ref.read(customerProvider.notifier).initialize();
     // ref.read(appointmentManagementProvider.notifier).initialize();
   }
