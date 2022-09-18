@@ -29,16 +29,21 @@ class Course {
   static List<Course> exercise() {
     final List<Course> tmpList = [];
 
-    //10台〜９０台同士のかけ算コース
-    for (int i = 1; i < 10; i++) {
-      tmpList.add(Course(
-        id: 1000 + i,
-        title: '${i}0台の数同士',
-        caption: '${i}0x${i}0     ${i}4x${i}5     ${i}9x${i}9',
-        multiplierList: List<int>.generate(9, (index) => i * 10 + index),
-        multiplicandList: List<int>.generate(9, (index) => i * 10 + index),
-      ));
-    }
+    //10台と９０台同士のかけ算コース
+    tmpList.add(Course(
+      id: 1001,
+      title: '10台の数同士',
+      caption: '10x10     14x15     19x19',
+      multiplierList: List<int>.generate(9, (index) => 10 + index),
+      multiplicandList: List<int>.generate(9, (index) => 10 + index),
+    ));
+    tmpList.add(Course(
+      id: 1002,
+      title: '90台の数同士',
+      caption: '90x90     94x95     99x99',
+      multiplierList: List<int>.generate(9, (index) => 90 + index),
+      multiplicandList: List<int>.generate(9, (index) => 90 + index),
+    ));
 
     return tmpList;
   }

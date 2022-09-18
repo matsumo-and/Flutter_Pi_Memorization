@@ -24,20 +24,29 @@ class TappableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      customBorder: border,
-      onTap: onTap,
-      child: IgnorePointer(
-        ignoring: ignoring,
-        child: Card(
-            margin: margin,
-            color: backgroundColor,
-            shape: border,
-            child: SizedBox(
-              height: height,
-              width: MediaQuery.of(context).size.width,
-              child: child,
-            )),
+    return Padding(
+      padding: margin,
+      child: Card(
+        color: Colors.transparent,
+        shape: border,
+        elevation: 0,
+        child: InkWell(
+          customBorder: border,
+          onTap: onTap,
+          child: Ink(
+            decoration: const BoxDecoration(
+                color: backgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(7))),
+            child: IgnorePointer(
+              ignoring: ignoring,
+              child: SizedBox(
+                height: height,
+                width: MediaQuery.of(context).size.width,
+                child: child,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
