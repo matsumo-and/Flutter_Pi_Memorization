@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/multiplication/course.dart';
+import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 
 class MultiplicationHome extends StatelessWidget {
@@ -10,12 +11,8 @@ class MultiplicationHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: const HomeAppBar(
         title: const Text('かけ算'),
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
-        ),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
