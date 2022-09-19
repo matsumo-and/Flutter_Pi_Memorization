@@ -20,7 +20,7 @@ class CalculationPageState extends State<CalculationPage>
   @override
   void initState() {
     controller = TextEditingController(text: '12345');
-    animationController = AnimationController(vsync: this);
+    animationController = AnimationController(vsync: this, value: 0.5);
     super.initState();
   }
 
@@ -37,11 +37,37 @@ class CalculationPageState extends State<CalculationPage>
       appBar: AppBar(title: const Text('1/10問目')),
       body: Stack(
         children: [
-          LinearProgressIndicator(
-            color: Colors.amber,
-            backgroundColor: Colors.grey,
-            value: animationController.value,
-            semanticsLabel: 'Linear progress indicator',
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.watch_later_outlined,
+                  size: 18,
+                  color: Color.fromRGBO(81, 133, 213, 1),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 8,
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: LinearProgressIndicator(
+                      backgroundColor: const Color.fromRGBO(236, 239, 241, 1),
+                      color: const Color.fromRGBO(81, 133, 213, 1),
+                      value: animationController.value,
+                    ),
+                  ),
+                ),
+                Text(
+                  '30',
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).textTheme.caption!.color),
+                )
+              ],
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -52,27 +78,50 @@ class CalculationPageState extends State<CalculationPage>
                 style: TextStyle(fontSize: 40),
               ),
               const SizedBox(height: 15),
-              SizedBox(
-                height: 65,
-                width: 145,
-                child: Center(
-                  child: TextFormField(
-                    controller: controller,
-                    readOnly: true,
-                    enabled: false,
-                    maxLength: 5,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 40),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Center(
+                    child: Text(
+                      '=',
+                      style: TextStyle(
+                          fontSize: 40, color: Color.fromRGBO(77, 77, 77, 0.4)),
                     ),
                   ),
-                ),
+
+                  const Padding(padding: EdgeInsets.all(8)),
+
+                  //カーソルやシステムキーボードは表示させないテキストフィールド
+                  SizedBox(
+                    height: 65,
+                    width: 145,
+                    child: Center(
+                      child: TextFormField(
+                        controller: controller,
+                        readOnly: true,
+                        enabled: false,
+                        maxLength: 5,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 40),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(0),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  //TextFormFieldの位置を真ん中に合わせるための暫定対応
+                  const Padding(padding: EdgeInsets.all(8)),
+                  const Text('=',
+                      style:
+                          TextStyle(fontSize: 40, color: Colors.transparent)),
+                ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               GradientTextButton(
                 title: '回答する',
                 height: 45,
@@ -80,7 +129,7 @@ class CalculationPageState extends State<CalculationPage>
                 onPressed: () {},
                 disabled: false,
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 60),
               const NumericKeyboard(),
             ],
           ),
