@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/multiplication/course.dart';
+import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -53,7 +54,9 @@ class ModeSelect extends ConsumerWidget {
         TappableCard(
           border: border,
           margin: cardMargin,
-          onTap: () {},
+          onTap: () {
+            //TODO チュートリアル
+          },
           height: 60,
           child: Align(
             alignment: Alignment.centerLeft,
@@ -86,11 +89,9 @@ class ModeSelect extends ConsumerWidget {
         //練習モード
         TappableCard(
             onTap: () {
-              multiplicationStateNotifier.set(
-                id: id,
-                practiceNum: multiplication.practiceNum + 1,
-              );
-              multiplicationStateNotifier.initialize();
+              Navigator.of(context).push(MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => CalculationPage()));
             },
             height: height,
             margin: cardMargin,
@@ -144,11 +145,9 @@ class ModeSelect extends ConsumerWidget {
                   //初心者コース
                   TappableCard(
                       onTap: () {
-                        multiplicationStateNotifier.set(
-                          id: id,
-                          beginnerNum: multiplication.beginnerNum + 1,
-                          beginnerDone: true,
-                        );
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CalculationPage()));
                       },
                       height: height,
                       border: border.copyWith(
@@ -215,11 +214,9 @@ class ModeSelect extends ConsumerWidget {
                   //達人コース
                   TappableCard(
                       onTap: () {
-                        multiplicationStateNotifier.set(
-                          id: id,
-                          professionalNum: multiplication.professionalNum + 1,
-                          professionalDone: true,
-                        );
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CalculationPage()));
                       },
                       height: height,
                       border: border.copyWith(

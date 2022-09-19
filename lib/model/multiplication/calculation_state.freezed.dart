@@ -19,7 +19,8 @@ mixin _$MultiplicationState {
   int get index => throw _privateConstructorUsedError;
   int get multiplier => throw _privateConstructorUsedError;
   int get multiplicand => throw _privateConstructorUsedError;
-  Duration get duration => throw _privateConstructorUsedError;
+  bool get isCorrect => throw _privateConstructorUsedError;
+  int get secElapsed => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MultiplicationStateCopyWith<MultiplicationState> get copyWith =>
@@ -31,7 +32,12 @@ abstract class $MultiplicationStateCopyWith<$Res> {
   factory $MultiplicationStateCopyWith(
           MultiplicationState value, $Res Function(MultiplicationState) then) =
       _$MultiplicationStateCopyWithImpl<$Res>;
-  $Res call({int index, int multiplier, int multiplicand, Duration duration});
+  $Res call(
+      {int index,
+      int multiplier,
+      int multiplicand,
+      bool isCorrect,
+      int secElapsed});
 }
 
 /// @nodoc
@@ -48,7 +54,8 @@ class _$MultiplicationStateCopyWithImpl<$Res>
     Object? index = freezed,
     Object? multiplier = freezed,
     Object? multiplicand = freezed,
-    Object? duration = freezed,
+    Object? isCorrect = freezed,
+    Object? secElapsed = freezed,
   }) {
     return _then(_value.copyWith(
       index: index == freezed
@@ -63,10 +70,14 @@ class _$MultiplicationStateCopyWithImpl<$Res>
           ? _value.multiplicand
           : multiplicand // ignore: cast_nullable_to_non_nullable
               as int,
-      duration: duration == freezed
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as Duration,
+      isCorrect: isCorrect == freezed
+          ? _value.isCorrect
+          : isCorrect // ignore: cast_nullable_to_non_nullable
+              as bool,
+      secElapsed: secElapsed == freezed
+          ? _value.secElapsed
+          : secElapsed // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -78,7 +89,12 @@ abstract class _$$_MultiplicationStateCopyWith<$Res>
           $Res Function(_$_MultiplicationState) then) =
       __$$_MultiplicationStateCopyWithImpl<$Res>;
   @override
-  $Res call({int index, int multiplier, int multiplicand, Duration duration});
+  $Res call(
+      {int index,
+      int multiplier,
+      int multiplicand,
+      bool isCorrect,
+      int secElapsed});
 }
 
 /// @nodoc
@@ -97,7 +113,8 @@ class __$$_MultiplicationStateCopyWithImpl<$Res>
     Object? index = freezed,
     Object? multiplier = freezed,
     Object? multiplicand = freezed,
-    Object? duration = freezed,
+    Object? isCorrect = freezed,
+    Object? secElapsed = freezed,
   }) {
     return _then(_$_MultiplicationState(
       index: index == freezed
@@ -112,10 +129,14 @@ class __$$_MultiplicationStateCopyWithImpl<$Res>
           ? _value.multiplicand
           : multiplicand // ignore: cast_nullable_to_non_nullable
               as int,
-      duration: duration == freezed
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as Duration,
+      isCorrect: isCorrect == freezed
+          ? _value.isCorrect
+          : isCorrect // ignore: cast_nullable_to_non_nullable
+              as bool,
+      secElapsed: secElapsed == freezed
+          ? _value.secElapsed
+          : secElapsed // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -127,7 +148,8 @@ class _$_MultiplicationState implements _MultiplicationState {
       {this.index = 0,
       this.multiplier = 0,
       this.multiplicand = 0,
-      this.duration = const Duration(seconds: 0)});
+      this.isCorrect = false,
+      this.secElapsed = 0});
 
   @override
   @JsonKey()
@@ -140,11 +162,14 @@ class _$_MultiplicationState implements _MultiplicationState {
   final int multiplicand;
   @override
   @JsonKey()
-  final Duration duration;
+  final bool isCorrect;
+  @override
+  @JsonKey()
+  final int secElapsed;
 
   @override
   String toString() {
-    return 'MultiplicationState(index: $index, multiplier: $multiplier, multiplicand: $multiplicand, duration: $duration)';
+    return 'MultiplicationState(index: $index, multiplier: $multiplier, multiplicand: $multiplicand, isCorrect: $isCorrect, secElapsed: $secElapsed)';
   }
 
   @override
@@ -157,7 +182,9 @@ class _$_MultiplicationState implements _MultiplicationState {
                 .equals(other.multiplier, multiplier) &&
             const DeepCollectionEquality()
                 .equals(other.multiplicand, multiplicand) &&
-            const DeepCollectionEquality().equals(other.duration, duration));
+            const DeepCollectionEquality().equals(other.isCorrect, isCorrect) &&
+            const DeepCollectionEquality()
+                .equals(other.secElapsed, secElapsed));
   }
 
   @override
@@ -166,7 +193,8 @@ class _$_MultiplicationState implements _MultiplicationState {
       const DeepCollectionEquality().hash(index),
       const DeepCollectionEquality().hash(multiplier),
       const DeepCollectionEquality().hash(multiplicand),
-      const DeepCollectionEquality().hash(duration));
+      const DeepCollectionEquality().hash(isCorrect),
+      const DeepCollectionEquality().hash(secElapsed));
 
   @JsonKey(ignore: true)
   @override
@@ -180,7 +208,8 @@ abstract class _MultiplicationState implements MultiplicationState {
       {final int index,
       final int multiplier,
       final int multiplicand,
-      final Duration duration}) = _$_MultiplicationState;
+      final bool isCorrect,
+      final int secElapsed}) = _$_MultiplicationState;
 
   @override
   int get index;
@@ -189,7 +218,9 @@ abstract class _MultiplicationState implements MultiplicationState {
   @override
   int get multiplicand;
   @override
-  Duration get duration;
+  bool get isCorrect;
+  @override
+  int get secElapsed;
   @override
   @JsonKey(ignore: true)
   _$$_MultiplicationStateCopyWith<_$_MultiplicationState> get copyWith =>
