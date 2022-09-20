@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,16 +19,7 @@ class CalculationPageState extends State<CalculationPage>
 
   @override
   void initState() {
-    controller = TextEditingController(text: '1234');
-    controller.addListener(() {
-      final String text = controller.text.toLowerCase();
-      controller.value = controller.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+    controller = TextEditingController();
     animationController = AnimationController(vsync: this, value: 0.5);
     super.initState();
   }
@@ -40,6 +30,41 @@ class CalculationPageState extends State<CalculationPage>
     super.dispose();
   }
 
+  Widget progressBar() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.watch_later_outlined,
+            size: 18,
+            color: Color.fromRGBO(81, 133, 213, 1),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            height: 8,
+            width: MediaQuery.of(context).size.width - 60,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: LinearProgressIndicator(
+                backgroundColor: const Color.fromRGBO(236, 239, 241, 1),
+                color: const Color.fromRGBO(81, 133, 213, 1),
+                value: animationController.value,
+              ),
+            ),
+          ),
+          Text(
+            '30',
+            style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).textTheme.caption!.color),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,38 +72,9 @@ class CalculationPageState extends State<CalculationPage>
       appBar: AppBar(title: const Text('1/10問目')),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.watch_later_outlined,
-                  size: 18,
-                  color: Color.fromRGBO(81, 133, 213, 1),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  height: 8,
-                  width: MediaQuery.of(context).size.width - 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: LinearProgressIndicator(
-                      backgroundColor: const Color.fromRGBO(236, 239, 241, 1),
-                      color: const Color.fromRGBO(81, 133, 213, 1),
-                      value: animationController.value,
-                    ),
-                  ),
-                ),
-                Text(
-                  '30',
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).textTheme.caption!.color),
-                )
-              ],
-            ),
-          ),
+          //タイマーのプログレスバー
+          progressBar(),
+
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,6 +120,7 @@ class CalculationPageState extends State<CalculationPage>
                           isDense: true,
                           contentPadding: const EdgeInsets.all(0),
                         ),
+                        onChanged: (_) {},
                       ),
                     ),
                   ),
@@ -136,12 +133,14 @@ class CalculationPageState extends State<CalculationPage>
                 ],
               ),
               const SizedBox(height: 10),
+
+              //Submit Button
               GradientTextButton(
                 title: '回答する',
                 height: 45,
                 width: 145,
                 onPressed: () {},
-                disabled: false,
+                disabled: controller.text == '',
               ),
               const SizedBox(height: 60),
               NumericKeyboard(
