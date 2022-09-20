@@ -2,7 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 class NumericKeyboard extends StatelessWidget {
-  const NumericKeyboard({Key? key}) : super(key: key);
+  final TextEditingController controller;
+  const NumericKeyboard({Key? key, required this.controller}) : super(key: key);
+
+  void _addText(value) {
+    if (controller.text.length <= 3) controller.text = controller.text + value;
+  }
+
+  void _backSpace() {
+    final int position = controller.text.length - 1;
+    if (position <= -1) {
+      return;
+    } else {
+      controller.text = controller.text.substring(0, position);
+    }
+  }
+
+  void _clear() {
+    controller.text = '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +60,9 @@ class NumericKeyboard extends StatelessWidget {
     return Expanded(
       child: Row(
         children: firstElement
-            .map((element) =>
-                keyCap(text: element.toString(), onTextInput: (_) {}))
+            .map((element) => keyCap(
+                text: element.toString(),
+                onTextInput: (value) => _addText(value)))
             .toList(),
       ),
     );
@@ -54,8 +73,9 @@ class NumericKeyboard extends StatelessWidget {
     return Expanded(
       child: Row(
         children: firstElement
-            .map((element) =>
-                keyCap(text: element.toString(), onTextInput: (_) {}))
+            .map((element) => keyCap(
+                text: element.toString(),
+                onTextInput: (value) => _addText(value)))
             .toList(),
       ),
     );
@@ -66,22 +86,21 @@ class NumericKeyboard extends StatelessWidget {
     return Expanded(
       child: Row(
         children: firstElement
-            .map((element) =>
-                keyCap(text: element.toString(), onTextInput: (_) {}))
+            .map((element) => keyCap(
+                text: element.toString(),
+                onTextInput: (value) => _addText(value)))
             .toList(),
       ),
     );
   }
 
   Widget buildRowFour() {
-    const firstElement = ['C', 0, 'BS'];
     return Expanded(
-      child: Row(
-        children: firstElement
-            .map((element) =>
-                keyCap(text: element.toString(), onTextInput: (_) {}))
-            .toList(),
-      ),
+      child: Row(children: [
+        keyCap(text: 'C', onTextInput: (_) => _clear()),
+        keyCap(text: '0', onTextInput: (value) => _addText(value)),
+        keyCap(text: 'BS', onTextInput: (value) => _backSpace())
+      ]),
     );
   }
 
@@ -101,7 +120,9 @@ class NumericKeyboard extends StatelessWidget {
         )),
         child: InkWell(
           splashFactory: NoSplash.splashFactory,
-          onTap: () {},
+          onTap: () {
+            onTextInput(text);
+          },
           child: Center(
             child: Text(
               text,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +20,16 @@ class CalculationPageState extends State<CalculationPage>
 
   @override
   void initState() {
-    controller = TextEditingController(text: '12345');
+    controller = TextEditingController(text: '1234');
+    controller.addListener(() {
+      final String text = controller.text.toLowerCase();
+      controller.value = controller.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+    });
     animationController = AnimationController(vsync: this, value: 0.5);
     super.initState();
   }
@@ -99,9 +109,13 @@ class CalculationPageState extends State<CalculationPage>
                     child: Center(
                       child: TextFormField(
                         controller: controller,
-                        readOnly: true,
                         enabled: false,
-                        maxLength: 5,
+                        readOnly: true,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        maxLength: 4,
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 40),
                         decoration: InputDecoration(
@@ -130,7 +144,9 @@ class CalculationPageState extends State<CalculationPage>
                 disabled: false,
               ),
               const SizedBox(height: 60),
-              const NumericKeyboard(),
+              NumericKeyboard(
+                controller: controller,
+              ),
             ],
           ),
         ],
