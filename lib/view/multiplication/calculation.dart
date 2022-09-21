@@ -5,6 +5,7 @@ import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.da
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../model/multiplication/calculation_state.dart';
 import '../gradient_text_button.dart';
 
 class CalculationPage extends ConsumerStatefulWidget {
@@ -22,12 +23,22 @@ class CalculationPageState extends ConsumerState<CalculationPage>
   late TextEditingController controller;
   late AnimationController animationController;
 
+  static const maxQuestionNum = 10;
+
   @override
   void initState() {
     controller = TextEditingController();
     animationController = AnimationController(vsync: this, value: 0.5);
 
-    ref.read(calculationProvider.notifier).initialize(id: widget.id);
+    //Submit ButtonのEnableを文字数で変えるために、暫定１文字ごとSetStateしてる
+    controller.addListener(() {
+      setState(() {});
+    });
+
+    //引数のIDを受け取ってランダムな掛け算問題を生成する
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(calculationProvider.notifier).initialize(id: widget.id);
+    });
 
     super.initState();
   }
@@ -75,11 +86,13 @@ class CalculationPageState extends ConsumerState<CalculationPage>
 
   @override
   Widget build(BuildContext context) {
-    final currentQuestion = ref.read(calculationProvider).last;
+    final currentState = ref.watch(calculationProvider);
+    final currentQuestion =
+        currentState.isEmpty ? const CalculationState() : currentState.last;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text('1/10問目')),
+      appBar: AppBar(title: Text('${currentQuestion.index}/$maxQuestionNum問目')),
       body: Stack(
         children: [
           //タイマーのプログレスバー。練習モード以外なら表示する
@@ -119,7 +132,7 @@ class CalculationPageState extends ConsumerState<CalculationPage>
                       child: TextFormField(
                         controller: controller,
                         enabled: false,
-                        readOnly: true,
+                        //readOnly: true,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
@@ -133,7 +146,9 @@ class CalculationPageState extends ConsumerState<CalculationPage>
                           isDense: true,
                           contentPadding: const EdgeInsets.all(0),
                         ),
-                        onChanged: (_) {},
+                        onChanged: (_) {
+                          setState(() {});
+                        },
                       ),
                     ),
                   ),
@@ -152,9 +167,19 @@ class CalculationPageState extends ConsumerState<CalculationPage>
                 title: '回答する',
                 height: 45,
                 width: 145,
-                onPressed: () {},
-                disabled: controller.text == '',
+                onPressed: controller.text.isEmpty
+                    ? null
+                    : () {
+                        ref.read(calculationProvider.notifier).submit(
+                            userAnswer: int.tryParse(controller.text)!,
+                            secElapsed: 12);
+
+                        //テキスト内容を初期化する
+                        controller.text = '';
+                      },
+                disabled: controller.text.isEmpty,
               ),
+
               const SizedBox(height: 60),
               NumericKeyboard(
                 controller: controller,

@@ -1,11 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 
 import '../model/multiplication/calculation_state.dart';
 import '../model/multiplication/course.dart';
-import '../model/multiplication/multiplication_archivement.dart';
 
 ///globalに宣言し、bottom_tab_bar.dartで初期化される
 final calculationProvider =
@@ -36,17 +34,16 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
     final randomMaltiplier = random.nextInt(maxMaltiplierIndex);
     final randomMaltiplicand = random.nextInt(maxMaltiplicandIndex);
 
-    state.add(CalculationState(
+    final addedState = CalculationState(
       index: state.isEmpty ? 1 : state.last.index + 1,
       multiplier: maxMaltiplierList[randomMaltiplier],
       multiplicand: maxMaltiplicandList[randomMaltiplicand],
-    ));
+    );
 
-    print(state.last);
+    state = [...state, addedState];
   }
 
-  void submit(
-      {required int index, required int userAnswer, required int secElapsed}) {
+  void submit({required int userAnswer, required int secElapsed}) {
     final CalculationState currentCalculation = state.last;
 
     final int answer =
@@ -59,8 +56,12 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
       isCorrect = false;
     }
 
-    state.last.copyWith(
+    final toggledState = state.last.copyWith(
         userAnswer: userAnswer, secElapsed: secElapsed, isCorrect: isCorrect);
+
+    state = [state.removeLast(), toggledState];
+
+    print(state.last);
     getRandom();
   }
 
