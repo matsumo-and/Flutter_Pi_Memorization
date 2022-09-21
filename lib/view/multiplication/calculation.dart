@@ -19,8 +19,7 @@ class CalculationPage extends ConsumerStatefulWidget {
   CalculationPageState createState() => CalculationPageState();
 }
 
-class CalculationPageState extends ConsumerState<CalculationPage>
-    with TickerProviderStateMixin {
+class CalculationPageState extends ConsumerState<CalculationPage> {
   late TextEditingController controller;
 
   static const maxQuestionNum = 10;

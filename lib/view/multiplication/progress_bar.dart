@@ -11,10 +11,17 @@ class ProgressBar extends ConsumerStatefulWidget {
 class ProgressBarState extends ConsumerState<ProgressBar>
     with TickerProviderStateMixin {
   late AnimationController controller;
+
   @override
   void initState() {
     controller = AnimationController(vsync: this, value: 0.5);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
