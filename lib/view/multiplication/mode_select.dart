@@ -89,12 +89,10 @@ class ModeSelect extends ConsumerWidget {
         //練習モード
         TappableCard(
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => CalculationPage(
-                          id: id, mode: CalculationMode.practice)))
-                  .then((_) => ref.read(calculationProvider.notifier).clear());
+              Navigator.of(context).push(MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) =>
+                      CalculationPage(id: id, mode: CalculationMode.practice)));
             },
             height: height,
             margin: cardMargin,
@@ -148,13 +146,10 @@ class ModeSelect extends ConsumerWidget {
                   //初心者コース
                   TappableCard(
                       onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) => CalculationPage(
-                                    id: id, mode: CalculationMode.beginner)))
-                            .then((_) =>
-                                ref.read(calculationProvider.notifier).clear());
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CalculationPage(
+                                id: id, mode: CalculationMode.beginner)));
                       },
                       height: height,
                       border: border.copyWith(
@@ -221,14 +216,10 @@ class ModeSelect extends ConsumerWidget {
                   //達人コース
                   TappableCard(
                       onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) => CalculationPage(
-                                    id: id,
-                                    mode: CalculationMode.professional)))
-                            .then((_) =>
-                                ref.read(calculationProvider.notifier).clear());
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CalculationPage(
+                                id: id, mode: CalculationMode.professional)));
                       },
                       height: height,
                       border: border.copyWith(

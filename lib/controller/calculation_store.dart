@@ -19,6 +19,7 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
   static late List<int> maxMaltiplicandList;
 
   void initialize({required int id}) {
+    state = [];
     course = Course.find(id);
     maxMaltiplierList = course.multiplierList;
     maxMaltiplicandList = course.multiplicandList;
@@ -46,10 +47,10 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
   void submit({required int userAnswer, required int secElapsed}) {
     final CalculationState currentCalculation = state.last;
 
+    //採点する
     final int answer =
         currentCalculation.multiplier * currentCalculation.multiplicand;
-
-    bool isCorrect;
+    late bool isCorrect;
     if (answer == userAnswer) {
       isCorrect = true;
     } else {
@@ -63,9 +64,5 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
 
     print(state.last);
     getRandom();
-  }
-
-  void clear() {
-    state = [];
   }
 }
