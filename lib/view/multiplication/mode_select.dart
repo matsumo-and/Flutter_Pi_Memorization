@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/calculation_store.dart';
+import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/model/multiplication/course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
@@ -31,8 +33,6 @@ class ModeSelect extends ConsumerWidget {
     final multiplication = ref.watch(multiplicationProvider).firstWhere(
         (element) => element.id == id,
         orElse: (() => const Multiplication()));
-    final multiplicationStateNotifier =
-        ref.read(multiplicationProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -89,9 +89,12 @@ class ModeSelect extends ConsumerWidget {
         //練習モード
         TappableCard(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => CalculationPage()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => CalculationPage(
+                          id: id, mode: CalculationMode.practice)))
+                  .then((_) => ref.read(calculationProvider.notifier).clear());
             },
             height: height,
             margin: cardMargin,
@@ -145,9 +148,13 @@ class ModeSelect extends ConsumerWidget {
                   //初心者コース
                   TappableCard(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => CalculationPage()));
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) => CalculationPage(
+                                    id: id, mode: CalculationMode.beginner)))
+                            .then((_) =>
+                                ref.read(calculationProvider.notifier).clear());
                       },
                       height: height,
                       border: border.copyWith(
@@ -214,9 +221,14 @@ class ModeSelect extends ConsumerWidget {
                   //達人コース
                   TappableCard(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => CalculationPage()));
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) => CalculationPage(
+                                    id: id,
+                                    mode: CalculationMode.professional)))
+                            .then((_) =>
+                                ref.read(calculationProvider.notifier).clear());
                       },
                       height: height,
                       border: border.copyWith(

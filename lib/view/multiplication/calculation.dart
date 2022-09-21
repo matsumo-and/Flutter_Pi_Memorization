@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pi_memorization/controller/calculation_store.dart';
+import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../gradient_text_button.dart';
 
-class CalculationPage extends StatefulWidget {
-  const CalculationPage({Key? key}) : super(key: key);
+class CalculationPage extends ConsumerStatefulWidget {
+  final int id;
+  final CalculationMode mode;
+  const CalculationPage({Key? key, required this.id, required this.mode})
+      : super(key: key);
 
   @override
   CalculationPageState createState() => CalculationPageState();
 }
 
-class CalculationPageState extends State<CalculationPage>
+class CalculationPageState extends ConsumerState<CalculationPage>
     with TickerProviderStateMixin {
   late TextEditingController controller;
   late AnimationController animationController;
@@ -21,6 +26,9 @@ class CalculationPageState extends State<CalculationPage>
   void initState() {
     controller = TextEditingController();
     animationController = AnimationController(vsync: this, value: 0.5);
+
+    ref.read(calculationProvider.notifier).initialize(id: widget.id);
+
     super.initState();
   }
 
@@ -67,21 +75,26 @@ class CalculationPageState extends State<CalculationPage>
 
   @override
   Widget build(BuildContext context) {
+    final currentQuestion = ref.read(calculationProvider).last;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('1/10問目')),
       body: Stack(
         children: [
-          //タイマーのプログレスバー
-          progressBar(),
+          //タイマーのプログレスバー。練習モード以外なら表示する
+          Visibility(
+            visible: widget.mode != CalculationMode.practice,
+            child: progressBar(),
+          ),
 
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                '10 × 12',
-                style: TextStyle(fontSize: 40),
+              Text(
+                '${currentQuestion.multiplier} × ${currentQuestion.multiplicand}',
+                style: const TextStyle(fontSize: 40),
               ),
               const SizedBox(height: 15),
               Row(

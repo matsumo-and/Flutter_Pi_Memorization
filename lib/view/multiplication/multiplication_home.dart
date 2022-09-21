@@ -12,7 +12,7 @@ class MultiplicationHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppBar(
-        title: const Text('かけ算'),
+        title: Text('かけ算'),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
