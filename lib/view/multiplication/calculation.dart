@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_pi_memorization/controller/calculation_store.dart';
 import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
+import 'package:flutter_pi_memorization/view/multiplication/progress_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/multiplication/calculation_state.dart';
@@ -21,21 +22,21 @@ class CalculationPage extends ConsumerStatefulWidget {
 class CalculationPageState extends ConsumerState<CalculationPage>
     with TickerProviderStateMixin {
   late TextEditingController controller;
-  late AnimationController animationController;
 
   static const maxQuestionNum = 10;
 
   @override
   void initState() {
     controller = TextEditingController();
-    animationController = AnimationController(vsync: this, value: 0.5);
 
     //Submit ButtonのEnableを文字数で変えるために、暫定１文字ごとSetStateしてる
     controller.addListener(() {
       setState(() {});
     });
 
-    //引数のIDを受け取ってランダムな掛け算問題を生成する
+    //引数のIDを受け取ってランダムな掛け算問題を生成する.
+    //ここで初めてInitializeしてStateの中身を決めるためビルド中には行えないらしい
+    //そのためビルド後にInitializeする
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(calculationProvider.notifier).initialize(id: widget.id);
     });
@@ -49,43 +50,9 @@ class CalculationPageState extends ConsumerState<CalculationPage>
     super.dispose();
   }
 
-  Widget progressBar() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.watch_later_outlined,
-            size: 18,
-            color: Color.fromRGBO(81, 133, 213, 1),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            height: 8,
-            width: MediaQuery.of(context).size.width - 60,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: LinearProgressIndicator(
-                backgroundColor: const Color.fromRGBO(236, 239, 241, 1),
-                color: const Color.fromRGBO(81, 133, 213, 1),
-                value: animationController.value,
-              ),
-            ),
-          ),
-          Text(
-            '30',
-            style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).textTheme.caption!.color),
-          )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    //ビルド後にInitializeするため State.last は例外を吐く可能性がある（実行時エラー）
     final currentState = ref.watch(calculationProvider);
     final currentQuestion =
         currentState.isEmpty ? const CalculationState() : currentState.last;
@@ -98,7 +65,7 @@ class CalculationPageState extends ConsumerState<CalculationPage>
           //タイマーのプログレスバー。練習モード以外なら表示する
           Visibility(
             visible: widget.mode != CalculationMode.practice,
-            child: progressBar(),
+            child: ProgressBar(),
           ),
 
           Column(
@@ -170,6 +137,7 @@ class CalculationPageState extends ConsumerState<CalculationPage>
                 onPressed: controller.text.isEmpty
                     ? null
                     : () {
+                        //SUBMIT して次の問題を表示する
                         ref.read(calculationProvider.notifier).submit(
                             userAnswer: int.tryParse(controller.text)!,
                             secElapsed: 12);
@@ -181,6 +149,8 @@ class CalculationPageState extends ConsumerState<CalculationPage>
               ),
 
               const SizedBox(height: 60),
+
+              //Custom Keyboard
               NumericKeyboard(
                 controller: controller,
               ),
