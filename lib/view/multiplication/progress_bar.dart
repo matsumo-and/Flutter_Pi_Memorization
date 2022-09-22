@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProgressBar extends ConsumerStatefulWidget {
@@ -26,6 +27,12 @@ class ProgressBarState extends ConsumerState<ProgressBar>
 
   @override
   Widget build(BuildContext context) {
+    final timerState = ref.watch(timerProvider);
+    controller = AnimationController(
+        vsync: this,
+        value: timerState.secLimit == null
+            ? 0
+            : (timerState.secElapsed / timerState.secLimit!).toDouble());
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -50,7 +57,9 @@ class ProgressBarState extends ConsumerState<ProgressBar>
             ),
           ),
           Text(
-            '30',
+            timerState.secLimit == null
+                ? '0'
+                : (timerState.secLimit! - timerState.secElapsed).toString(),
             style: TextStyle(
                 fontSize: 14,
                 color: Theme.of(context).textTheme.caption!.color),

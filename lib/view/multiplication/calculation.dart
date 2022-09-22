@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_pi_memorization/controller/calculation_store.dart';
+import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
+import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_pi_memorization/view/multiplication/progress_bar.dart';
@@ -36,11 +37,21 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
     //引数のIDを受け取ってランダムな掛け算問題を生成する.
     //ここで初めてInitializeしてStateの中身を決めるためビルド中には行えないらしい
     //そのためビルド後にInitializeする
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(calculationProvider.notifier).initialize(id: widget.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(calculationProvider.notifier)
+          .initialize(id: widget.id, mode: widget.mode);
+      ref.read(timerProvider.notifier).start(widget.mode);
     });
 
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    ref.read(timerProvider.notifier).stop();
+    print('deactivate');
+    super.deactivate();
   }
 
   @override

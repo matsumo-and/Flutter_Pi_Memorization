@@ -1,9 +1,12 @@
 import 'dart:math';
 
+import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../model/multiplication/calculation_mode.dart';
 import '../model/multiplication/calculation_state.dart';
 import '../model/multiplication/course.dart';
+import '../model/timer_state.dart';
 
 ///globalに宣言し、bottom_tab_bar.dartで初期化される
 final calculationProvider =
@@ -18,15 +21,16 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
   static late List<int> maxMaltiplierList;
   static late List<int> maxMaltiplicandList;
 
-  void initialize({required int id}) {
+  void initialize({required int id, required CalculationMode mode}) {
+    //
     state = [];
     course = Course.find(id);
     maxMaltiplierList = course.multiplierList;
     maxMaltiplicandList = course.multiplicandList;
-    getRandom();
+    _getRandom();
   }
 
-  void getRandom() {
+  void _getRandom() {
     final Random random = Random();
 
     final int maxMaltiplierIndex = course.multiplierList.length;
@@ -50,12 +54,7 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
     //採点する
     final int answer =
         currentCalculation.multiplier * currentCalculation.multiplicand;
-    late bool isCorrect;
-    if (answer == userAnswer) {
-      isCorrect = true;
-    } else {
-      isCorrect = false;
-    }
+    final bool isCorrect = answer == userAnswer ? true : false;
 
     final toggledState = state.last.copyWith(
         userAnswer: userAnswer, secElapsed: secElapsed, isCorrect: isCorrect);
@@ -63,6 +62,6 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
     state = [state.removeLast(), toggledState];
 
     print(state.last);
-    getRandom();
+    _getRandom();
   }
 }
