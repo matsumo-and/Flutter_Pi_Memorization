@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
+import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
@@ -21,19 +21,10 @@ class CalculationPage extends ConsumerStatefulWidget {
 }
 
 class CalculationPageState extends ConsumerState<CalculationPage> {
-  late TextEditingController controller;
-
   static const maxQuestionNum = 10;
 
   @override
   void initState() {
-    controller = TextEditingController();
-
-    //Submit ButtonのEnableを文字数で変えるために、暫定１文字ごとSetStateしてる
-    controller.addListener(() {
-      setState(() {});
-    });
-
     //引数のIDを受け取ってランダムな掛け算問題を生成する.
     //ここで初めてInitializeしてStateの中身を決めるためビルド中には行えないらしい
     //そのためビルド後にInitializeする
@@ -56,16 +47,18 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final keyboardState = ref.watch(keyboardProvider);
+    final keyboardStateNotifier = ref.read(keyboardProvider.notifier);
+
     //ビルド後にInitializeするため State.last は例外を吐く可能性がある（実行時エラー）
-    final currentState = ref.watch(calculationProvider);
+    final questionState = ref.watch(calculationProvider);
     final currentQuestion =
-        currentState.isEmpty ? const CalculationState() : currentState.last;
+        questionState.isEmpty ? const CalculationState() : questionState.last;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,7 +68,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
           //タイマーのプログレスバー。練習モード以外なら表示する
           Visibility(
             visible: widget.mode != CalculationMode.practice,
-            child: ProgressBar(),
+            child: const ProgressBar(),
           ),
 
           Column(
@@ -102,31 +95,19 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                   const Padding(padding: EdgeInsets.all(8)),
 
                   //カーソルやシステムキーボードは表示させないテキストフィールド
-                  SizedBox(
-                    height: 65,
+                  Container(
+                    height: 45,
                     width: 145,
-                    child: Center(
-                      child: TextFormField(
-                        controller: controller,
-                        enabled: false,
-                        //readOnly: true,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        maxLength: 4,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 40),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5)),
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(0),
-                        ),
-                        onChanged: (_) {
-                          setState(() {});
-                        },
-                      ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 0.5,
+                          color: const Color.fromRGBO(77, 77, 77, 0.4)),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      keyboardState.toString(),
+                      style: const TextStyle(fontSize: 40),
+                      textAlign: TextAlign.center,
                     ),
                   ),
 
@@ -144,26 +125,24 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                 title: '回答する',
                 height: 45,
                 width: 145,
-                onPressed: controller.text.isEmpty
+                onPressed: keyboardState.isEmpty
                     ? null
                     : () {
                         //SUBMIT して次の問題を表示する
                         ref.read(calculationProvider.notifier).submit(
-                            userAnswer: int.tryParse(controller.text)!,
+                            userAnswer: int.tryParse(keyboardState)!,
                             secElapsed: 12);
 
                         //テキスト内容を初期化する
-                        controller.text = '';
+                        keyboardStateNotifier.clear();
                       },
-                disabled: controller.text.isEmpty,
+                disabled: keyboardState.isEmpty,
               ),
 
               const SizedBox(height: 60),
 
               //Custom Keyboard
-              NumericKeyboard(
-                controller: controller,
-              ),
+              const NumericKeyboard(),
             ],
           ),
         ],

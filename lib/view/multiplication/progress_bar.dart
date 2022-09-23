@@ -11,28 +11,22 @@ class ProgressBar extends ConsumerStatefulWidget {
 
 class ProgressBarState extends ConsumerState<ProgressBar>
     with TickerProviderStateMixin {
-  late AnimationController controller;
-
   @override
   void initState() {
-    controller = AnimationController(vsync: this, value: 0.5);
     super.initState();
   }
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final timerState = ref.watch(timerProvider);
-    controller = AnimationController(
-        vsync: this,
-        value: timerState.secLimit == null
-            ? 0
-            : (timerState.secElapsed / timerState.secLimit!).toDouble());
+    final double secElapsed = timerState.secLimit == null
+        ? 0
+        : (timerState.secElapsed / timerState.secLimit!).toDouble();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -52,7 +46,7 @@ class ProgressBarState extends ConsumerState<ProgressBar>
               child: LinearProgressIndicator(
                 backgroundColor: const Color.fromRGBO(236, 239, 241, 1),
                 color: const Color.fromRGBO(81, 133, 213, 1),
-                value: controller.value,
+                value: secElapsed,
               ),
             ),
           ),
