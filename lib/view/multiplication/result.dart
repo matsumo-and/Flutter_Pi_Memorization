@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
 import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
+import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_pi_memorization/view/multiplication/progress_bar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/course.dart';
@@ -48,6 +50,7 @@ class ResultPageState extends ConsumerState<ResultPage> {
     return Scaffold(
       appBar: AppBar(title: Text(Course.find(widget.id).title)),
       body: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
           SingleChildScrollView(
             child: Column(
@@ -59,14 +62,27 @@ class ResultPageState extends ConsumerState<ResultPage> {
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 200,
-                          width: 200,
-                          child: widget.mode.medal,
-                        ),
-                        const Text('合格おめでとうございます！！\nこの調子で頑張りましょう！'),
-                      ],
+                      children: questionState
+                                  .where((element) => element.isCorrect == true)
+                                  .length ==
+                              10
+                          ? [
+                              SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: widget.mode.medal),
+                              const Text('合格おめでとうございます！！\nこの調子で頑張りましょう！'),
+                            ]
+                          : [
+                              const SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Image(
+                                      image: AssetImage(
+                                    'assets/result.multiplication.png',
+                                  ))),
+                              const Text('お疲れ様でした！\nこの調子で頑張りましょう！'),
+                            ],
                     ),
                   ),
                 ),
@@ -147,50 +163,60 @@ class ResultPageState extends ConsumerState<ResultPage> {
 
                           //ユーザーが解いた問題についての採点リスト
                           for (CalculationState state in questionState)
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 70,
-                                  width: 40,
-                                  child: Icon(
-                                    state.isCorrect
-                                        ? Icons.circle_outlined
-                                        : Icons.close_outlined,
-                                    color: state.isCorrect
-                                        ? const Color.fromRGBO(81, 133, 213, 1)
-                                        : const Color.fromRGBO(224, 70, 45, 1),
-                                    size: 24,
+                            Ink(
+                              color: state.isCorrect
+                                  ? Colors.transparent
+                                  : const Color.fromRGBO(255, 235, 238, 1),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 70,
+                                    width: 40,
+                                    child: Icon(
+                                      state.isCorrect
+                                          ? Icons.circle_outlined
+                                          : Icons.close_outlined,
+                                      color: state.isCorrect
+                                          ? const Color.fromRGBO(
+                                              81, 133, 213, 1)
+                                          : const Color.fromRGBO(
+                                              224, 70, 45, 1),
+                                      size: 24,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    border: Border(bottom: BorderSide.none),
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width - 100,
-                                  height: 70,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '(${state.index}) ${state.multiplier} × ${state.multiplicand} = ${state.multiplier * state.multiplicand}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline2,
-                                      ),
-                                      Text(
-                                        '${state.secElapsed}秒',
-                                        style:
-                                            Theme.of(context).textTheme.caption,
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              width: 0.5,
+                                              color: Color.fromRGBO(
+                                                  33, 33, 33, 0.2))),
+                                    ),
+                                    width:
+                                        MediaQuery.of(context).size.width - 100,
+                                    height: 25,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '(${state.index}) ${state.multiplier} × ${state.multiplicand} = ${state.multiplier * state.multiplicand}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline2,
+                                        ),
+                                        Text(
+                                          '${state.secElapsed}秒',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                         ],
                       ),
@@ -201,23 +227,24 @@ class ResultPageState extends ConsumerState<ResultPage> {
               ],
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                color: Colors.white,
-                child: GradientTextButton(
-                  height: 45,
-                  width: MediaQuery.of(context).size.width,
-                  title: 'リトライ',
-                  onPressed: () {
-                    print("object");
-                  },
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).padding.bottom),
-            ],
+
+          //リトライボタン
+          Container(
+            //セーフサイズを避けて描画する
+            padding: const EdgeInsets.all(16).add(
+                EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom)),
+            color: Colors.white,
+            child: GradientTextButton(
+              height: 45,
+              width: MediaQuery.of(context).size.width,
+              title: 'リトライ',
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) =>
+                        CalculationPage(id: widget.id, mode: widget.mode)));
+              },
+            ),
           ),
         ],
       ),
