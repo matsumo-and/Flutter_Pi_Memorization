@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
 import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
-import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_pi_memorization/view/multiplication/progress_bar.dart';
+import 'package:flutter_pi_memorization/view/multiplication/result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/multiplication/calculation_state.dart';
+import '../../model/multiplication/medal.dart';
 import '../gradient_text_button.dart';
 
 class CalculationPage extends ConsumerStatefulWidget {
@@ -32,7 +33,15 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
       ref
           .read(calculationProvider.notifier)
           .initialize(id: widget.id, mode: widget.mode);
-      ref.read(timerProvider.notifier).start(widget.mode);
+      ref.read(keyboardProvider.notifier).clear();
+
+      ref.read(timerProvider.notifier).start(
+          mode: widget.mode,
+          onTimerEnd: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    ResultPage(id: widget.id, mode: widget.mode)));
+          });
     });
 
     super.initState();
@@ -41,7 +50,6 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
   @override
   void deactivate() {
     ref.read(timerProvider.notifier).stop();
-    print('deactivate');
     super.deactivate();
   }
 
@@ -67,7 +75,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
         children: [
           //タイマーのプログレスバー。練習モード以外なら表示する
           Visibility(
-            visible: widget.mode != CalculationMode.practice,
+            visible: widget.mode != CalculationMode.none,
             child: const ProgressBar(),
           ),
 
@@ -129,9 +137,15 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                     ? null
                     : () {
                         //SUBMIT して次の問題を表示する
-                        ref.read(calculationProvider.notifier).submit(
+                        ref.watch(calculationProvider.notifier).submit(
                             userAnswer: int.tryParse(keyboardState)!,
-                            secElapsed: 12);
+                            secElapsed: 12,
+                            onComplete: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => ResultPage(
+                                          id: widget.id, mode: widget.mode)));
+                            });
 
                         //テキスト内容を初期化する
                         keyboardStateNotifier.clear();

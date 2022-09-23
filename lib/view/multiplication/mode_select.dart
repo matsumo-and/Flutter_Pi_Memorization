@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/model/multiplication/calculation_mode.dart';
 import 'package:flutter_pi_memorization/model/multiplication/course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
@@ -91,7 +90,7 @@ class ModeSelect extends ConsumerWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (context) =>
-                      CalculationPage(id: id, mode: CalculationMode.practice)));
+                      CalculationPage(id: id, mode: CalculationMode.none)));
             },
             height: height,
             margin: cardMargin,
@@ -171,8 +170,8 @@ class ModeSelect extends ConsumerWidget {
                                     height: height,
                                     width: height,
                                     child: multiplication.beginnerDone
-                                        ? Medal.beginner.icon
-                                        : Medal.none.icon,
+                                        ? CalculationMode.beginner.medal
+                                        : CalculationMode.none.medal,
                                   ),
                                 ),
                                 Column(
@@ -238,8 +237,8 @@ class ModeSelect extends ConsumerWidget {
                                   height: height,
                                   width: height,
                                   child: multiplication.professionalDone
-                                      ? Medal.professional.icon
-                                      : Medal.none.icon,
+                                      ? CalculationMode.professional.medal
+                                      : CalculationMode.none.medal,
                                 ),
                                 Column(
                                   mainAxisAlignment:

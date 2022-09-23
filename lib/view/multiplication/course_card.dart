@@ -46,10 +46,10 @@ class CourseCard extends StatelessWidget {
             height: height,
             width: height,
             child: multiplication.professionalDone
-                ? Medal.professional.icon
+                ? CalculationMode.professional.medal
                 : multiplication.beginnerDone
-                    ? Medal.beginner.icon
-                    : Medal.none.icon,
+                    ? CalculationMode.beginner.medal
+                    : CalculationMode.none.medal,
           );
         }),
         Column(

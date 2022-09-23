@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/multiplication/calculation_mode.dart';
 import '../model/multiplication/calculation_state.dart';
 import '../model/multiplication/course.dart';
+import '../model/multiplication/medal.dart';
 import '../model/timer_state.dart';
 
 ///globalに宣言し、bottom_tab_bar.dartで初期化される
@@ -48,7 +48,10 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
     state = [...state, addedState];
   }
 
-  void submit({required int userAnswer, required int secElapsed}) {
+  void submit(
+      {required int userAnswer,
+      required int secElapsed,
+      required Function()? onComplete}) {
     final CalculationState currentCalculation = state.last;
 
     //採点する
@@ -56,12 +59,16 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
         currentCalculation.multiplier * currentCalculation.multiplicand;
     final bool isCorrect = answer == userAnswer ? true : false;
 
-    final toggledState = state.last.copyWith(
+    final fetchedState = state.last.copyWith(
         userAnswer: userAnswer, secElapsed: secElapsed, isCorrect: isCorrect);
 
-    state = [state.removeLast(), toggledState];
+    state.removeLast();
+    state = [...state, fetchedState];
 
-    print(state.last);
-    _getRandom();
+    if (state.length >= 10) {
+      onComplete!();
+    } else {
+      _getRandom();
+    }
   }
 }

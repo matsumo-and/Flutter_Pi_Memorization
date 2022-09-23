@@ -50,13 +50,20 @@ class ProgressBarState extends ConsumerState<ProgressBar>
               ),
             ),
           ),
-          Text(
-            timerState.secLimit == null
-                ? '0'
-                : (timerState.secLimit! - timerState.secElapsed).toString(),
-            style: TextStyle(
-                fontSize: 14,
-                color: Theme.of(context).textTheme.caption!.color),
+          SizedBox(
+            height: 20,
+            width: 20,
+            child: Center(
+              child: Text(
+                timerState.secLimit == null
+                    ? '0'
+                    : (timerState.secLimit! - timerState.secElapsed).toString(),
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).textTheme.caption!.color),
+                textAlign: TextAlign.center,
+              ),
+            ),
           )
         ],
       ),
