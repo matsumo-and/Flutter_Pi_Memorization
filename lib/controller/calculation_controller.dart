@@ -1,12 +1,10 @@
 import 'dart:math';
 
-import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/multiplication/calculation_state.dart';
 import '../model/multiplication/course.dart';
 import '../model/multiplication/medal.dart';
-import '../model/timer_state.dart';
 
 ///globalに宣言し、bottom_tab_bar.dartで初期化される
 final calculationProvider =
