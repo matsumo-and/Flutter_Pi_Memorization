@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../model/multiplication/medal.dart';
 import '../model/timer_state.dart';
 
-///globalに宣言し、bottom_tab_bar.dartで初期化される
 final timerProvider = StateNotifierProvider<TimerController, TimerState>((ref) {
   return TimerController(const TimerState());
 });

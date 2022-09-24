@@ -6,7 +6,7 @@ import '../model/multiplication/calculation_state.dart';
 import '../model/multiplication/course.dart';
 import '../model/multiplication/medal.dart';
 
-///globalに宣言し、bottom_tab_bar.dartで初期化される
+//calculation.dartで初期化される
 final calculationProvider =
     StateNotifierProvider<CalculationStore, List<CalculationState>>((ref) {
   return CalculationStore([]);
@@ -14,13 +14,13 @@ final calculationProvider =
 
 class CalculationStore extends StateNotifier<List<CalculationState>> {
   CalculationStore(List<CalculationState> list) : super(list);
-
+  static const maxQuestionNum = 10;
   static late Course course;
   static late List<int> maxMaltiplierList;
   static late List<int> maxMaltiplicandList;
 
   void initialize({required int id, required CalculationMode mode}) {
-    //
+    //コースから引数のIDを持つリストを持ってくる
     state = [];
     course = Course.find(id);
     maxMaltiplierList = course.multiplierList;
@@ -28,6 +28,7 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
     _getRandom();
   }
 
+  ///かける数、掛けられる数の両方のリストから毎回ランダムなIndexを取り出してStateに保持する。
   void _getRandom() {
     final Random random = Random();
 
@@ -60,10 +61,13 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
     final fetchedState = state.last.copyWith(
         userAnswer: userAnswer, secElapsed: secElapsed, isCorrect: isCorrect);
 
+    //採点結果を反映してStateに再格納する
     state.removeLast();
     state = [...state, fetchedState];
 
-    if (state.length >= 10) {
+    //問題が規定数に達したら引数のFunction（リザルト画面に遷移）を実行
+    //そうでなければもう一問出題する
+    if (state.length >= maxQuestionNum) {
       onComplete!();
     } else {
       _getRandom();

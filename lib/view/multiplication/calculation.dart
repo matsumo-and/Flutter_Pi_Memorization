@@ -23,9 +23,9 @@ class CalculationPage extends ConsumerStatefulWidget {
 
 class CalculationPageState extends ConsumerState<CalculationPage> {
   static const maxQuestionNum = 10;
-  static const int countInSec = 3;
+  static const int maxCount = 3;
 
-  //各問題にかかった秒数を計測する
+  //各問題にかかった秒数を計測する(DateTimeではなく秒数)
   int lastSubmitted = 0;
 
   //カウントインの回数を保持する
@@ -33,12 +33,14 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
 
   @override
   void initState() {
-    //引数のIDを受け取ってランダムな掛け算問題を生成する.
-    //ここで初めてInitializeしてStateの中身を決めるためビルド中には行えないらしいため、ビルド後にInitializeする
+    //ここで初めてInitializeしてStateの中身を決めるためビルド中には行えないらしい。ビルド後にInitializeする
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //引数のIDを受け取ってランダムな掛け算問題を生成する.
       ref
           .read(calculationProvider.notifier)
           .initialize(id: widget.id, mode: widget.mode);
+
+      //以前のキーボードの状態をクリアする
       ref.read(keyboardProvider.notifier).clear();
 
       //カウントインを表示してから（awaitしてから）タイマーをスタートする
@@ -74,7 +76,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
     if (widget.mode == CalculationMode.none) return;
 
     //1秒ごとカウントアップし、カウントがcountInSecを上回ったら
-    for (int sec = 0; sec < countInSec + 1; sec++) {
+    for (int sec = 0; sec < maxCount + 1; sec++) {
       await Future.delayed(const Duration(seconds: 1));
       setState(() {
         count++;
@@ -92,7 +94,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
     final currentQuestion =
         questionState.isEmpty ? const CalculationState() : questionState.last;
 
-    return widget.mode != CalculationMode.none && count <= 3
+    return widget.mode != CalculationMode.none && count <= maxCount
         ? countIn(count)
         : Scaffold(
             backgroundColor: Colors.white,
@@ -199,6 +201,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
           );
   }
 
+  //カウントインWidget
   Widget countIn(int count) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -213,7 +216,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: List.generate(
-                countInSec,
+                maxCount,
                 (index) => SizedBox(
                   height: 32,
                   width: 32,
