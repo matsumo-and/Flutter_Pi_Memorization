@@ -19,7 +19,8 @@ class MultiplicationStore extends StateNotifier<List<Multiplication>> {
     box = await Hive.openBox<Multiplication>('MultiplicationAdopter');
 
     //以下コマンドでBoxを初期化できる。
-    //box.deleteAll(box.keys);
+    // box.deleteAll(box.keys);
+    // box.deleteFromDisk();
 
     final List<Multiplication> fetchedList = box.values.toList();
 
@@ -30,22 +31,33 @@ class MultiplicationStore extends StateNotifier<List<Multiplication>> {
   }
 
   ///任意のパラメータを受け取ってRiverpodとローカルストレージを更新する。
-  Future<void> set(
-      {required int id,
-      bool? beginnerDone,
-      bool? professionalDone,
-      int? practiceNum,
-      int? beginnerNum,
-      int? professionalNum}) async {
+  Future<void> set({
+    required int id,
+    bool? beginnerDone,
+    bool? professionalDone,
+    int? practiceChallenges,
+    int? beginnerChallenges,
+    int? professionalChallenges,
+    int? maxPracticeAnswer,
+    int? maxBeginnerAnswer,
+    int? maxProfessionalAnswer,
+  }) async {
     //現在のIDのオブジェクトを取得し任意のパラメータを変更する
     final Multiplication currentStatus = _find(id);
     final Multiplication addedStatus = currentStatus.copyWith(
       id: id,
       beginnerDone: beginnerDone ?? currentStatus.beginnerDone,
       professionalDone: professionalDone ?? currentStatus.professionalDone,
-      practiceNum: practiceNum ?? currentStatus.practiceNum,
-      beginnerNum: beginnerNum ?? currentStatus.beginnerNum,
-      professionalNum: professionalNum ?? currentStatus.professionalNum,
+      practiceChallenges:
+          practiceChallenges ?? currentStatus.practiceChallenges,
+      beginnerChallenges:
+          beginnerChallenges ?? currentStatus.beginnerChallenges,
+      professionalChallenges:
+          professionalChallenges ?? currentStatus.professionalChallenges,
+      maxPracticeAnswer: maxPracticeAnswer ?? currentStatus.maxPracticeAnswer,
+      maxBeginnerAnswer: maxBeginnerAnswer ?? currentStatus.maxBeginnerAnswer,
+      maxProfessionalAnswer:
+          maxProfessionalAnswer ?? currentStatus.maxProfessionalAnswer,
     );
 
     //Riverpodから引数のIDを持つオブジェクトを削除してから新たなオブジェクトを格納

@@ -20,16 +20,19 @@ class MultiplicationAdopter extends TypeAdapter<_$_Multiplication> {
       id: fields[0] as int,
       beginnerDone: fields[1] as bool,
       professionalDone: fields[2] as bool,
-      practiceNum: fields[3] as int,
-      beginnerNum: fields[4] as int,
-      professionalNum: fields[5] as int,
+      practiceChallenges: fields[3] as int,
+      beginnerChallenges: fields[4] as int,
+      professionalChallenges: fields[5] as int,
+      maxPracticeAnswer: fields[6] as int,
+      maxBeginnerAnswer: fields[7] as int,
+      maxProfessionalAnswer: fields[8] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_Multiplication obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -37,11 +40,17 @@ class MultiplicationAdopter extends TypeAdapter<_$_Multiplication> {
       ..writeByte(2)
       ..write(obj.professionalDone)
       ..writeByte(3)
-      ..write(obj.practiceNum)
+      ..write(obj.practiceChallenges)
       ..writeByte(4)
-      ..write(obj.beginnerNum)
+      ..write(obj.beginnerChallenges)
       ..writeByte(5)
-      ..write(obj.professionalNum);
+      ..write(obj.professionalChallenges)
+      ..writeByte(6)
+      ..write(obj.maxPracticeAnswer)
+      ..writeByte(7)
+      ..write(obj.maxBeginnerAnswer)
+      ..writeByte(8)
+      ..write(obj.maxProfessionalAnswer);
   }
 
   @override

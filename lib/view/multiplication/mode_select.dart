@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/model/multiplication/course.dart';
+import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,8 +31,6 @@ class ModeSelect extends ConsumerWidget {
     final multiplication = ref.watch(multiplicationProvider).firstWhere(
         (element) => element.id == id,
         orElse: (() => const Multiplication()));
-    final multiplicationStateNotifier =
-        ref.read(multiplicationProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +52,9 @@ class ModeSelect extends ConsumerWidget {
         TappableCard(
           border: border,
           margin: cardMargin,
-          onTap: () {},
+          onTap: () {
+            //TODO チュートリアル
+          },
           height: 60,
           child: Align(
             alignment: Alignment.centerLeft,
@@ -86,11 +87,10 @@ class ModeSelect extends ConsumerWidget {
         //練習モード
         TappableCard(
             onTap: () {
-              multiplicationStateNotifier.set(
-                id: id,
-                practiceNum: multiplication.practiceNum + 1,
-              );
-              multiplicationStateNotifier.initialize();
+              Navigator.of(context).push(MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) =>
+                      CalculationPage(id: id, mode: CalculationMode.none)));
             },
             height: height,
             margin: cardMargin,
@@ -109,7 +109,7 @@ class ModeSelect extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       Text(
-                        '挑戦回数${multiplication.practiceNum}回',
+                        '挑戦回数${multiplication.practiceChallenges}回',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ],
@@ -144,11 +144,10 @@ class ModeSelect extends ConsumerWidget {
                   //初心者コース
                   TappableCard(
                       onTap: () {
-                        multiplicationStateNotifier.set(
-                          id: id,
-                          beginnerNum: multiplication.beginnerNum + 1,
-                          beginnerDone: true,
-                        );
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CalculationPage(
+                                id: id, mode: CalculationMode.beginner)));
                       },
                       height: height,
                       border: border.copyWith(
@@ -158,7 +157,7 @@ class ModeSelect extends ConsumerWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -171,8 +170,8 @@ class ModeSelect extends ConsumerWidget {
                                     height: height,
                                     width: height,
                                     child: multiplication.beginnerDone
-                                        ? Medal.beginner.icon
-                                        : Medal.none.icon,
+                                        ? CalculationMode.beginner.medal
+                                        : CalculationMode.none.medal,
                                   ),
                                 ),
                                 Column(
@@ -198,7 +197,7 @@ class ModeSelect extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  '挑戦回数${multiplication.beginnerNum}回',
+                                  '挑戦回数${multiplication.beginnerChallenges}回',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                                 //Space調整のため
@@ -215,11 +214,10 @@ class ModeSelect extends ConsumerWidget {
                   //達人コース
                   TappableCard(
                       onTap: () {
-                        multiplicationStateNotifier.set(
-                          id: id,
-                          professionalNum: multiplication.professionalNum + 1,
-                          professionalDone: true,
-                        );
+                        Navigator.of(context).push(MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CalculationPage(
+                                id: id, mode: CalculationMode.professional)));
                       },
                       height: height,
                       border: border.copyWith(
@@ -229,7 +227,7 @@ class ModeSelect extends ConsumerWidget {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+                        padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -239,8 +237,8 @@ class ModeSelect extends ConsumerWidget {
                                   height: height,
                                   width: height,
                                   child: multiplication.professionalDone
-                                      ? Medal.professional.icon
-                                      : Medal.none.icon,
+                                      ? CalculationMode.professional.medal
+                                      : CalculationMode.none.medal,
                                 ),
                                 Column(
                                   mainAxisAlignment:
@@ -265,7 +263,7 @@ class ModeSelect extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  '挑戦回数${multiplication.professionalNum}回',
+                                  '挑戦回数${multiplication.professionalChallenges}回',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                                 //Space調整のため

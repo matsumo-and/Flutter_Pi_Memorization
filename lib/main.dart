@@ -36,30 +36,31 @@ class MyApp extends StatelessWidget {
       },
       title: 'Pi_Memorization',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          appBarTheme: appBarTheme,
-          canvasColor: canvasColor,
-          textTheme: TextTheme(
-            headline1: GoogleFonts.notoSansJavanese(
-              textStyle: const TextStyle(
-                color: Color.fromRGBO(33, 33, 33, 1),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+        primarySwatch: Colors.blue,
+        appBarTheme: appBarTheme,
+        canvasColor: canvasColor,
+        textTheme: TextTheme(
+          headline1: GoogleFonts.notoSansJavanese(
+            textStyle: const TextStyle(
+              color: Color.fromRGBO(33, 33, 33, 1),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            headline2: GoogleFonts.notoSansJavanese(
-              textStyle: const TextStyle(
-                color: Color.fromRGBO(33, 33, 33, 1),
-                fontSize: 16,
-              ),
+          ),
+          headline2: GoogleFonts.notoSansJavanese(
+            textStyle: const TextStyle(
+              color: Color.fromRGBO(33, 33, 33, 1),
+              fontSize: 16,
             ),
-            caption: GoogleFonts.notoSansJavanese(
-              textStyle: const TextStyle(
-                color: Color.fromRGBO(158, 158, 158, 1),
-                fontSize: 14,
-              ),
+          ),
+          caption: GoogleFonts.notoSansJavanese(
+            textStyle: const TextStyle(
+              color: Color.fromRGBO(158, 158, 158, 1),
+              fontSize: 14,
             ),
-          )),
+          ),
+        ),
+      ),
       home: const BottomTabBar(),
       debugShowCheckedModeBanner: false,
     );
