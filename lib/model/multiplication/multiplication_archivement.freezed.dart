@@ -17,17 +17,25 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$Multiplication {
   @HiveField(0)
-  int get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError; //コースを修了したか
   @HiveField(1)
   bool get beginnerDone => throw _privateConstructorUsedError;
   @HiveField(2)
-  bool get professionalDone => throw _privateConstructorUsedError;
+  bool get professionalDone =>
+      throw _privateConstructorUsedError; //各コースに何回挑戦したか
   @HiveField(3)
-  int get practiceNum => throw _privateConstructorUsedError;
+  int get practiceChallenges => throw _privateConstructorUsedError;
   @HiveField(4)
-  int get beginnerNum => throw _privateConstructorUsedError;
+  int get beginnerChallenges => throw _privateConstructorUsedError;
   @HiveField(5)
-  int get professionalNum => throw _privateConstructorUsedError;
+  int get professionalChallenges =>
+      throw _privateConstructorUsedError; //各コースの最大正解数
+  @HiveField(6)
+  int get maxPracticeAnswer => throw _privateConstructorUsedError;
+  @HiveField(7)
+  int get maxBeginnerAnswer => throw _privateConstructorUsedError;
+  @HiveField(8)
+  int get maxProfessionalAnswer => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MultiplicationCopyWith<Multiplication> get copyWith =>
@@ -43,9 +51,12 @@ abstract class $MultiplicationCopyWith<$Res> {
       {@HiveField(0) int id,
       @HiveField(1) bool beginnerDone,
       @HiveField(2) bool professionalDone,
-      @HiveField(3) int practiceNum,
-      @HiveField(4) int beginnerNum,
-      @HiveField(5) int professionalNum});
+      @HiveField(3) int practiceChallenges,
+      @HiveField(4) int beginnerChallenges,
+      @HiveField(5) int professionalChallenges,
+      @HiveField(6) int maxPracticeAnswer,
+      @HiveField(7) int maxBeginnerAnswer,
+      @HiveField(8) int maxProfessionalAnswer});
 }
 
 /// @nodoc
@@ -62,9 +73,12 @@ class _$MultiplicationCopyWithImpl<$Res>
     Object? id = freezed,
     Object? beginnerDone = freezed,
     Object? professionalDone = freezed,
-    Object? practiceNum = freezed,
-    Object? beginnerNum = freezed,
-    Object? professionalNum = freezed,
+    Object? practiceChallenges = freezed,
+    Object? beginnerChallenges = freezed,
+    Object? professionalChallenges = freezed,
+    Object? maxPracticeAnswer = freezed,
+    Object? maxBeginnerAnswer = freezed,
+    Object? maxProfessionalAnswer = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -79,17 +93,29 @@ class _$MultiplicationCopyWithImpl<$Res>
           ? _value.professionalDone
           : professionalDone // ignore: cast_nullable_to_non_nullable
               as bool,
-      practiceNum: practiceNum == freezed
-          ? _value.practiceNum
-          : practiceNum // ignore: cast_nullable_to_non_nullable
+      practiceChallenges: practiceChallenges == freezed
+          ? _value.practiceChallenges
+          : practiceChallenges // ignore: cast_nullable_to_non_nullable
               as int,
-      beginnerNum: beginnerNum == freezed
-          ? _value.beginnerNum
-          : beginnerNum // ignore: cast_nullable_to_non_nullable
+      beginnerChallenges: beginnerChallenges == freezed
+          ? _value.beginnerChallenges
+          : beginnerChallenges // ignore: cast_nullable_to_non_nullable
               as int,
-      professionalNum: professionalNum == freezed
-          ? _value.professionalNum
-          : professionalNum // ignore: cast_nullable_to_non_nullable
+      professionalChallenges: professionalChallenges == freezed
+          ? _value.professionalChallenges
+          : professionalChallenges // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxPracticeAnswer: maxPracticeAnswer == freezed
+          ? _value.maxPracticeAnswer
+          : maxPracticeAnswer // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxBeginnerAnswer: maxBeginnerAnswer == freezed
+          ? _value.maxBeginnerAnswer
+          : maxBeginnerAnswer // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxProfessionalAnswer: maxProfessionalAnswer == freezed
+          ? _value.maxProfessionalAnswer
+          : maxProfessionalAnswer // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -106,9 +132,12 @@ abstract class _$$_MultiplicationCopyWith<$Res>
       {@HiveField(0) int id,
       @HiveField(1) bool beginnerDone,
       @HiveField(2) bool professionalDone,
-      @HiveField(3) int practiceNum,
-      @HiveField(4) int beginnerNum,
-      @HiveField(5) int professionalNum});
+      @HiveField(3) int practiceChallenges,
+      @HiveField(4) int beginnerChallenges,
+      @HiveField(5) int professionalChallenges,
+      @HiveField(6) int maxPracticeAnswer,
+      @HiveField(7) int maxBeginnerAnswer,
+      @HiveField(8) int maxProfessionalAnswer});
 }
 
 /// @nodoc
@@ -127,9 +156,12 @@ class __$$_MultiplicationCopyWithImpl<$Res>
     Object? id = freezed,
     Object? beginnerDone = freezed,
     Object? professionalDone = freezed,
-    Object? practiceNum = freezed,
-    Object? beginnerNum = freezed,
-    Object? professionalNum = freezed,
+    Object? practiceChallenges = freezed,
+    Object? beginnerChallenges = freezed,
+    Object? professionalChallenges = freezed,
+    Object? maxPracticeAnswer = freezed,
+    Object? maxBeginnerAnswer = freezed,
+    Object? maxProfessionalAnswer = freezed,
   }) {
     return _then(_$_Multiplication(
       id: id == freezed
@@ -144,17 +176,29 @@ class __$$_MultiplicationCopyWithImpl<$Res>
           ? _value.professionalDone
           : professionalDone // ignore: cast_nullable_to_non_nullable
               as bool,
-      practiceNum: practiceNum == freezed
-          ? _value.practiceNum
-          : practiceNum // ignore: cast_nullable_to_non_nullable
+      practiceChallenges: practiceChallenges == freezed
+          ? _value.practiceChallenges
+          : practiceChallenges // ignore: cast_nullable_to_non_nullable
               as int,
-      beginnerNum: beginnerNum == freezed
-          ? _value.beginnerNum
-          : beginnerNum // ignore: cast_nullable_to_non_nullable
+      beginnerChallenges: beginnerChallenges == freezed
+          ? _value.beginnerChallenges
+          : beginnerChallenges // ignore: cast_nullable_to_non_nullable
               as int,
-      professionalNum: professionalNum == freezed
-          ? _value.professionalNum
-          : professionalNum // ignore: cast_nullable_to_non_nullable
+      professionalChallenges: professionalChallenges == freezed
+          ? _value.professionalChallenges
+          : professionalChallenges // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxPracticeAnswer: maxPracticeAnswer == freezed
+          ? _value.maxPracticeAnswer
+          : maxPracticeAnswer // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxBeginnerAnswer: maxBeginnerAnswer == freezed
+          ? _value.maxBeginnerAnswer
+          : maxBeginnerAnswer // ignore: cast_nullable_to_non_nullable
+              as int,
+      maxProfessionalAnswer: maxProfessionalAnswer == freezed
+          ? _value.maxProfessionalAnswer
+          : maxProfessionalAnswer // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -168,14 +212,18 @@ class _$_Multiplication implements _Multiplication {
       {@HiveField(0) this.id = 0,
       @HiveField(1) this.beginnerDone = false,
       @HiveField(2) this.professionalDone = false,
-      @HiveField(3) this.practiceNum = 0,
-      @HiveField(4) this.beginnerNum = 0,
-      @HiveField(5) this.professionalNum = 0});
+      @HiveField(3) this.practiceChallenges = 0,
+      @HiveField(4) this.beginnerChallenges = 0,
+      @HiveField(5) this.professionalChallenges = 0,
+      @HiveField(6) this.maxPracticeAnswer = 0,
+      @HiveField(7) this.maxBeginnerAnswer = 0,
+      @HiveField(8) this.maxProfessionalAnswer = 0});
 
   @override
   @JsonKey()
   @HiveField(0)
   final int id;
+//コースを修了したか
   @override
   @JsonKey()
   @HiveField(1)
@@ -184,22 +232,36 @@ class _$_Multiplication implements _Multiplication {
   @JsonKey()
   @HiveField(2)
   final bool professionalDone;
+//各コースに何回挑戦したか
   @override
   @JsonKey()
   @HiveField(3)
-  final int practiceNum;
+  final int practiceChallenges;
   @override
   @JsonKey()
   @HiveField(4)
-  final int beginnerNum;
+  final int beginnerChallenges;
   @override
   @JsonKey()
   @HiveField(5)
-  final int professionalNum;
+  final int professionalChallenges;
+//各コースの最大正解数
+  @override
+  @JsonKey()
+  @HiveField(6)
+  final int maxPracticeAnswer;
+  @override
+  @JsonKey()
+  @HiveField(7)
+  final int maxBeginnerAnswer;
+  @override
+  @JsonKey()
+  @HiveField(8)
+  final int maxProfessionalAnswer;
 
   @override
   String toString() {
-    return 'Multiplication(id: $id, beginnerDone: $beginnerDone, professionalDone: $professionalDone, practiceNum: $practiceNum, beginnerNum: $beginnerNum, professionalNum: $professionalNum)';
+    return 'Multiplication(id: $id, beginnerDone: $beginnerDone, professionalDone: $professionalDone, practiceChallenges: $practiceChallenges, beginnerChallenges: $beginnerChallenges, professionalChallenges: $professionalChallenges, maxPracticeAnswer: $maxPracticeAnswer, maxBeginnerAnswer: $maxBeginnerAnswer, maxProfessionalAnswer: $maxProfessionalAnswer)';
   }
 
   @override
@@ -213,11 +275,17 @@ class _$_Multiplication implements _Multiplication {
             const DeepCollectionEquality()
                 .equals(other.professionalDone, professionalDone) &&
             const DeepCollectionEquality()
-                .equals(other.practiceNum, practiceNum) &&
+                .equals(other.practiceChallenges, practiceChallenges) &&
             const DeepCollectionEquality()
-                .equals(other.beginnerNum, beginnerNum) &&
+                .equals(other.beginnerChallenges, beginnerChallenges) &&
             const DeepCollectionEquality()
-                .equals(other.professionalNum, professionalNum));
+                .equals(other.professionalChallenges, professionalChallenges) &&
+            const DeepCollectionEquality()
+                .equals(other.maxPracticeAnswer, maxPracticeAnswer) &&
+            const DeepCollectionEquality()
+                .equals(other.maxBeginnerAnswer, maxBeginnerAnswer) &&
+            const DeepCollectionEquality()
+                .equals(other.maxProfessionalAnswer, maxProfessionalAnswer));
   }
 
   @override
@@ -226,9 +294,12 @@ class _$_Multiplication implements _Multiplication {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(beginnerDone),
       const DeepCollectionEquality().hash(professionalDone),
-      const DeepCollectionEquality().hash(practiceNum),
-      const DeepCollectionEquality().hash(beginnerNum),
-      const DeepCollectionEquality().hash(professionalNum));
+      const DeepCollectionEquality().hash(practiceChallenges),
+      const DeepCollectionEquality().hash(beginnerChallenges),
+      const DeepCollectionEquality().hash(professionalChallenges),
+      const DeepCollectionEquality().hash(maxPracticeAnswer),
+      const DeepCollectionEquality().hash(maxBeginnerAnswer),
+      const DeepCollectionEquality().hash(maxProfessionalAnswer));
 
   @JsonKey(ignore: true)
   @override
@@ -241,28 +312,40 @@ abstract class _Multiplication implements Multiplication {
       {@HiveField(0) final int id,
       @HiveField(1) final bool beginnerDone,
       @HiveField(2) final bool professionalDone,
-      @HiveField(3) final int practiceNum,
-      @HiveField(4) final int beginnerNum,
-      @HiveField(5) final int professionalNum}) = _$_Multiplication;
+      @HiveField(3) final int practiceChallenges,
+      @HiveField(4) final int beginnerChallenges,
+      @HiveField(5) final int professionalChallenges,
+      @HiveField(6) final int maxPracticeAnswer,
+      @HiveField(7) final int maxBeginnerAnswer,
+      @HiveField(8) final int maxProfessionalAnswer}) = _$_Multiplication;
 
   @override
   @HiveField(0)
   int get id;
-  @override
+  @override //コースを修了したか
   @HiveField(1)
   bool get beginnerDone;
   @override
   @HiveField(2)
   bool get professionalDone;
-  @override
+  @override //各コースに何回挑戦したか
   @HiveField(3)
-  int get practiceNum;
+  int get practiceChallenges;
   @override
   @HiveField(4)
-  int get beginnerNum;
+  int get beginnerChallenges;
   @override
   @HiveField(5)
-  int get professionalNum;
+  int get professionalChallenges;
+  @override //各コースの最大正解数
+  @HiveField(6)
+  int get maxPracticeAnswer;
+  @override
+  @HiveField(7)
+  int get maxBeginnerAnswer;
+  @override
+  @HiveField(8)
+  int get maxProfessionalAnswer;
   @override
   @JsonKey(ignore: true)
   _$$_MultiplicationCopyWith<_$_Multiplication> get copyWith =>

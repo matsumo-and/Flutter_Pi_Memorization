@@ -109,7 +109,7 @@ class ModeSelect extends ConsumerWidget {
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       Text(
-                        '挑戦回数${multiplication.practiceNum}回',
+                        '挑戦回数${multiplication.practiceChallenges}回',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ],
@@ -197,7 +197,7 @@ class ModeSelect extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  '挑戦回数${multiplication.beginnerNum}回',
+                                  '挑戦回数${multiplication.beginnerChallenges}回',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                                 //Space調整のため
@@ -263,7 +263,7 @@ class ModeSelect extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  '挑戦回数${multiplication.professionalNum}回',
+                                  '挑戦回数${multiplication.professionalChallenges}回',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                                 //Space調整のため

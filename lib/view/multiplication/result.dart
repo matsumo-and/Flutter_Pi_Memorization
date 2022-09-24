@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
-import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.dart';
+import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
-import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
-import 'package:flutter_pi_memorization/view/multiplication/progress_bar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/course.dart';
 import '../../model/multiplication/medal.dart';
+import '../../model/multiplication/multiplication_archivement.dart';
 import '../gradient_text_button.dart';
 
 class ResultPage extends ConsumerStatefulWidget {
@@ -29,6 +27,8 @@ class ResultPageState extends ConsumerState<ResultPage> {
 
   @override
   void initState() {
+    //問題の結果から、コースをクリアしたか || 最大正解数を更新するか || 挑戦回数のカウントアップ　を実施する
+    storeResult();
     super.initState();
   }
 
@@ -40,6 +40,88 @@ class ResultPageState extends ConsumerState<ResultPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void storeResult() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //更新しないパラメータについてはNullになる
+      bool? begginerDone;
+      bool? professionalDone;
+      int? practiceChallenges;
+      int? begginerChallenges;
+      int? professionalChallenges;
+      int? maxPracticeAnswer;
+      int? maxBegginerAnswer;
+      int? maxProfessionalAnswer;
+
+      final questionState = ref.read(calculationProvider);
+      final archiveState = ref.read(multiplicationProvider);
+      final Multiplication currentArchive = archiveState.firstWhere(
+          (elm) => elm.id == widget.id,
+          orElse: () => Multiplication(id: widget.id));
+
+      //コースをクリアしたか？
+      bool? modeDone() {
+        bool? tmp;
+        if (questionState
+                .where((question) => question.isCorrect == true)
+                .length ==
+            maxQuestionNum) {
+          tmp = true;
+        }
+        return tmp;
+      }
+
+      //最大正回数を更新するか？
+      int? maxCorrectAnswer(int stateNum) {
+        int? tmp;
+        final int maxStateAnswer = questionState
+            .where((question) => question.isCorrect == true)
+            .length;
+        if (maxStateAnswer >= stateNum) {
+          tmp = maxStateAnswer;
+        }
+        return tmp;
+      }
+
+      switch (widget.mode) {
+        case CalculationMode.none:
+          //挑戦回数のカウントアップ
+          practiceChallenges = currentArchive.practiceChallenges + 1;
+
+          break;
+        case CalculationMode.beginner:
+          begginerDone = modeDone();
+          maxBegginerAnswer =
+              maxCorrectAnswer(currentArchive.maxBeginnerAnswer);
+          //挑戦回数のカウントアップ
+          begginerChallenges = currentArchive.beginnerChallenges + 1;
+
+          break;
+        case CalculationMode.professional:
+          professionalDone = modeDone();
+          maxProfessionalAnswer =
+              maxCorrectAnswer(currentArchive.maxPracticeAnswer);
+          //挑戦回数のカウントアップ
+          professionalChallenges = currentArchive.professionalChallenges + 1;
+
+          break;
+      }
+
+      //ローカル及びRiverpodのステートを更新する
+      final archiveStateNotifier = ref.read(multiplicationProvider.notifier);
+      archiveStateNotifier.set(
+        id: widget.id,
+        beginnerDone: begginerDone,
+        professionalDone: professionalDone,
+        practiceChallenges: practiceChallenges,
+        beginnerChallenges: begginerChallenges,
+        professionalChallenges: professionalChallenges,
+        maxPracticeAnswer: maxPracticeAnswer,
+        maxBeginnerAnswer: maxBegginerAnswer,
+        maxProfessionalAnswer: maxProfessionalAnswer,
+      );
+    });
   }
 
   @override
@@ -65,7 +147,7 @@ class ResultPageState extends ConsumerState<ResultPage> {
                       children: questionState
                                   .where((element) => element.isCorrect == true)
                                   .length ==
-                              10
+                              maxQuestionNum
                           ? [
                               SizedBox(
                                   height: 200,
@@ -118,7 +200,7 @@ class ResultPageState extends ConsumerState<ResultPage> {
                               ),
                               const Spacer(),
                               Text(
-                                  '${questionState.where((element) => element.isCorrect == true).toList().length} / 10問')
+                                  '${questionState.where((element) => element.isCorrect == true).toList().length} / $maxQuestionNum問')
                             ],
                           ),
                           Row(

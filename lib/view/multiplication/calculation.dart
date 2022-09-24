@@ -219,7 +219,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                   width: 32,
                   child: index < count
                       ? const Icon(
-                          Icons.check_circle_outline,
+                          Icons.check_circle_outline_sharp,
                           size: 32,
                           color: Color.fromRGBO(81, 133, 213, 1),
                         )
