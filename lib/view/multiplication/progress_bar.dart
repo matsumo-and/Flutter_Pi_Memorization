@@ -68,6 +68,5 @@ class ProgressBarState extends ConsumerState<ProgressBar>
         ],
       ),
     );
-    ;
   }
 }
