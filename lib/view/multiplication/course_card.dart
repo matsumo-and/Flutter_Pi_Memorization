@@ -4,7 +4,7 @@ import 'package:flutter_pi_memorization/model/multiplication/course.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../model/multiplication/medal.dart';
+import '../../model/multiplication/calculation_mode.dart';
 import '../../model/multiplication/multiplication_archivement.dart';
 import 'mode_select.dart';
 

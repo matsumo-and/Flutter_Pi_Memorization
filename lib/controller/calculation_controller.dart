@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/multiplication/calculation_state.dart';
 import '../model/multiplication/course.dart';
-import '../model/multiplication/medal.dart';
+import '../model/multiplication/calculation_mode.dart';
 
 //calculation.dartで初期化される
 final calculationProvider =

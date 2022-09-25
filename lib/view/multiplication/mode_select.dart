@@ -5,7 +5,7 @@ import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/multiplication_store.dart';
-import '../../model/multiplication/medal.dart';
+import '../../model/multiplication/calculation_mode.dart';
 import '../../model/multiplication/multiplication_archivement.dart';
 
 class ModeSelect extends ConsumerWidget {

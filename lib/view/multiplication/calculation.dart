@@ -8,7 +8,7 @@ import 'package:flutter_pi_memorization/view/multiplication/result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/multiplication/calculation_state.dart';
-import '../../model/multiplication/medal.dart';
+import '../../model/multiplication/calculation_mode.dart';
 import '../gradient_text_button.dart';
 
 class CalculationPage extends ConsumerStatefulWidget {

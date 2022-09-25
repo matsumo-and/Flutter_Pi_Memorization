@@ -26,7 +26,7 @@ class MultiplicationHome extends StatelessWidget {
               ),
             ),
           ),
-          //本番用のかけ算コース
+          //本番用のかけ算コース. 便宜上ID＝１０００を指定
           const CourseCard(
             id: 1000,
           ),

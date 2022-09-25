@@ -3,7 +3,9 @@ import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 
+import '../../../model/multiplication/course.dart';
 import '../../../model/multiplication/multiplication_archivement.dart';
+import '../../multiplication/course_card.dart';
 import 'circle_progress_indicator.dart';
 
 class MultiPlicationProgress extends StatefulWidget {
@@ -65,7 +67,32 @@ class MultiPlicationProgressState extends State<MultiPlicationProgress> {
                       ],
                     ),
                   ),
-                  MultiplicationCircularProgress()
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.all(15),
+                        child: MultiplicationCircularProgress(),
+                      ),
+
+                      ///TODO implement smaller CourseCard
+                      // Column(
+                      //   children: List.generate(
+                      //       Course.exercise().length > 3
+                      //           ? 3
+                      //           : Course.exercise().length,
+                      //       (index) => ConstrainedBox(
+                      //             constraints: BoxConstraints(
+                      //                 maxWidth:
+                      //                     MediaQuery.of(context).size.width /
+                      //                         2),
+                      //             child: CourseCard(
+                      //               id: Course.exercise()[index].id,
+                      //             ),
+                      //           )),
+                      // ),
+                    ],
+                  ),
                 ],
               ),
             ),
