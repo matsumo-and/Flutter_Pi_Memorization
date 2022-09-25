@@ -3,6 +3,7 @@ import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
 
 import '../../model/multiplication/multiplication_archivement.dart';
+import 'multiplication/multiplication_progress.dart';
 
 class ProgressRecord extends StatefulWidget {
   const ProgressRecord({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class ProgressRecordState extends State<ProgressRecord> {
           ),
         ),
         body: TabBarView(children: <Widget>[
-          Container(),
+          MultiPlicationProgress(),
           Container(),
         ]),
       ),
