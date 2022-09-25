@@ -4,7 +4,7 @@ import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization.dart';
-import 'package:flutter_pi_memorization/view/progress_record.dart';
+import 'package:flutter_pi_memorization/view/progress_record/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BottomTabBar extends ConsumerStatefulWidget {
