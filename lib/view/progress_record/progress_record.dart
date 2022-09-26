@@ -39,7 +39,7 @@ class ProgressRecordState extends State<ProgressRecord> {
           ),
         ),
         body: TabBarView(children: <Widget>[
-          const MultiPlicationProgress(),
+          const MultiplicationProgress(),
           Container(),
         ]),
       ),

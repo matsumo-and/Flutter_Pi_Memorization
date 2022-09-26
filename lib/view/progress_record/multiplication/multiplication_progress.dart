@@ -8,14 +8,14 @@ import '../../../model/multiplication/multiplication_archivement.dart';
 import '../../multiplication/course_card.dart';
 import 'circle_progress_indicator.dart';
 
-class MultiPlicationProgress extends StatefulWidget {
-  const MultiPlicationProgress({Key? key}) : super(key: key);
+class MultiplicationProgress extends StatefulWidget {
+  const MultiplicationProgress({Key? key}) : super(key: key);
 
   @override
-  State<MultiPlicationProgress> createState() => MultiPlicationProgressState();
+  State<MultiplicationProgress> createState() => MultiplicationProgressState();
 }
 
-class MultiPlicationProgressState extends State<MultiPlicationProgress> {
+class MultiplicationProgressState extends State<MultiplicationProgress> {
   @override
   void initState() {
     super.initState();
