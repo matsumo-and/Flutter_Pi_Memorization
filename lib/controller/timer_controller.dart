@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/multiplication/medal.dart';
+import '../model/multiplication/calculation_mode.dart';
 import '../model/timer_state.dart';
 
 final timerProvider = StateNotifierProvider<TimerController, TimerState>((ref) {
