@@ -55,6 +55,9 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^1.1.3
 
+  #circular progress indicator
+  percent_indicator: ^4.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
