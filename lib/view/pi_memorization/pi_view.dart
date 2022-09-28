@@ -23,6 +23,9 @@ class PiView extends StatelessWidget {
 
     List<Widget> viewList() {
       List<Widget> tmpList = [];
+      //Paddingを追加
+      tmpList.add(const SizedBox(height: 15));
+
       //一番目のモードであれば整数部分を表示する
       if (digitsId == 1) {
         tmpList.add(Align(
@@ -42,6 +45,9 @@ class PiView extends StatelessWidget {
               .toList(),
         ));
       }
+
+      //Paddingを追加
+      tmpList.add(const SizedBox(height: 15));
       return tmpList;
     }
 
