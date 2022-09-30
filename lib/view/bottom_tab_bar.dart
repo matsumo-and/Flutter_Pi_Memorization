@@ -7,6 +7,8 @@ import 'package:flutter_pi_memorization/view/pi_memorization.dart';
 import 'package:flutter_pi_memorization/view/progress_record/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../controller/multiplication_record.dart';
+
 class BottomTabBar extends ConsumerStatefulWidget {
   const BottomTabBar({Key? key}) : super(key: key);
 
@@ -50,7 +52,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
 
     //Provider初期化用
     ref.read(multiplicationProvider.notifier).initialize();
-    // ref.read(customerProvider.notifier).initialize();
+    ref.read(multiplicationRecodeProvider.notifier).initialize();
     // ref.read(appointmentManagementProvider.notifier).initialize();
   }
 
