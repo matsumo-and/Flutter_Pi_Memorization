@@ -78,6 +78,9 @@ class MultiplicationDetailRecords extends StatelessWidget {
             for (int index = 0; index < Course.exercise().length; index++)
               detailCourseCard(
                   context: context, id: Course.exercise()[index].id),
+            Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom)),
           ],
         ),
       ),
