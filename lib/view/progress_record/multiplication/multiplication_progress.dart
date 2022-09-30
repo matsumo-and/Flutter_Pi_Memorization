@@ -1,38 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/view/common_appbar.dart';
-import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
-import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
+import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
+import 'package:flutter_pi_memorization/view/progress_record/multiplication/multiplication_detail_records.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../controller/multiplication_store.dart';
 import '../../../model/multiplication/calculation_mode.dart';
 import '../../../model/multiplication/course.dart';
 import '../../../model/multiplication/multiplication_archivement.dart';
-import '../../multiplication/course_card.dart';
 import 'circle_progress_indicator.dart';
 
-class MultiplicationProgress extends StatefulWidget {
+class MultiplicationProgress extends StatelessWidget {
   const MultiplicationProgress({Key? key}) : super(key: key);
 
-  @override
-  State<MultiplicationProgress> createState() => MultiplicationProgressState();
-}
-
-class MultiplicationProgressState extends State<MultiplicationProgress> {
   static const double _padding = 12;
   static final ShapeBorder _cardShape =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(7));
   static const Color _cardColor = Color.fromRGBO(250, 250, 250, 1);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +45,10 @@ class MultiplicationProgressState extends State<MultiplicationProgress> {
                         ),
                         TextButton(
                           onPressed: () {
-                            ///TODO Naviagete to List of archivement
+                            Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                    builder: ((context) =>
+                                        const MultiplicationDetailRecords())));
                           },
                           child: const Text(
                             'すべて見る',
@@ -143,13 +129,23 @@ class MultiplicationProgressState extends State<MultiplicationProgress> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          '1111',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1
-                                              ?.copyWith(fontSize: 24),
-                                        ),
+                                        Consumer(builder: (context, ref, _) {
+                                          final int totalChallenges = ref
+                                              .watch(
+                                                  multiplicationRecodeProvider)
+                                              .fold(
+                                                  0,
+                                                  (preValue, record) =>
+                                                      preValue +
+                                                      record.totalChallenges);
+                                          return Text(
+                                            '$totalChallenges',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1
+                                                ?.copyWith(fontSize: 24),
+                                          );
+                                        }),
                                         Text(
                                           '回',
                                           style: Theme.of(context)
@@ -198,13 +194,19 @@ class MultiplicationProgressState extends State<MultiplicationProgress> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          '1111',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1
-                                              ?.copyWith(fontSize: 24),
-                                        ),
+                                        Consumer(builder: (context, ref, _) {
+                                          final totalDates = ref
+                                              .watch(
+                                                  multiplicationRecodeProvider)
+                                              .length;
+                                          return Text(
+                                            '$totalDates',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1
+                                                ?.copyWith(fontSize: 24),
+                                          );
+                                        }),
                                         Text(
                                           '日',
                                           style: Theme.of(context)
