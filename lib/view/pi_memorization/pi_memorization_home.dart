@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pickerController.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
-import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization/pi_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,29 +8,55 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'pi_view_picker.dart';
 
-class PiMemorizationHome extends ConsumerWidget {
+class PiMemorizationHome extends ConsumerStatefulWidget {
   const PiMemorizationHome({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<PiMemorizationHome> createState() => PiMemorizationHomeState();
+}
+
+class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
   static const EdgeInsets _padding =
       EdgeInsets.symmetric(vertical: 7, horizontal: 12);
 
+  late ScrollController childController;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    childController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    childController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final pickerState = ref.watch(pickerProvider);
     return Scaffold(
       appBar: const HomeAppBar(title: Text("円周率")),
       body: SingleChildScrollView(
+        primary: false,
         child: Column(
           children: [
             Container(
               color: Colors.white,
               margin: const EdgeInsets.symmetric(vertical: 15),
               width: MediaQuery.of(context).size.width,
-              child: Column(children: const [
+              child: Column(children: [
                 //円周率の各桁一覧表
-                PiView(),
+                PiView(controller: childController),
 
-                PiViewPickerButton(),
+                //Pickerで桁数を決定する
+                PiViewPickerButton(
+                  onControllerReset: () {
+                    //桁数を変更したときにスクロール位置を最初に戻すs
+                    if (childController.hasClients) childController.jumpTo(0);
+                  },
+                )
               ]),
             ),
             const SizedBox(height: 15),

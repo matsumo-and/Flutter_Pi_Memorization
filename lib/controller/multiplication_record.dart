@@ -24,7 +24,6 @@ class MultiplicationRecordState
     if (fetchedList.isNotEmpty) {
       state = fetchedList;
     }
-    print(state);
   }
 
   void increment() async {

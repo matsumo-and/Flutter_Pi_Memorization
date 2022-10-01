@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PiViewPickerButton extends StatelessWidget {
-  const PiViewPickerButton({Key? key}) : super(key: key);
+  final void Function()? onControllerReset;
+  const PiViewPickerButton({Key? key, required this.onControllerReset})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,13 @@ class PiViewPickerButton extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(7)),
       ),
       child: InkWell(
-        onTap: (() {
+        onTap: () {
           showCupertinoModalPopup(
               barrierDismissible: false,
               context: context,
-              builder: (context) => const PiViewPicker());
-        }),
+              builder: (context) =>
+                  PiViewPicker(onControllerReset: onControllerReset));
+        },
         borderRadius: const BorderRadius.all(Radius.circular(7)),
         child: Ink(
           child: IgnorePointer(
@@ -54,7 +57,9 @@ class PiViewPickerButton extends StatelessWidget {
 }
 
 class PiViewPicker extends ConsumerStatefulWidget {
-  const PiViewPicker({Key? key}) : super(key: key);
+  final void Function()? onControllerReset;
+  const PiViewPicker({Key? key, required this.onControllerReset})
+      : super(key: key);
 
   @override
   ConsumerState<PiViewPicker> createState() => PiViewPickerState();
@@ -114,6 +119,8 @@ class PiViewPickerState extends ConsumerState<PiViewPicker> {
                 padding: const EdgeInsets.all(10),
                 child: TextButton(
                     onPressed: () {
+                      //桁数を変えたときにスクロール位置を戻す
+                      widget.onControllerReset?.call();
                       ref.read(pickerProvider.notifier).set(
                             digitsFrom:
                                 optionListFrom[controllerFrom.selectedItem],

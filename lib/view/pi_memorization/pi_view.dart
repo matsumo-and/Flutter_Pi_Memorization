@@ -6,12 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../model/pi_memorization/pi.dart';
 
 class PiView extends ConsumerWidget {
-  const PiView({Key? key}) : super(key: key);
+  final ScrollController controller;
+  const PiView({Key? key, required this.controller}) : super(key: key);
 
   static final Border _border = Border.all(width: 0.5, color: Colors.grey);
   static const BorderRadius _borderRadius =
       BorderRadius.all(Radius.circular(13));
   static const double _fontSize = 28;
+  static const EdgeInsets _letterMargin = EdgeInsets.symmetric(vertical: 10);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,15 +63,23 @@ class PiView extends ConsumerWidget {
       ),
       margin: const EdgeInsets.all(15),
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: viewList(),
+      //サイズをlette6行分　＋　上下のPaddingに設定する
+      height: (_fontSize + _letterMargin.bottom * 2) * 6 + 30,
+      child: Scrollbar(
+        controller: controller,
+        child: SingleChildScrollView(
+          controller: controller,
+          child: Column(
+            children: viewList(),
+          ),
+        ),
       ),
     );
   }
 
   Widget letterWidget(BuildContext context, String letter) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: _letterMargin,
       width: _fontSize,
       height: _fontSize,
       child: Text(
