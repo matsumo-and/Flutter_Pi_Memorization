@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/model/record/multiplication_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -9,6 +10,7 @@ import 'view/bottom_tab_bar.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<Multiplication>(MultiplicationAdopter());
+  Hive.registerAdapter<MultiplicationRecord>(MultiplicationRecordAdopter());
   runApp(const ProviderScope(child: MyApp()));
 }
 

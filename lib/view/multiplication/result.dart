@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
+import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
 import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
@@ -121,6 +122,9 @@ class ResultPageState extends ConsumerState<ResultPage> {
         maxBeginnerAnswer: maxBegginerAnswer,
         maxProfessionalAnswer: maxProfessionalAnswer,
       );
+
+      //Record用の総挑戦回数も更新する
+      ref.read(multiplicationRecodeProvider.notifier).increment();
     });
   }
 

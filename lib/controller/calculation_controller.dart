@@ -15,6 +15,7 @@ final calculationProvider =
 class CalculationStore extends StateNotifier<List<CalculationState>> {
   CalculationStore(List<CalculationState> list) : super(list);
   static const maxQuestionNum = 10;
+  static late int courseId;
   static late Course course;
   static late List<int> maxMaltiplierList;
   static late List<int> maxMaltiplicandList;
@@ -22,6 +23,7 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
   void initialize({required int id, required CalculationMode mode}) {
     //コースから引数のIDを持つリストを持ってくる
     state = [];
+    courseId = id;
     course = Course.find(id);
     maxMaltiplierList = course.multiplierList;
     maxMaltiplicandList = course.multiplicandList;
@@ -31,6 +33,11 @@ class CalculationStore extends StateNotifier<List<CalculationState>> {
   ///かける数、掛けられる数の両方のリストから毎回ランダムなIndexを取り出してStateに保持する。
   void _getRandom() {
     final Random random = Random();
+
+    //問題によっては乱数を使用しているため再度掛け算の候補リストを取得する
+    course = Course.find(courseId);
+    maxMaltiplierList = course.multiplierList;
+    maxMaltiplicandList = course.multiplicandList;
 
     final int maxMaltiplierIndex = course.multiplierList.length;
     final int maxMaltiplicandIndex = course.multiplicandList.length;
