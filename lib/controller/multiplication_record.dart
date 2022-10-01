@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
-//main.dartで初期化される
+//bottom_tab_bar.dartで初期化される
 final multiplicationRecodeProvider = StateNotifierProvider<
     MultiplicationRecordState, List<MultiplicationRecord>>((ref) {
   return MultiplicationRecordState([]);

@@ -48,6 +48,7 @@ class MultiplicationDetailRecords extends StatelessWidget {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            //総挑戦回数
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -58,6 +59,8 @@ class MultiplicationDetailRecords extends StatelessWidget {
                                     style: Theme.of(context).textTheme.caption),
                               ],
                             ),
+
+                            //総学習日数
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -87,6 +90,7 @@ class MultiplicationDetailRecords extends StatelessWidget {
     );
   }
 
+  ///コースごと・モードごとにクリアしたかの実績を表示するカード
   Widget detailCourseCard({required BuildContext context, required int id}) {
     const double height = 120;
     final double width = MediaQuery.of(context).size.width;
@@ -119,6 +123,7 @@ class MultiplicationDetailRecords extends StatelessWidget {
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                //初心者コース
                 Expanded(
                   child: Card(
                     color: _cardColor,
@@ -152,6 +157,8 @@ class MultiplicationDetailRecords extends StatelessWidget {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 10)),
+
+                //達人コース
                 Expanded(
                   child: Card(
                     color: _cardColor,

@@ -12,7 +12,7 @@ import 'circle_progress_indicator.dart';
 class MultiplicationProgress extends StatelessWidget {
   const MultiplicationProgress({Key? key}) : super(key: key);
 
-  static const double _padding = 12;
+  static const EdgeInsets _padding = EdgeInsets.all(12);
   static final ShapeBorder _cardShape =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(7));
   static const Color _cardColor = Color.fromRGBO(250, 250, 250, 1);
@@ -24,9 +24,9 @@ class MultiplicationProgress extends StatelessWidget {
         children: [
           Card(
             shape: _cardShape,
-            margin: const EdgeInsets.all(_padding),
+            margin: _padding,
             child: Padding(
-              padding: const EdgeInsets.all(_padding),
+              padding: _padding,
               child: Column(
                 children: [
                   Container(
@@ -65,6 +65,8 @@ class MultiplicationProgress extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const MultiplicationCircularProgress(),
+
+                      //全コースの実績状況をリストに
                       Column(
                         children: List.generate(
                             Course.exercise().length > 3
@@ -94,7 +96,7 @@ class MultiplicationProgress extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 15),
                     child: Row(
                       children: [
-                        //総挑戦階数
+                        //総挑戦回数
                         Expanded(
                           child: Card(
                             elevation: 0,
@@ -102,7 +104,7 @@ class MultiplicationProgress extends StatelessWidget {
                             color: _cardColor,
                             child: Container(
                                 height: 80,
-                                padding: const EdgeInsets.all(_padding),
+                                padding: _padding,
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -167,7 +169,7 @@ class MultiplicationProgress extends StatelessWidget {
                             color: _cardColor,
                             child: Container(
                                 height: 80,
-                                padding: const EdgeInsets.all(_padding),
+                                padding: _padding,
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -234,7 +236,8 @@ class MultiplicationProgress extends StatelessWidget {
   Widget progressCourseCard({required BuildContext context, required int id}) {
     //画面サイズの半分から両側のPaddingを引いた値
     const double height = 55;
-    final double width = MediaQuery.of(context).size.width / 2 - (_padding * 2);
+    final double width =
+        MediaQuery.of(context).size.width / 2 - (_padding.right * 2);
     const double iconSize = 50;
     return Card(
       color: _cardColor,
