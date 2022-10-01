@@ -32,8 +32,8 @@ class MultiplicationCircularProgressState
 
   @override
   Widget build(BuildContext context) {
-    //進捗バーは画面横サイズの半分にする
-    final double size = MediaQuery.of(context).size.width / 2;
+    //進捗バーは画面横サイズの半分-Paddingにする
+    final double size = MediaQuery.of(context).size.width / 2 - 30;
 
     //全10問 * モード数 *　コース数　(演習＋本番)が進捗における最大の場合の数
     final int maxProgressCount =

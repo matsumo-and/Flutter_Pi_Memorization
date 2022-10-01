@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 @immutable
@@ -29,6 +31,11 @@ class Course {
   static List<Course> exercise() {
     final List<Course> tmpList = [];
 
+    //1~9の乱数を生成し、コースによってはこれを用いる
+    final Random random = Random();
+    final int random1 = random.nextInt(9) + 1;
+    final int random2 = random.nextInt(9) + 1;
+
     //10台と９０台同士のかけ算コース
     tmpList.add(Course(
       id: 1001,
@@ -43,6 +50,55 @@ class Course {
       caption: '90x90     94x95     99x99',
       multiplierList: List<int>.generate(9, (index) => 90 + index),
       multiplicandList: List<int>.generate(9, (index) => 90 + index),
+    ));
+
+    tmpList.add(Course(
+      id: 1003,
+      title: '20,30…90をはさんだ数',
+      caption: '17x23     24x35     78x89',
+      multiplierList: List<int>.generate(9, (index) => random1 * 10 + index),
+      multiplicandList:
+          List<int>.generate(9, (index) => (random1 + 1) * 10 + index),
+    ));
+
+    tmpList.add(Course(
+      id: 1004,
+      title: '50に近い数同士',
+      caption: '46x53     53x54     48x49',
+      multiplierList: List<int>.generate(10, (index) => 45 + index),
+      multiplicandList: List<int>.generate(10, (index) => 45 + index),
+    ));
+
+    tmpList.add(Course(
+      id: 1005,
+      title: '10の位が等しく、1の位が足して10',
+      caption: '17x13     24x26     78x72',
+      multiplierList: <int>[random1 * 10 + random2],
+      multiplicandList: <int>[random1 * 10 + (10 - random2)],
+    ));
+
+    tmpList.add(Course(
+      id: 1006,
+      title: '1の位が等しく、10の位が足して10',
+      caption: '17x23     24x35     78x89',
+      multiplierList: <int>[random1 * 10 + random2],
+      multiplicandList: <int>[(10 - random1) * 10 + random2],
+    ));
+
+    tmpList.add(Course(
+      id: 1007,
+      title: 'かける数が25',
+      caption: '17x25     24x25     78x25',
+      multiplierList: List<int>.generate(99, (index) => index),
+      multiplicandList: const <int>[25],
+    ));
+
+    tmpList.add(Course(
+      id: 1008,
+      title: '偶数と1の位が5の数',
+      caption: '18x25     24x25     78x25',
+      multiplierList: List<int>.generate(49, (index) => index * 2),
+      multiplicandList: List<int>.generate(9, (index) => index * 10 + 5),
     ));
 
     return tmpList;

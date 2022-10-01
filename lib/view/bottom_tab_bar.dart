@@ -5,6 +5,7 @@ import 'package:flutter_pi_memorization/model/tab.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../controller/multiplication_record.dart';
 import 'pi_memorization/pi_memorization_home.dart';
 import 'progress_record/progress_record.dart';
 
@@ -51,7 +52,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
 
     //Provider初期化用
     ref.read(multiplicationProvider.notifier).initialize();
-    // ref.read(customerProvider.notifier).initialize();
+    ref.read(multiplicationRecodeProvider.notifier).initialize();
     // ref.read(appointmentManagementProvider.notifier).initialize();
   }
 

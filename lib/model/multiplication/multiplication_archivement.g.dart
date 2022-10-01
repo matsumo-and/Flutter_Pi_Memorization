@@ -11,7 +11,6 @@ class MultiplicationAdopter extends TypeAdapter<_$_Multiplication> {
   final int typeId = 0;
 
   @override
-  // ignore: library_private_types_in_public_api
   _$_Multiplication read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
@@ -31,7 +30,6 @@ class MultiplicationAdopter extends TypeAdapter<_$_Multiplication> {
   }
 
   @override
-  // ignore: library_private_types_in_public_api
   void write(BinaryWriter writer, _$_Multiplication obj) {
     writer
       ..writeByte(9)
