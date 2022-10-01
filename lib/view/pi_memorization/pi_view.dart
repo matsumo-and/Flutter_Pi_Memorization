@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pickerController.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../model/pi_memorization/pi.dart';
 
-class PiView extends StatelessWidget {
-  final int digitsId;
-  const PiView({Key? key, required this.digitsId}) : super(key: key);
+class PiView extends ConsumerWidget {
+  const PiView({Key? key}) : super(key: key);
 
   static final Border _border = Border.all(width: 0.5, color: Colors.grey);
   static const BorderRadius _borderRadius =
@@ -13,13 +14,15 @@ class PiView extends StatelessWidget {
   static const double _fontSize = 28;
 
   @override
-  Widget build(BuildContext context) {
-    //IDに応じた桁の円周率を10文字ごとに分けてリストに格納する
-    final Pi pi = Pi.getSubstring(digitsId: digitsId);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pickerState = ref.watch(pickerProvider);
+
+    //桁数に応じた円周率を10文字ごとに分けてリストに格納する
+    final String pi = Pi.fullDigits
+        .substring(pickerState.digitsFrom - 1, pickerState.digitsTo);
     final RegExp regExp = RegExp(r'(\d{10})(?=(\d{10})+)');
-    final List<String> result = pi.substring
-        .replaceAllMapped(regExp, ((match) => '${match[1]}\n'))
-        .split('\n');
+    final List<String> result =
+        pi.replaceAllMapped(regExp, ((match) => '${match[1]}\n')).split('\n');
 
     List<Widget> viewList() {
       List<Widget> tmpList = [];
@@ -27,7 +30,7 @@ class PiView extends StatelessWidget {
       tmpList.add(const SizedBox(height: 15));
 
       //一番目のモードであれば整数部分を表示する
-      if (digitsId == 1) {
+      if (pickerState.digitsFrom == 1) {
         tmpList.add(Align(
             alignment: Alignment.centerLeft,
             child: Padding(

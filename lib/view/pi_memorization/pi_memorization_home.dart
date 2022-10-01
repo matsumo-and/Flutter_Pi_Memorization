@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pickerController.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/course_card.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization/pi_view.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class PiMemorizationHome extends StatelessWidget {
+import 'pi_view_picker.dart';
+
+class PiMemorizationHome extends ConsumerWidget {
   const PiMemorizationHome({Key? key}) : super(key: key);
 
   static const EdgeInsets _padding =
       EdgeInsets.symmetric(vertical: 7, horizontal: 12);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pickerState = ref.watch(pickerProvider);
     return Scaffold(
       appBar: const HomeAppBar(title: Text("円周率")),
       body: SingleChildScrollView(
@@ -22,32 +27,11 @@ class PiMemorizationHome extends StatelessWidget {
               color: Colors.white,
               margin: const EdgeInsets.symmetric(vertical: 15),
               width: MediaQuery.of(context).size.width,
-              child: Column(children: [
+              child: Column(children: const [
                 //円周率の各桁一覧表
-                const PiView(digitsId: 1),
+                PiView(),
 
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 0.5, color: Colors.grey),
-                    borderRadius: const BorderRadius.all(Radius.circular(7)),
-                  ),
-                  margin:
-                      const EdgeInsets.only(bottom: 15, right: 15, left: 15),
-                  padding: const EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/pi_index.svg',
-                        width: 24,
-                        height: 24,
-                      ),
-                      const Text('1~50'),
-                      const Spacer(),
-                      const Icon(Icons.keyboard_arrow_down)
-                    ],
-                  ),
-                )
+                PiViewPickerButton(),
               ]),
             ),
             const SizedBox(height: 15),
@@ -98,9 +82,9 @@ class PiMemorizationHome extends StatelessWidget {
                               width: 24,
                               height: 24,
                             ),
-                            const Text('1番目'),
-                            const Spacer(),
-                            const Icon(Icons.keyboard_arrow_down)
+                            const Padding(padding: EdgeInsets.all(5)),
+                            Text(
+                                '${pickerState.digitsFrom} ~ ${pickerState.digitsTo} 桁'),
                           ],
                         ),
                       )
