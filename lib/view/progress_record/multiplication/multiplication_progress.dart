@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
+import 'package:flutter_pi_memorization/view/progress_record/calendar.dart';
 import 'package:flutter_pi_memorization/view/progress_record/multiplication/multiplication_detail_records.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,6 +24,7 @@ class MultiplicationProgress extends StatelessWidget {
       child: Column(
         children: [
           Card(
+            elevation: 0,
             shape: _cardShape,
             margin: _padding,
             child: Padding(
@@ -227,7 +229,13 @@ class MultiplicationProgress extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+
+          //pdding
+          const SizedBox(height: 15),
+
+          //Calendar
+          ProgressCalendar(),
         ],
       ),
     );
