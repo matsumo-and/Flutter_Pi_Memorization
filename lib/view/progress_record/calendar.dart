@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,9 +68,6 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
         ? ref.watch(multiplicationRecodeProvider)
         : [];
     //TODO implement pimemorize
-    //総挑戦回数　＝　List中の全ての挑戦回数の足し合わせ
-    final int totalChallenges = recordList.fold(
-        0, (preValue, record) => preValue + record.totalChallenges);
     return Card(
       elevation: 0,
       margin: _padding,
@@ -144,14 +138,32 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
                               size: _iconSize,
                             ),
                           ),
-                          SizedBox(
-                            height: 30,
-                            child: Text(
-                              '$totalChallenges 回',
-                              style: Theme.of(context).textTheme.caption,
-                              textAlign: TextAlign.center,
-                            ),
-                          )
+                          //現在の表示されているカレンダーの年月をListenする
+                          ValueListenableBuilder<DateTime>(
+                              valueListenable: viewDate,
+                              builder: (context, value, _) {
+                                //各月の総挑戦回数　＝　List中の全ての挑戦回数の足し合わせ
+                                final DateFormat format = DateFormat('yyyyMM');
+                                final List<TotalChallengesRecord>
+                                    totalChallengesListByMonth = recordList
+                                        .where((record) => record.date!
+                                            .contains(format.format(value)))
+                                        .toList();
+                                final int totalChallenges =
+                                    totalChallengesListByMonth.fold(
+                                        0,
+                                        (preValue, record) =>
+                                            preValue + record.totalChallenges);
+
+                                return SizedBox(
+                                  height: 30,
+                                  child: Text(
+                                    '$totalChallenges 回',
+                                    style: Theme.of(context).textTheme.caption,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              }),
                         ],
                       )
                     ],
