@@ -1,7 +1,4 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProgressCalendar extends ConsumerStatefulWidget {
@@ -22,17 +19,17 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
 
   final DateTime now = DateTime.now();
 
-  //calendar作成時に初期化
-  late PageController controller;
-
   //カレンダーに表示される年月を管理する
+  late PageController controller;
   late final ValueNotifier<DateTime> viewDate;
+  late int monthDiff;
 
   @override
   void initState() {
     super.initState();
     viewDate = ValueNotifier(now);
-    controller = PageController();
+    monthDiff = (now.year - firstDay.year) * 12 + now.month - firstDay.month;
+    controller = PageController(initialPage: monthDiff);
 
     //calendarのコントローラーの値で表示年月を変更する
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -98,6 +95,7 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      //現在の表示されているカレンダーの年月をListenする
                       ValueListenableBuilder<DateTime>(
                           valueListenable: viewDate,
                           builder: (context, value, _) {
@@ -150,35 +148,15 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
               height: 300,
               width: MediaQuery.of(context).size.width,
               child: PageView(
-                controller: controller,
-                children: [
-                  calendarBase(context: context, date: now),
-                  calendarBase(
-                      context: context, date: now.add(Duration(days: 31))),
-                ],
-              ),
+                  controller: controller,
+                  //最初の年月から現在までのカレンダーを作成する
+                  children: List.generate(
+                      monthDiff + 1,
+                      (month) => calendarBase(
+                          context: context,
+                          date: DateTime(
+                              firstDay.year, firstDay.month + month, 1)))),
             )
-            // TableCalendar(
-            //   //カレンダー生成時にControllerを初期化して外部から操作できるようにする
-            //   onCalendarCreated: ((pageController) =>
-            //       controller = pageController),
-            //   headerVisible: false,
-            //   daysOfWeekVisible: false,
-            //   sixWeekMonthsEnforced: true,
-            //   availableGestures: AvailableGestures.none,
-            //   focusedDay: now,
-            //   firstDay: DateTime(2022, 1, 1),
-            //   lastDay: DateTime(now.year, now.month + 1, now.day),
-            //   calendarStyle: CalendarStyle(),
-            //   calendarBuilders: CalendarBuilders(
-            //     markerBuilder: (context, date, events) {
-            //       if (events.isNotEmpty) {
-            //         return _buildEventsMarker(date, events);
-            //       }
-            //     },
-            //   ),
-            //   eventLoader: _getEventForDay,
-            // ),
           ],
         ),
       ),
@@ -186,9 +164,8 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
   }
 
   Widget calendarBase({required BuildContext context, required DateTime date}) {
-    final DateTime firstDate = DateTime(date.year, date.month, 1);
+    //月末の日にちを取得
     final DateTime lastDate = DateTime(date.year, date.month + 1, 0);
-    final int firstWeekDay = firstDate.weekday;
 
     final List<List<Widget>> monthWidget = [[]];
     List<Widget> weekWidget = [];
@@ -201,7 +178,7 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
             alignment: Alignment.center,
             child: Text(
               day,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
           ));
@@ -223,17 +200,19 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
             weekWidget.insert(0, dayWidget(""));
           }
         }
+        //土曜日区切りで二次元配列を生成
         monthWidget.add(weekWidget);
         weekWidget = [];
       }
     }
 
     return Column(
+      //縦横に均等に配置する
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: monthWidget
           .map((weekList) => Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: weekList.map((e) => e).toList()))
+              children: weekList.map((day) => day).toList()))
           .toList(),
     );
   }
