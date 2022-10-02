@@ -58,9 +58,6 @@ dependencies:
   #circular progress indicator
   percent_indicator: ^4.2.2
 
-  #calendar
-  table_calendar: ^3.0.7
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
