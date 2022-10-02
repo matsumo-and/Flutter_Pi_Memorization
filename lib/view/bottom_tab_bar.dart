@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
-import 'package:flutter_pi_memorization/view/pi_memorization.dart';
-import 'package:flutter_pi_memorization/view/progress_record/progress_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../controller/multiplication_record.dart';
+import 'pi_memorization/pi_memorization_home.dart';
+import 'progress_record/progress_record.dart';
 
 class BottomTabBar extends ConsumerStatefulWidget {
   const BottomTabBar({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
       activeIcon: Icon(Icons.close),
     ),
     Tabs(
-      widget: const PiMemorization(),
+      widget: const PiMemorizationHome(),
       label: "円周率",
       inactiveIcon: Tabs.inactiveSvgIcon(fileName: "pi.svg"),
       activeIcon: Tabs.activeSvgIcon(fileName: "pi.svg"),
