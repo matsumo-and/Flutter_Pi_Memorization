@@ -1,24 +1,24 @@
-import 'package:flutter_pi_memorization/model/record/multiplication_record.dart';
+import 'package:flutter_pi_memorization/model/record/total_challenges_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 //bottom_tab_bar.dartで初期化される
 final multiplicationRecodeProvider = StateNotifierProvider<
-    MultiplicationRecordState, List<MultiplicationRecord>>((ref) {
+    MultiplicationRecordState, List<TotalChallengesRecord>>((ref) {
   return MultiplicationRecordState([]);
 });
 
 class MultiplicationRecordState
-    extends StateNotifier<List<MultiplicationRecord>> {
-  MultiplicationRecordState(List<MultiplicationRecord> list) : super(list);
+    extends StateNotifier<List<TotalChallengesRecord>> {
+  MultiplicationRecordState(List<TotalChallengesRecord> list) : super(list);
 
-  late Box<MultiplicationRecord> box;
+  late Box<TotalChallengesRecord> box;
 
   void initialize() async {
-    box =
-        await Hive.openBox<MultiplicationRecord>('MultiplicationRecordAdopter');
-    final List<MultiplicationRecord> fetchedList = box.values.toList();
+    box = await Hive.openBox<TotalChallengesRecord>(
+        'TotalChallengesRecordAdopter');
+    final List<TotalChallengesRecord> fetchedList = box.values.toList();
 
     //Boxが空でなければRiverpodに渡す
     if (fetchedList.isNotEmpty) {
@@ -33,12 +33,12 @@ class MultiplicationRecordState
     final String formatDate = format.format(now);
 
     //Stateの中で今日の日付の挑戦回数があれば取得する
-    final MultiplicationRecord currentRecord = state.firstWhere(
+    final TotalChallengesRecord currentRecord = state.firstWhere(
       (record) => record.date == formatDate,
-      orElse: () => MultiplicationRecord(date: formatDate, totalChallenges: 0),
+      orElse: () => TotalChallengesRecord(date: formatDate, totalChallenges: 0),
     );
 
-    final MultiplicationRecord incrementRecord = currentRecord.copyWith(
+    final TotalChallengesRecord incrementRecord = currentRecord.copyWith(
         totalChallenges: currentRecord.totalChallenges + 1);
 
     //RiverpodにIncrementした挑戦回数を格納

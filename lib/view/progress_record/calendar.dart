@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../model/record/total_challenges_record.dart';
+
+enum CalendarType {
+  multiplication,
+  piMemorization,
+}
+
 class ProgressCalendar extends ConsumerStatefulWidget {
-  const ProgressCalendar({Key? key}) : super(key: key);
+  final CalendarType calendarType;
+  const ProgressCalendar({Key? key, required this.calendarType})
+      : super(key: key);
 
   @override
   ConsumerState<ProgressCalendar> createState() => ProgressCalendarState();
@@ -24,6 +34,9 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
   late final ValueNotifier<DateTime> viewDate;
   late int monthDiff;
 
+  //掛け算または円周率の挑戦回数を管理
+  late List<TotalChallengesRecord> recordList = [];
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +51,13 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
         viewDate.value =
             DateTime(firstDay.year, firstDay.month + monthDiff, firstDay.day);
       });
+
+      //Typeによって掛け算または円周率の実績を切り替える
+      recordList = widget.calendarType == CalendarType.multiplication
+          ? ref.watch(multiplicationRecodeProvider)
+          : [];
+      //TODO implement pimemorize
+      //print(DateTime.parse(recordList.last.date!));
     });
   }
 

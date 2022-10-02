@@ -235,7 +235,9 @@ class MultiplicationProgress extends StatelessWidget {
           const SizedBox(height: 15),
 
           //Calendar
-          ProgressCalendar(),
+          const ProgressCalendar(
+            calendarType: CalendarType.multiplication,
+          ),
         ],
       ),
     );
