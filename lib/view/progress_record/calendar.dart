@@ -265,25 +265,25 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
               alignment: AlignmentDirectional.center,
               children: [
                 Container(
+                  color: showToday(day),
+                  height: maxWidth,
+                  width: maxWidth,
+                ),
+                Container(
                   height: radius,
                   width: radius,
                   decoration: BoxDecoration(
                       color: circlueColor,
                       borderRadius: BorderRadius.circular(24)),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      day,
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                Container(
-                    color: showToday(day),
-                    height: maxWidth,
-                    width: maxWidth,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        day,
-                        style:
-                            const TextStyle(fontSize: 16, color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    )),
               ],
             );
     }
