@@ -233,7 +233,9 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
             )),
           ),
           //Custom Keyboard
-          const NumericKeyboard(),
+          const NumericKeyboard(
+            ignoreGesture: true,
+          ),
         ],
       ),
     );
