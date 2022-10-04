@@ -31,6 +31,7 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
   //カウントインの回数を保持する
   int count = 0;
 
+  //円周率入力時のスクロールを制御
   late ScrollController controller;
 
   @override
@@ -45,7 +46,6 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
 
       //カウントインを表示してから（awaitしてから）タイマーをスタートする
       await showCountIn();
-
       ref.read(timerProvider.notifier).start(onTimerEnd: () {});
     });
   }
@@ -66,7 +66,7 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
     //練習モードであればカウントインは表示しない
     if (widget.mode == PiMode.excersize) return;
 
-    //1秒ごとカウントアップし、カウントがcountInSecを上回ったら
+    //1秒ごとカウントアップし、カウントがcountInSecを上回ったら出題画面を表示
     for (int sec = 0; sec < maxCount + 1; sec++) {
       await Future.delayed(const Duration(seconds: 1));
       setState(() {
@@ -77,8 +77,6 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboardState = ref.watch(keyboardProvider);
-
     final pickerState = ref.watch(pickerProvider);
     final appBarSubTitle = widget.mode == PiMode.excersize
         ? ' (${pickerState.digitsFrom} ~ ${pickerState.digitsTo})'
@@ -88,11 +86,13 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
         .substring(pickerState.digitsFrom - 1, pickerState.digitsTo);
 
     //桁数に応じた円周率を10文字ごとに分けてリストに格納する
+    final keyboardState = ref.watch(keyboardProvider);
     final RegExp regExp = RegExp(r'(\d{10})(?=(\d)+)');
     final List<String> result = keyboardState
         .replaceAllMapped(regExp, ((match) => '${match[1]}\n'))
         .split('\n');
 
+    //入力された数を1文字ごとに分けてWidgetに格納する
     Widget letterWidget(BuildContext context, String letter) {
       return Container(
         margin: _letterMargin,
@@ -114,6 +114,7 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
     List<Widget> viewList() {
       //問題範囲の円周率を10文字ごと区切った時の列数を取得
       int maxLength = (answer.length / 10).ceil();
+
       List<Widget> tmpList = [];
 
       //Paddingを追加し、必要列数を１つ増やす
@@ -131,14 +132,14 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
         maxLength++;
       }
 
-      //各10文字ごとの列に対して、更に1文字ずつ分割して画面に均等に配置する
+      //１０文字ごと区切った各列に対して、更に1文字ずつ分割して画面に均等に配置する
       for (String line in result) {
         final List<Widget> letterList = line
             .split('')
             .map((letter) => letterWidget(context, letter))
             .toList();
 
-        //10文字になるようにドットを加える
+        //文字数が足りなければ10文字になるようにドットを加える
         while (letterList.length < 10) {
           letterList.add(letterWidget(context, ''));
         }
@@ -202,6 +203,7 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
 
                 //Custom Keyboard
                 NumericKeyboard(
+                  //入力できる最大文字数はPickerで選んだ桁数分
                   maxLength: pickerState.digitsTo - pickerState.digitsFrom + 1,
                   backSpaceEnabled: false,
                   clearEnabled: false,
