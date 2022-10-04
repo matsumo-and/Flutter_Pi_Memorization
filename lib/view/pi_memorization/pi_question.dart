@@ -4,29 +4,32 @@ import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.d
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';
 import 'package:flutter_pi_memorization/view/multiplication/progress_bar.dart';
-import 'package:flutter_pi_memorization/view/multiplication/result.dart';
+import 'package:flutter_pi_memorization/view/pi_memorization/result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/calculation_mode.dart';
 import '../gradient_text_button.dart';
 
-class CalculationPage extends ConsumerStatefulWidget {
-  final int id;
-  final CalculationMode mode;
-  const CalculationPage({Key? key, required this.id, required this.mode})
-      : super(key: key);
+enum PiMode { excersize, act }
+
+class PiQuestion extends ConsumerStatefulWidget {
+  final int startDigit;
+  final int endDigit;
+  final PiMode mode;
+  const PiQuestion({
+    Key? key,
+    required this.startDigit,
+    required this.endDigit,
+    required this.mode,
+  }) : super(key: key);
 
   @override
-  CalculationPageState createState() => CalculationPageState();
+  ConsumerState<PiQuestion> createState() => PiQuestionState();
 }
 
-class CalculationPageState extends ConsumerState<CalculationPage> {
-  static const maxQuestionNum = 10;
+class PiQuestionState extends ConsumerState<PiQuestion> {
   static const int maxCount = 3;
-
-  //各問題にかかった秒数を計測する(DateTimeではなく秒数)
-  int lastSubmitted = 0;
 
   //カウントインの回数を保持する
   int count = 0;
@@ -35,25 +38,22 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
   void initState() {
     //ここで初めてInitializeしてStateの中身を決めるためビルド中には行えないらしい。ビルド後にInitializeする
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //引数のIDを受け取ってランダムな掛け算問題を生成する.
-      ref
-          .read(calculationProvider.notifier)
-          .initialize(id: widget.id, mode: widget.mode);
-
       //以前のキーボードの状態をクリアする
       ref.read(keyboardProvider.notifier).clear();
 
       //カウントインを表示してから（awaitしてから）タイマーをスタートする
       await showCountIn();
 
-      ref.read(timerProvider.notifier).start(
-          mode: widget.mode,
-          onTimerEnd: () {
-            //timerが終了したらリザルト画面に遷移する。
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    MultiplicationResult(id: widget.id, mode: widget.mode)));
-          });
+      ref.read(timerProvider.notifier).start(onTimerEnd: () {
+        //timerが終了したらリザルト画面に遷移する。
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => PiResult(
+                  startDigit: widget.startDigit,
+                  endDigit: widget.endDigit,
+                  correctDigits: 0,
+                  mode: widget.mode,
+                )));
+      });
     });
 
     super.initState();
@@ -98,8 +98,8 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
         ? countIn(count)
         : Scaffold(
             backgroundColor: Colors.white,
-            appBar: AppBar(
-                title: Text('${currentQuestion.index}/$maxQuestionNum問目')),
+            // appBar: AppBar(
+            //     title: Text('${currentQuestion.index}/$maxQuestionNum問目')),
             body: Stack(
               children: [
                 //タイマーのプログレスバー。練習モード以外なら表示する
@@ -170,20 +170,17 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                               ref.watch(calculationProvider.notifier).submit(
                                   userAnswer: int.tryParse(keyboardState)!,
                                   secElapsed:
-                                      ref.read(timerProvider).secElapsed -
-                                          lastSubmitted,
+                                      ref.read(timerProvider).secElapsed,
                                   onComplete: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MultiplicationResult(
-                                                    id: widget.id,
-                                                    mode: widget.mode)));
+                                    Navigator.of(context)
+                                        .pushReplacement(MaterialPageRoute(
+                                            builder: (context) => PiResult(
+                                                  startDigit: widget.startDigit,
+                                                  endDigit: widget.endDigit,
+                                                  correctDigits: 0,
+                                                  mode: widget.mode,
+                                                )));
                                   });
-
-                              //回答した時間を保持、次回差分を出す
-                              lastSubmitted =
-                                  ref.read(timerProvider).secElapsed;
 
                               //テキスト内容を初期化する
                               keyboardStateNotifier.clear();

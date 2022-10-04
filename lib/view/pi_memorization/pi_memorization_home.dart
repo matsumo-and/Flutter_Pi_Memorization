@@ -18,6 +18,8 @@ class PiMemorizationHome extends ConsumerStatefulWidget {
 class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
   static const EdgeInsets _padding =
       EdgeInsets.symmetric(vertical: 7, horizontal: 12);
+  static const BorderRadius _borderRadius =
+      BorderRadius.all(Radius.circular(7));
 
   late ScrollController childController;
 
@@ -71,8 +73,12 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
               ),
             ),
             TappableCard(
+                onTap: () {
+                  //TODO
+                },
+                border:
+                    const RoundedRectangleBorder(borderRadius: _borderRadius),
                 height: 120,
-                onTap: null,
                 margin: _padding,
                 child: Padding(
                   padding: const EdgeInsets.all(15),
@@ -118,7 +124,11 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
                 )),
             const SizedBox(height: 15),
             TappableCard(
-                onTap: null,
+                onTap: () {
+                  //TODO
+                },
+                border:
+                    const RoundedRectangleBorder(borderRadius: _borderRadius),
                 margin: _padding,
                 child: Padding(
                   padding: const EdgeInsets.all(15),

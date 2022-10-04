@@ -15,7 +15,8 @@ class TimerController extends StateNotifier<TimerState> {
   late Timer timer;
 
   void start(
-      {required CalculationMode mode, required Function()? onTimerEnd}) async {
+      {CalculationMode mode = CalculationMode.none,
+      required Function()? onTimerEnd}) async {
     //以前の状態があれば初期化する
     state = state.copyWith(secElapsed: 0);
     state = state.copyWith(secLimit: mode.timeLimit);
