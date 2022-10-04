@@ -6,11 +6,13 @@ class NumericKeyboard extends ConsumerWidget {
   final bool ignoreGesture;
   final bool backSpaceEnabled;
   final bool clearEnabled;
+  final int? maxLength;
   const NumericKeyboard({
     Key? key,
     this.ignoreGesture = false,
     this.backSpaceEnabled = true,
     this.clearEnabled = true,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,8 @@ class NumericKeyboard extends ConsumerWidget {
           children: firstElement
               .map((element) => keyCap(
                   text: element.toString(),
-                  onTextInput: (value) => keyboardStateNotifier.insert(value)))
+                  onTextInput: (value) => keyboardStateNotifier.insert(
+                      value: value, maxLength: maxLength)))
               .toList(),
         ),
       );
@@ -39,7 +42,8 @@ class NumericKeyboard extends ConsumerWidget {
           children: firstElement
               .map((element) => keyCap(
                   text: element.toString(),
-                  onTextInput: (value) => keyboardStateNotifier.insert(value)))
+                  onTextInput: (value) => keyboardStateNotifier.insert(
+                      value: value, maxLength: maxLength)))
               .toList(),
         ),
       );
@@ -52,7 +56,8 @@ class NumericKeyboard extends ConsumerWidget {
           children: firstElement
               .map((element) => keyCap(
                   text: element.toString(),
-                  onTextInput: (value) => keyboardStateNotifier.insert(value)))
+                  onTextInput: (value) => keyboardStateNotifier.insert(
+                      value: value, maxLength: maxLength)))
               .toList(),
         ),
       );
@@ -67,7 +72,8 @@ class NumericKeyboard extends ConsumerWidget {
               : keyCap(text: '', onTextInput: (_) {}),
           keyCap(
               text: '0',
-              onTextInput: (value) => keyboardStateNotifier.insert(value)),
+              onTextInput: (value) => keyboardStateNotifier.insert(
+                  value: value, maxLength: maxLength)),
           backSpaceEnabled
               ? keyCap(
                   text: 'BS',

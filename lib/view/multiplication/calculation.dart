@@ -194,7 +194,9 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                     const SizedBox(height: 60),
 
                     //Custom Keyboard
-                    const NumericKeyboard(),
+                    const NumericKeyboard(
+                      maxLength: 4,
+                    ),
                   ],
                 ),
               ],

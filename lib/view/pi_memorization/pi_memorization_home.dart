@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pickerController.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
+import 'package:flutter_pi_memorization/view/pi_memorization/pi_question.dart';
 import 'package:flutter_pi_memorization/view/pi_memorization/pi_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../model/pi_memorization/pi_mode.dart';
 import 'pi_view_picker.dart';
 
 class PiMemorizationHome extends ConsumerStatefulWidget {
@@ -74,7 +76,10 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
             ),
             TappableCard(
                 onTap: () {
-                  //TODO
+                  Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                          builder: ((BuildContext context) =>
+                              PiQuestion(mode: PiMode.excersize))));
                 },
                 border:
                     const RoundedRectangleBorder(borderRadius: _borderRadius),
@@ -125,7 +130,10 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
             const SizedBox(height: 15),
             TappableCard(
                 onTap: () {
-                  //TODO
+                  Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                          builder: ((BuildContext context) =>
+                              PiQuestion(mode: PiMode.act))));
                 },
                 border:
                     const RoundedRectangleBorder(borderRadius: _borderRadius),

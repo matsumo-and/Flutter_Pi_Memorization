@@ -11,18 +11,15 @@ import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/course.dart';
 import '../../model/multiplication/calculation_mode.dart';
 import '../../model/multiplication/multiplication_archivement.dart';
+import '../../model/pi_memorization/pi_mode.dart';
 import '../gradient_text_button.dart';
 import 'pi_question.dart';
 
 class PiResult extends ConsumerStatefulWidget {
-  final int startDigit;
-  final int endDigit;
   final int correctDigits;
   final PiMode mode;
   const PiResult({
     Key? key,
-    required this.startDigit,
-    required this.endDigit,
     required this.correctDigits,
     required this.mode,
   }) : super(key: key);
@@ -329,8 +326,6 @@ class PiResultState extends ConsumerState<PiResult> {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     fullscreenDialog: true,
                     builder: (context) => PiQuestion(
-                          startDigit: widget.startDigit,
-                          endDigit: widget.endDigit,
                           mode: widget.mode,
                         )));
               },

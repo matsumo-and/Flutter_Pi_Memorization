@@ -8,9 +8,13 @@ final keyboardProvider =
 class KeyboardController extends StateNotifier<String> {
   KeyboardController(String text) : super(text);
 
-  void insert(value) {
-    if (state.length <= 3) {
+  void insert({required String value, int? maxLength}) {
+    if (maxLength == null) {
       state = state + value;
+    } else {
+      if (state.length <= maxLength - 1) {
+        state = state + value;
+      }
     }
   }
 
