@@ -215,6 +215,7 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
 
   //カウントインWidget
   Widget countIn(int count) {
+    const double iconSize = 32;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -230,16 +231,16 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
               children: List.generate(
                 maxCount,
                 (index) => SizedBox(
-                  height: 32,
-                  width: 32,
+                  height: iconSize,
+                  width: iconSize,
                   child: index < count
                       ? const Icon(
                           Icons.check_circle_outline_sharp,
-                          size: 32,
+                          size: iconSize,
                           color: Color.fromRGBO(81, 133, 213, 1),
                         )
                       : const Icon(Icons.circle_outlined,
-                          size: 32, color: Colors.black),
+                          size: iconSize, color: Colors.black),
                 ),
               ),
             )),
