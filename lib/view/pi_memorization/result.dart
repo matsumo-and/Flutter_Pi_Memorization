@@ -11,19 +11,24 @@ import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/course.dart';
 import '../../model/multiplication/calculation_mode.dart';
 import '../../model/multiplication/multiplication_archivement.dart';
+import '../../model/pi_memorization/pi_mode.dart';
 import '../gradient_text_button.dart';
+import 'pi_question.dart';
 
-class MultiplicationResult extends ConsumerStatefulWidget {
-  final int id;
-  final CalculationMode mode;
-  const MultiplicationResult({Key? key, required this.id, required this.mode})
-      : super(key: key);
+class PiResult extends ConsumerStatefulWidget {
+  final int correctDigits;
+  final PiMode mode;
+  const PiResult({
+    Key? key,
+    required this.correctDigits,
+    required this.mode,
+  }) : super(key: key);
 
   @override
-  MultiplicationResultState createState() => MultiplicationResultState();
+  ConsumerState<PiResult> createState() => PiResultState();
 }
 
-class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
+class PiResultState extends ConsumerState<PiResult> {
   static const maxQuestionNum = 10;
 
   @override
@@ -57,9 +62,6 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
 
       final questionState = ref.read(calculationProvider);
       final archiveState = ref.read(multiplicationProvider);
-      final Multiplication currentArchive = archiveState.firstWhere(
-          (elm) => elm.id == widget.id,
-          orElse: () => Multiplication(id: widget.id));
 
       //コースをクリアしたか？
       bool? modeDone() {
@@ -86,25 +88,20 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
       }
 
       switch (widget.mode) {
-        case CalculationMode.none:
-          //挑戦回数のカウントアップ
-          practiceChallenges = currentArchive.practiceChallenges + 1;
-
-          break;
-        case CalculationMode.beginner:
+        case PiMode.excersize:
           begginerDone = modeDone();
           maxBegginerAnswer =
-              maxCorrectAnswer(currentArchive.maxBeginnerAnswer);
+              maxCorrectAnswer(archiveState.last.maxBeginnerAnswer);
           //挑戦回数のカウントアップ
-          begginerChallenges = currentArchive.beginnerChallenges + 1;
+          begginerChallenges = archiveState.last.beginnerChallenges + 1;
 
           break;
-        case CalculationMode.professional:
+        case PiMode.act:
           professionalDone = modeDone();
           maxProfessionalAnswer =
-              maxCorrectAnswer(currentArchive.maxPracticeAnswer);
+              maxCorrectAnswer(archiveState.last.maxPracticeAnswer);
           //挑戦回数のカウントアップ
-          professionalChallenges = currentArchive.professionalChallenges + 1;
+          professionalChallenges = archiveState.last.professionalChallenges + 1;
 
           break;
       }
@@ -112,7 +109,7 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
       //ローカル及びRiverpodのステートを更新する
       final archiveStateNotifier = ref.read(multiplicationProvider.notifier);
       archiveStateNotifier.set(
-        id: widget.id,
+        id: 0,
         beginnerDone: begginerDone,
         professionalDone: professionalDone,
         practiceChallenges: practiceChallenges,
@@ -134,7 +131,7 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
     final timerState = ref.watch(timerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(Course.find(widget.id).title)),
+      // appBar: AppBar(title: Text(Course.find(widget.id).title)),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -154,9 +151,10 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                               maxQuestionNum
                           ? [
                               SizedBox(
-                                  height: 200,
-                                  width: 200,
-                                  child: widget.mode.medal),
+                                height: 200,
+                                width: 200,
+                                // child: widget.mode.medal
+                              ),
                               const Text('合格おめでとうございます！！\nこの調子で頑張りましょう！'),
                             ]
                           : [
@@ -327,8 +325,9 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     fullscreenDialog: true,
-                    builder: (context) =>
-                        CalculationPage(id: widget.id, mode: widget.mode)));
+                    builder: (context) => PiQuestion(
+                          mode: widget.mode,
+                        )));
               },
             ),
           ),

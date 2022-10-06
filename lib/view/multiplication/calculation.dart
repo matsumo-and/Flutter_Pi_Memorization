@@ -52,7 +52,7 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
             //timerが終了したらリザルト画面に遷移する。
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) =>
-                    ResultPage(id: widget.id, mode: widget.mode)));
+                    MultiplicationResult(id: widget.id, mode: widget.mode)));
           });
     });
 
@@ -175,9 +175,10 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                                   onComplete: () {
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                            builder: (context) => ResultPage(
-                                                id: widget.id,
-                                                mode: widget.mode)));
+                                            builder: (context) =>
+                                                MultiplicationResult(
+                                                    id: widget.id,
+                                                    mode: widget.mode)));
                                   });
 
                               //回答した時間を保持、次回差分を出す
@@ -193,7 +194,9 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
                     const SizedBox(height: 60),
 
                     //Custom Keyboard
-                    const NumericKeyboard(),
+                    const NumericKeyboard(
+                      maxLength: 4,
+                    ),
                   ],
                 ),
               ],
@@ -233,7 +236,9 @@ class CalculationPageState extends ConsumerState<CalculationPage> {
             )),
           ),
           //Custom Keyboard
-          const NumericKeyboard(),
+          const NumericKeyboard(
+            ignoreGesture: true,
+          ),
         ],
       ),
     );

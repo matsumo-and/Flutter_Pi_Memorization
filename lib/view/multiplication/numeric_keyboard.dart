@@ -3,7 +3,17 @@ import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NumericKeyboard extends ConsumerWidget {
-  const NumericKeyboard({Key? key}) : super(key: key);
+  final bool ignoreGesture;
+  final bool backSpaceEnabled;
+  final bool clearEnabled;
+  final int? maxLength;
+  const NumericKeyboard({
+    Key? key,
+    this.ignoreGesture = false,
+    this.backSpaceEnabled = true,
+    this.clearEnabled = true,
+    this.maxLength,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +28,8 @@ class NumericKeyboard extends ConsumerWidget {
           children: firstElement
               .map((element) => keyCap(
                   text: element.toString(),
-                  onTextInput: (value) => keyboardStateNotifier.insert(value)))
+                  onTextInput: (value) => keyboardStateNotifier.insert(
+                      value: value, maxLength: maxLength)))
               .toList(),
         ),
       );
@@ -31,7 +42,8 @@ class NumericKeyboard extends ConsumerWidget {
           children: firstElement
               .map((element) => keyCap(
                   text: element.toString(),
-                  onTextInput: (value) => keyboardStateNotifier.insert(value)))
+                  onTextInput: (value) => keyboardStateNotifier.insert(
+                      value: value, maxLength: maxLength)))
               .toList(),
         ),
       );
@@ -44,7 +56,8 @@ class NumericKeyboard extends ConsumerWidget {
           children: firstElement
               .map((element) => keyCap(
                   text: element.toString(),
-                  onTextInput: (value) => keyboardStateNotifier.insert(value)))
+                  onTextInput: (value) => keyboardStateNotifier.insert(
+                      value: value, maxLength: maxLength)))
               .toList(),
         ),
       );
@@ -53,43 +66,53 @@ class NumericKeyboard extends ConsumerWidget {
     Widget buildRowFour() {
       return Expanded(
         child: Row(children: [
-          keyCap(text: 'C', onTextInput: (_) => keyboardStateNotifier.clear()),
+          clearEnabled
+              ? keyCap(
+                  text: 'C', onTextInput: (_) => keyboardStateNotifier.clear())
+              : keyCap(text: '', onTextInput: (_) {}),
           keyCap(
               text: '0',
-              onTextInput: (value) => keyboardStateNotifier.insert(value)),
-          keyCap(
-              text: 'BS',
-              onTextInput: (value) => keyboardStateNotifier.backSpace())
+              onTextInput: (value) => keyboardStateNotifier.insert(
+                  value: value, maxLength: maxLength)),
+          backSpaceEnabled
+              ? keyCap(
+                  text: 'BS',
+                  onTextInput: (_) => keyboardStateNotifier.backSpace())
+              : keyCap(text: '', onTextInput: (_) {}),
         ]),
       );
     }
 
-    return Column(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 300,
-          decoration: BoxDecoration(
-              border: Border.all(
-            color: borderColor,
-            width: 0.5,
-          )),
-          child: Column(
-            children: [
-              buildRowOne(),
-              buildRowTwo(),
-              buildRowThree(),
-              buildRowFour(),
-            ],
+    return IgnorePointer(
+      //キーボードを押させたくない時Trueに設定する
+      ignoring: ignoreGesture,
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 300,
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: borderColor,
+              width: 0.5,
+            )),
+            child: Column(
+              children: [
+                buildRowOne(),
+                buildRowTwo(),
+                buildRowThree(),
+                buildRowFour(),
+              ],
+            ),
           ),
-        ),
 
-        //セーフゾーンを避ける
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).padding.bottom,
-        ),
-      ],
+          //セーフゾーンを避ける
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).padding.bottom,
+          ),
+        ],
+      ),
     );
   }
 
