@@ -15,7 +15,8 @@ class TappableCard extends StatelessWidget {
     required this.onTap,
     this.height = 80,
     this.margin = const EdgeInsets.all(0),
-    this.border = const RoundedRectangleBorder(),
+    this.border = const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(7))),
     this.ignoring = true,
   }) : super(key: key);
 
