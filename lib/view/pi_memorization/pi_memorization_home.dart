@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pickerController.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
@@ -42,6 +43,8 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
   Widget build(BuildContext context) {
     final pickerState = ref.watch(pickerProvider);
     final challengesState = ref.watch(piArchivementProvider);
+    final bestRecordsList = ref.watch(piBestRecordsListProvider);
+    final bestRecord = bestRecordsList.isEmpty ? 0 : bestRecordsList.last;
 
     return Scaffold(
       appBar: const HomeAppBar(title: Text("円周率")),
@@ -162,7 +165,7 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          '最高記録10桁',
+                          '最高記録$bestRecord桁',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ),

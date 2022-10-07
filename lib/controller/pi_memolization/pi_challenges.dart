@@ -4,13 +4,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
 //bottom_tab_bar.dartで初期化される
-final piRecordProvider =
-    StateNotifierProvider<PiRecordState, List<TotalChallengesRecord>>((ref) {
-  return PiRecordState([]);
+final piChallengesRecordProvider =
+    StateNotifierProvider<PiChallengesRecordState, List<TotalChallengesRecord>>(
+        (ref) {
+  return PiChallengesRecordState([]);
 });
 
-class PiRecordState extends StateNotifier<List<TotalChallengesRecord>> {
-  PiRecordState(List<TotalChallengesRecord> list) : super(list);
+class PiChallengesRecordState
+    extends StateNotifier<List<TotalChallengesRecord>> {
+  PiChallengesRecordState(List<TotalChallengesRecord> list) : super(list);
 
   late Box<TotalChallengesRecord> box;
 

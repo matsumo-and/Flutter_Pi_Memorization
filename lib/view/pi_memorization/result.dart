@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
-import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controller/pi_memolization/pi_record.dart';
+import '../../controller/pi_memolization/pi_challenges.dart';
 import '../../model/multiplication/calculation_state.dart';
-import '../../model/multiplication/course.dart';
-import '../../model/multiplication/calculation_mode.dart';
-import '../../model/multiplication/multiplication_archivement.dart';
 import '../../model/pi_memorization/pi_mode.dart';
 import '../gradient_text_button.dart';
 import 'pi_question.dart';
@@ -35,14 +30,9 @@ class PiResultState extends ConsumerState<PiResult> {
 
   @override
   void initState() {
-    //問題の結果から、コースをクリアしたか || 最大正解数を更新するか || 挑戦回数のカウントアップ　を実施する
+    //挑戦回数を増やし、必要であれば最大正解数を更新する
     storeResult();
     super.initState();
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -78,7 +68,18 @@ class PiResultState extends ConsumerState<PiResult> {
       );
 
       //Record用の総挑戦回数も更新する
-      ref.read(piRecordProvider.notifier).increment();
+      ref.read(piChallengesRecordProvider.notifier).increment();
+
+      //BestRecordListの最後の要素が一番値が大きいことが確約されている
+      final piBestRecordsListState = ref.read(piBestRecordsListProvider);
+      final int bestRecordByNow = piBestRecordsListState.last.bestRecord ?? 0;
+
+      //円周率が過去最高記録であれば更新する
+      if (widget.correctDigits > bestRecordByNow) {
+        ref
+            .read(piBestRecordsListProvider.notifier)
+            .update(bestRecord: widget.correctDigits);
+      }
     });
   }
 

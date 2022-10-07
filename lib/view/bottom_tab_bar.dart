@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
-import 'package:flutter_pi_memorization/controller/pi_memolization/pi_record.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_challenges.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/model/tab.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
@@ -56,7 +57,8 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
     ref.read(multiplicationProvider.notifier).initialize();
     ref.read(multiplicationRecodeProvider.notifier).initialize();
     ref.read(piArchivementProvider.notifier).initialize();
-    ref.read(piRecordProvider.notifier).initialize();
+    ref.read(piChallengesRecordProvider.notifier).initialize();
+    ref.read(piBestRecordsListProvider.notifier).initialize();
   }
 
   @override
