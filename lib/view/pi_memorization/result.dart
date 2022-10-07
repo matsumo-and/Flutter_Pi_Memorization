@@ -8,6 +8,7 @@ import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controller/pi_memolization/pi_record.dart';
 import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/course.dart';
 import '../../model/multiplication/calculation_mode.dart';
@@ -77,7 +78,7 @@ class PiResultState extends ConsumerState<PiResult> {
       );
 
       //Record用の総挑戦回数も更新する
-      //ref.read(multiplicationRecodeProvider.notifier).increment();
+      ref.read(piRecordProvider.notifier).increment();
     });
   }
 
