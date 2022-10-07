@@ -222,7 +222,7 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
             ValueListenableBuilder<DateTime>(
                 valueListenable: viewDate,
                 builder: (context, value, _) {
-                  ///各月の総挑戦回数　＝　[yyyyMM]を含むList中の全ての挑戦回数の足し合わせ
+                  ///[yyyyMM]をに合致する月別のリストを取得
                   final DateFormat format = DateFormat('yyyyMM');
                   final List<TotalChallengesRecord> totalChallengesListByMonth =
                       recordList
