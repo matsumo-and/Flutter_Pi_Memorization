@@ -5,12 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'model/multiplication/multiplication_archivement.dart';
+import 'model/pi_memorization/pi_archivement.dart';
 import 'view/bottom_tab_bar.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<Multiplication>(MultiplicationAdopter());
   Hive.registerAdapter<TotalChallengesRecord>(TotalChallengesRecordAdopter());
+  Hive.registerAdapter<PiArchivement>(PiArchivementAdopter());
   runApp(const ProviderScope(child: MyApp()));
 }
 

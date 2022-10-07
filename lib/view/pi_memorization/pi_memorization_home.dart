@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pickerController.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
@@ -40,6 +41,8 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
   @override
   Widget build(BuildContext context) {
     final pickerState = ref.watch(pickerProvider);
+    final challengesState = ref.watch(piArchivementProvider);
+
     return Scaffold(
       appBar: const HomeAppBar(title: Text("円周率")),
       body: SingleChildScrollView(
@@ -98,7 +101,7 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
                             style: Theme.of(context).textTheme.headline2,
                           ),
                           Text(
-                            '挑戦回数〇回',
+                            '挑戦回数${challengesState.practiceChallenges}回',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
@@ -151,7 +154,7 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
                             style: Theme.of(context).textTheme.headline2,
                           ),
                           Text(
-                            '挑戦回数０回',
+                            '挑戦回数${challengesState.realChallenges}回',
                             style: Theme.of(context).textTheme.caption,
                           ),
                         ],
