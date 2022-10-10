@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_challenges.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -66,8 +67,7 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
     //Typeによって掛け算または円周率の実績を切り替える
     recordList = widget.calendarType == CalendarType.multiplication
         ? ref.watch(multiplicationRecodeProvider)
-        : [];
-    //TODO implement pimemorize
+        : ref.watch(piChallengesRecordProvider);
     return Card(
       elevation: 0,
       margin: _padding,
