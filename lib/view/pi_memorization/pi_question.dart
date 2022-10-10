@@ -157,11 +157,17 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
                             widget.mode.remainingLives,
-                            (index) => Icon(
-                                  Icons.close,
-                                  color:
-                                      index < value ? Colors.red : Colors.grey,
-                                  size: 32,
+                            (index) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: index < value
+                                        ? const Color.fromRGBO(224, 70, 45, 1)
+                                        : const Color.fromRGBO(
+                                            196, 196, 196, 1),
+                                    size: 32,
+                                  ),
                                 )).toList(),
                       );
                     }),
