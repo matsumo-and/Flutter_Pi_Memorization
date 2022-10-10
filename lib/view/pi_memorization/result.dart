@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/pi_memolization/pi_challenges.dart';
-import '../../model/multiplication/calculation_state.dart';
+import '../../controller/pi_memolization/pickerController.dart';
 import '../../model/pi_memorization/pi_mode.dart';
 import '../gradient_text_button.dart';
 import 'pi_question.dart';
@@ -26,8 +25,6 @@ class PiResult extends ConsumerStatefulWidget {
 }
 
 class PiResultState extends ConsumerState<PiResult> {
-  static const maxQuestionNum = 10;
-
   @override
   void initState() {
     //挑戦回数を増やし、必要であれば最大正解数を更新する
@@ -45,7 +42,6 @@ class PiResultState extends ConsumerState<PiResult> {
       //更新しないパラメータについてはNullになる
       int? practiceChallenges;
       int? realChallenges;
-      int? bestRecord;
 
       final piChallengeState = ref.read(piArchivementProvider);
 
@@ -85,11 +81,14 @@ class PiResultState extends ConsumerState<PiResult> {
 
   @override
   Widget build(BuildContext context) {
-    final questionState = ref.watch(calculationProvider);
     final timerState = ref.watch(timerProvider);
+    final pickerState = ref.watch(pickerProvider);
+    final appBarSubTitle = widget.mode == PiMode.excersize
+        ? ' (${pickerState.digitsFrom} ~ ${pickerState.digitsTo})'
+        : '';
 
     return Scaffold(
-      // appBar: AppBar(title: Text(Course.find(widget.id).title)),
+      appBar: AppBar(title: Text('${widget.mode.appBarTitle}$appBarSubTitle')),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -103,10 +102,8 @@ class PiResultState extends ConsumerState<PiResult> {
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: questionState
-                                  .where((element) => element.isCorrect == true)
-                                  .length ==
-                              maxQuestionNum
+                      children: widget.correctDigits ==
+                              pickerState.digitsTo - pickerState.digitsFrom
                           ? [
                               SizedBox(
                                 height: 200,
@@ -155,12 +152,12 @@ class PiResultState extends ConsumerState<PiResult> {
                                 color: Color.fromRGBO(81, 133, 213, 1),
                               ),
                               Text(
-                                '正解数',
+                                '回答数',
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               const Spacer(),
                               Text(
-                                  '${questionState.where((element) => element.isCorrect == true).toList().length} / $maxQuestionNum問')
+                                  '${widget.correctDigits} / ${pickerState.digitsTo - pickerState.digitsFrom}')
                             ],
                           ),
                           Row(
@@ -185,84 +182,6 @@ class PiResultState extends ConsumerState<PiResult> {
                     )),
 
                 const SizedBox(height: 10),
-
-                TappableCard(
-                    height: 70 * (questionState.length.toDouble() + 1),
-                    margin: const EdgeInsets.all(8),
-                    onTap: null,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              '詳細',
-                              style: Theme.of(context).textTheme.headline1,
-                            ),
-                          ),
-
-                          //ユーザーが解いた問題についての採点リスト
-                          for (CalculationState state in questionState)
-                            Ink(
-                              color: state.isCorrect
-                                  ? Colors.transparent
-                                  : const Color.fromRGBO(255, 235, 238, 1),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 70,
-                                    width: 40,
-                                    child: Icon(
-                                      state.isCorrect
-                                          ? Icons.circle_outlined
-                                          : Icons.close_outlined,
-                                      color: state.isCorrect
-                                          ? const Color.fromRGBO(
-                                              81, 133, 213, 1)
-                                          : const Color.fromRGBO(
-                                              224, 70, 45, 1),
-                                      size: 24,
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              width: 0.5,
-                                              color: Color.fromRGBO(
-                                                  33, 33, 33, 0.2))),
-                                    ),
-                                    width:
-                                        MediaQuery.of(context).size.width - 100,
-                                    height: 25,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          '(${state.index}) ${state.multiplier} × ${state.multiplicand} = ${state.multiplier * state.multiplicand}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline2,
-                                        ),
-                                        Text(
-                                          '${state.secElapsed}秒',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    )),
 
                 //最後までスクロールするためにSafeAreaとStackボタン分の高さを確保する
                 SizedBox(height: MediaQuery.of(context).padding.bottom + 80),

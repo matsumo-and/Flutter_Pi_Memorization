@@ -84,8 +84,9 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
                 onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                       MaterialPageRoute(
+                          fullscreenDialog: true,
                           builder: ((BuildContext context) =>
-                              PiQuestion(mode: PiMode.excersize))));
+                              const PiQuestion(mode: PiMode.excersize))));
                 },
                 border:
                     const RoundedRectangleBorder(borderRadius: _borderRadius),
@@ -138,8 +139,9 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
                 onTap: () {
                   Navigator.of(context, rootNavigator: true).push(
                       MaterialPageRoute(
+                          fullscreenDialog: true,
                           builder: ((BuildContext context) =>
-                              PiQuestion(mode: PiMode.act))));
+                              const PiQuestion(mode: PiMode.act))));
                 },
                 border:
                     const RoundedRectangleBorder(borderRadius: _borderRadius),
