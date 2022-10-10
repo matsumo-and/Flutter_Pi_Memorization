@@ -45,6 +45,9 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
 
   void storeResult() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      //タイマーを停止する
+      ref.read(timerProvider.notifier).stop();
+
       //更新しないパラメータについてはNullになる
       bool? begginerDone;
       bool? professionalDone;

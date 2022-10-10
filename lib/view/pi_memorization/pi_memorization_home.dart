@@ -44,7 +44,8 @@ class PiMemorizationHomeState extends ConsumerState<PiMemorizationHome> {
     final pickerState = ref.watch(pickerProvider);
     final challengesState = ref.watch(piArchivementProvider);
     final bestRecordsList = ref.watch(piBestRecordsListProvider);
-    final bestRecord = bestRecordsList.isEmpty ? 0 : bestRecordsList.last;
+    final bestRecord =
+        bestRecordsList.isEmpty ? 0 : bestRecordsList.last.bestRecord ?? 0;
 
     return Scaffold(
       appBar: const HomeAppBar(title: Text("円周率")),

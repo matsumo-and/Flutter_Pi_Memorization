@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controller/pi_memolization/pi_challenges.dart';
 import '../../controller/pi_memolization/pickerController.dart';
+import '../../model/pi_memorization/pi.dart';
 import '../../model/pi_memorization/pi_mode.dart';
 import '../gradient_text_button.dart';
 import 'pi_question.dart';
@@ -39,6 +40,9 @@ class PiResultState extends ConsumerState<PiResult> {
 
   void storeResult() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      //タイマーを停止する
+      ref.read(timerProvider.notifier).stop();
+
       //更新しないパラメータについてはNullになる
       int? practiceChallenges;
       int? realChallenges;
@@ -68,7 +72,9 @@ class PiResultState extends ConsumerState<PiResult> {
 
       //BestRecordListの最後の要素が一番値が大きいことが確約されている
       final piBestRecordsListState = ref.read(piBestRecordsListProvider);
-      final int bestRecordByNow = piBestRecordsListState.last.bestRecord ?? 0;
+      final int bestRecordByNow = piBestRecordsListState.isEmpty
+          ? 0
+          : piBestRecordsListState.last.bestRecord ?? 0;
 
       //円周率が過去最高記録であれば更新する
       if (widget.correctDigits > bestRecordByNow) {
@@ -156,8 +162,9 @@ class PiResultState extends ConsumerState<PiResult> {
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               const Spacer(),
-                              Text(
-                                  '${widget.correctDigits} / ${pickerState.digitsTo - pickerState.digitsFrom}')
+                              Text(widget.mode == PiMode.act
+                                  ? '${widget.correctDigits} / ${Pi.fullDigits.length} 桁'
+                                  : '${widget.correctDigits} / ${pickerState.digitsTo - pickerState.digitsFrom} 桁')
                             ],
                           ),
                           Row(
