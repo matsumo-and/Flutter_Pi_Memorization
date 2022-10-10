@@ -30,6 +30,10 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
   static const double _fontSize = 28;
   static const EdgeInsets _letterMargin = EdgeInsets.symmetric(vertical: 10);
 
+  //間違えた回数を記録する
+  final ValueNotifier<int> failedAnswer = ValueNotifier(0);
+  late Function()? removeListener;
+
   //カウントインの回数を保持する
   int count = 0;
 
@@ -49,6 +53,8 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
       //カウントインを表示してから（awaitしてから）タイマーをスタートする
       await showCountIn();
       ref.read(timerProvider.notifier).start(onTimerEnd: () {});
+
+      checkAnswer();
     });
   }
 
@@ -56,6 +62,8 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
   void deactivate() {
     //Pageが破棄されると同時にタイマーを停止する。
     ref.read(timerProvider.notifier).stop();
+    //addListenerを削除
+    removeListener?.call();
     super.deactivate();
   }
 
@@ -77,6 +85,46 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
     }
   }
 
+  ///ユーザーの入力が合っているかを確認する
+  void checkAnswer() {
+    ///正しい答えを保持する
+    final pickerState = ref.read(pickerProvider);
+    final String piSubstr = Pi.fullDigits
+        .substring(pickerState.digitsFrom - 1, pickerState.digitsTo);
+    final String correctAnswer =
+        widget.mode == PiMode.act ? Pi.fullDigits : piSubstr;
+
+    ///入力された答えを[addListener]し、正答との末尾1文字を比較する
+    removeListener = ref.read(keyboardProvider.notifier).addListener((state) {
+      if (state != "") {
+        final String lastLetter = state.substring(state.length - 1);
+        final bool isCorrect = lastLetter ==
+            correctAnswer.substring(state.length - 1, state.length);
+
+        //もし間違っていたらカウントを増加させて、入力を1文字戻す
+        if (!isCorrect) {
+          ref.read(keyboardProvider.notifier).backSpace();
+          failedAnswer.value++;
+
+          //規定数を超過したらリザルト画面に遷移
+          if (failedAnswer.value >= widget.mode.remainingLives) {
+            navigateToResult();
+          }
+        } else {
+          //全部回答できたらリザルトに遷移
+          if (state.length == correctAnswer.length) navigateToResult();
+        }
+      }
+    });
+  }
+
+  void navigateToResult() =>
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: ((context) => PiResult(
+                correctDigits: ref.read(keyboardProvider).length,
+                mode: widget.mode,
+              ))));
+
   @override
   Widget build(BuildContext context) {
     final pickerState = ref.watch(pickerProvider);
@@ -93,12 +141,7 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
               actions: [
                 IconButton(
                     onPressed: (() {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: ((context) => PiResult(
-                                correctDigits:
-                                    ref.read(keyboardProvider).length,
-                                mode: widget.mode,
-                              ))));
+                      navigateToResult();
                     }),
                     icon: const Icon(Icons.arrow_forward_ios_outlined))
               ],
@@ -106,14 +149,31 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                //間違えた回数を記録する
+                ValueListenableBuilder<int>(
+                    valueListenable: failedAnswer,
+                    builder: (context, value, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                            widget.mode.remainingLives,
+                            (index) => Icon(
+                                  Icons.close,
+                                  color:
+                                      index < value ? Colors.red : Colors.grey,
+                                  size: 32,
+                                )).toList(),
+                      );
+                    }),
+
                 Expanded(
                   child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: _borderRadius,
                       color: Color.fromRGBO(250, 250, 250, 1),
                     ),
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 30),
+                    margin:
+                        const EdgeInsets.only(bottom: 15, left: 15, right: 15),
                     width: MediaQuery.of(context).size.width,
                     //サイズをlette6行分　＋　上下のPaddingに設定する
                     height: (_fontSize + _letterMargin.bottom * 2) * 6 + 30,

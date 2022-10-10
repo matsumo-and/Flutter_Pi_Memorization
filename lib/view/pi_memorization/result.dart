@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
@@ -42,6 +43,8 @@ class PiResultState extends ConsumerState<PiResult> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //タイマーを停止する
       ref.read(timerProvider.notifier).stop();
+      //キーボードの入力内容を初期化する
+      ref.read(keyboardProvider.notifier).clear();
 
       //更新しないパラメータについてはNullになる
       int? practiceChallenges;
@@ -54,9 +57,23 @@ class PiResultState extends ConsumerState<PiResult> {
           //挑戦回数のカウントアップ
           practiceChallenges = piChallengeState.practiceChallenges + 1;
           break;
+
         case PiMode.act:
           //挑戦回数のカウントアップ
           realChallenges = piChallengeState.realChallenges + 1;
+
+          //BestRecordListの最後の要素が一番値が大きいことが確約されている
+          final piBestRecordsListState = ref.read(piBestRecordsListProvider);
+          final int bestRecordByNow = piBestRecordsListState.isEmpty
+              ? 0
+              : piBestRecordsListState.last.bestRecord ?? 0;
+
+          //円周率が過去最高記録であれば更新する
+          if (widget.correctDigits > bestRecordByNow) {
+            ref
+                .read(piBestRecordsListProvider.notifier)
+                .update(bestRecord: widget.correctDigits);
+          }
           break;
       }
 
@@ -69,19 +86,6 @@ class PiResultState extends ConsumerState<PiResult> {
 
       //Record用の総挑戦回数も更新する
       ref.read(piChallengesRecordProvider.notifier).increment();
-
-      //BestRecordListの最後の要素が一番値が大きいことが確約されている
-      final piBestRecordsListState = ref.read(piBestRecordsListProvider);
-      final int bestRecordByNow = piBestRecordsListState.isEmpty
-          ? 0
-          : piBestRecordsListState.last.bestRecord ?? 0;
-
-      //円周率が過去最高記録であれば更新する
-      if (widget.correctDigits > bestRecordByNow) {
-        ref
-            .read(piBestRecordsListProvider.notifier)
-            .update(bestRecord: widget.correctDigits);
-      }
     });
   }
 
@@ -121,10 +125,9 @@ class PiResultState extends ConsumerState<PiResult> {
                                       image: AssetImage(
                                     'assets/result.pi.act.png',
                                   ))),
-                              Text(widget.correctDigits >
-                                      (piBestRecordsListState.last.bestRecord ??
-                                          0)
-                                  ? '記録更新おめでとうございます！！\nこの調子で頑張りましょう！'
+                              Text(widget.correctDigits ==
+                                      (piBestRecordsListState.last.bestRecord!)
+                                  ? '最高記録です！\nこの調子で頑張りましょう！'
                                   : 'お疲れ様でした！\nこの調子で頑張りましょう！'),
                             ]
                           : [
