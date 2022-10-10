@@ -57,8 +57,6 @@ dependencies:
 
   #circular progress indicator
   percent_indicator: ^4.2.2
-  #two dimention charts
-  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:

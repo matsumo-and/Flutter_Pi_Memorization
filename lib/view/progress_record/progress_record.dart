@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/view/common_appbar.dart';
-import 'package:flutter_pi_memorization/view/progress_record/pi_memorization/pi_progress.dart';
 import 'multiplication/multiplication_progress.dart';
 
 class ProgressRecord extends StatefulWidget {
@@ -30,8 +29,8 @@ class ProgressRecordState extends State<ProgressRecord> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: _tab.length,
-      child: const Scaffold(
-        appBar: HomeAppBar(
+      child: Scaffold(
+        appBar: const HomeAppBar(
           title: Text('記録'),
           bottom: TabBar(
             tabs: _tab,
@@ -40,8 +39,8 @@ class ProgressRecordState extends State<ProgressRecord> {
           ),
         ),
         body: TabBarView(children: <Widget>[
-          MultiplicationProgress(),
-          PiProgress(),
+          const MultiplicationProgress(),
+          Container(),
         ]),
       ),
     );
