@@ -92,11 +92,14 @@ class PiResultState extends ConsumerState<PiResult> {
     final appBarSubTitle = widget.mode == PiMode.excersize
         ? ' (${pickerState.digitsFrom} ~ ${pickerState.digitsTo})'
         : '';
+    final goalDigits = widget.mode == PiMode.act
+        ? Pi.fullDigits.length
+        : pickerState.digitsTo - pickerState.digitsFrom + 1;
 
     return Scaffold(
       appBar: AppBar(title: Text('${widget.mode.appBarTitle}$appBarSubTitle')),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SingleChildScrollView(
             child: Column(
@@ -108,8 +111,7 @@ class PiResultState extends ConsumerState<PiResult> {
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: widget.correctDigits ==
-                              pickerState.digitsTo - pickerState.digitsFrom
+                      children: widget.correctDigits == goalDigits
                           ? [
                               SizedBox(
                                 height: 200,
@@ -162,9 +164,7 @@ class PiResultState extends ConsumerState<PiResult> {
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               const Spacer(),
-                              Text(widget.mode == PiMode.act
-                                  ? '${widget.correctDigits} / ${Pi.fullDigits.length} 桁'
-                                  : '${widget.correctDigits} / ${pickerState.digitsTo - pickerState.digitsFrom} 桁')
+                              Text('${widget.correctDigits} / $goalDigits 桁')
                             ],
                           ),
                           Row(
