@@ -89,6 +89,7 @@ class PiResultState extends ConsumerState<PiResult> {
   Widget build(BuildContext context) {
     final timerState = ref.watch(timerProvider);
     final pickerState = ref.watch(pickerProvider);
+    final piBestRecordsListState = ref.watch(piBestRecordsListProvider);
     final appBarSubTitle = widget.mode == PiMode.excersize
         ? ' (${pickerState.digitsFrom} ~ ${pickerState.digitsTo})'
         : '';
@@ -111,14 +112,20 @@ class PiResultState extends ConsumerState<PiResult> {
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: widget.correctDigits == goalDigits
+                      children: widget.mode == PiMode.act
                           ? [
-                              SizedBox(
-                                height: 200,
-                                width: 200,
-                                // child: widget.mode.medal
-                              ),
-                              const Text('合格おめでとうございます！！\nこの調子で頑張りましょう！'),
+                              const SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Image(
+                                      image: AssetImage(
+                                    'assets/result.pi.act.png',
+                                  ))),
+                              Text(widget.correctDigits >
+                                      (piBestRecordsListState.last.bestRecord ??
+                                          0)
+                                  ? '記録更新おめでとうございます！！\nこの調子で頑張りましょう！'
+                                  : 'お疲れ様でした！\nこの調子で頑張りましょう！'),
                             ]
                           : [
                               const SizedBox(
@@ -126,7 +133,7 @@ class PiResultState extends ConsumerState<PiResult> {
                                   width: 200,
                                   child: Image(
                                       image: AssetImage(
-                                    'assets/result.multiplication.png',
+                                    'assets/result.common.png',
                                   ))),
                               const Text('お疲れ様でした！\nこの調子で頑張りましょう！'),
                             ],

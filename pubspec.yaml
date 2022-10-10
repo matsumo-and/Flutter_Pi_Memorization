@@ -112,4 +112,5 @@ flutter:
 
   assets:
     - assets/
-    - assets/result.multiplication.png
+    - assets/result.common.png
+    - assets/result.pi.act.png

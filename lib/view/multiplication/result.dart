@@ -168,7 +168,7 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                                   width: 200,
                                   child: Image(
                                       image: AssetImage(
-                                    'assets/result.multiplication.png',
+                                    'assets/result.common.png',
                                   ))),
                               const Text('お疲れ様でした！\nこの調子で頑張りましょう！'),
                             ],
