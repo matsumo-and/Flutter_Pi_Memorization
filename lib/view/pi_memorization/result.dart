@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
+import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
-import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controller/pi_memolization/pi_challenges.dart';
 import '../../model/multiplication/calculation_state.dart';
-import '../../model/multiplication/course.dart';
-import '../../model/multiplication/calculation_mode.dart';
-import '../../model/multiplication/multiplication_archivement.dart';
 import '../../model/pi_memorization/pi_mode.dart';
 import '../gradient_text_button.dart';
 import 'pi_question.dart';
@@ -33,14 +30,9 @@ class PiResultState extends ConsumerState<PiResult> {
 
   @override
   void initState() {
-    //問題の結果から、コースをクリアしたか || 最大正解数を更新するか || 挑戦回数のカウントアップ　を実施する
+    //挑戦回数を増やし、必要であれば最大正解数を更新する
     storeResult();
     super.initState();
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -51,77 +43,43 @@ class PiResultState extends ConsumerState<PiResult> {
   void storeResult() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //更新しないパラメータについてはNullになる
-      bool? begginerDone;
-      bool? professionalDone;
       int? practiceChallenges;
-      int? begginerChallenges;
-      int? professionalChallenges;
-      int? maxPracticeAnswer;
-      int? maxBegginerAnswer;
-      int? maxProfessionalAnswer;
+      int? realChallenges;
+      int? bestRecord;
 
-      final questionState = ref.read(calculationProvider);
-      final archiveState = ref.read(multiplicationProvider);
-
-      //コースをクリアしたか？
-      bool? modeDone() {
-        bool? tmp;
-        if (questionState
-                .where((question) => question.isCorrect == true)
-                .length ==
-            maxQuestionNum) {
-          tmp = true;
-        }
-        return tmp;
-      }
-
-      //最大正回数を更新するか？
-      int? maxCorrectAnswer(int stateNum) {
-        int? tmp;
-        final int maxStateAnswer = questionState
-            .where((question) => question.isCorrect == true)
-            .length;
-        if (maxStateAnswer >= stateNum) {
-          tmp = maxStateAnswer;
-        }
-        return tmp;
-      }
+      final piChallengeState = ref.read(piArchivementProvider);
 
       switch (widget.mode) {
         case PiMode.excersize:
-          begginerDone = modeDone();
-          maxBegginerAnswer =
-              maxCorrectAnswer(archiveState.last.maxBeginnerAnswer);
           //挑戦回数のカウントアップ
-          begginerChallenges = archiveState.last.beginnerChallenges + 1;
-
+          practiceChallenges = piChallengeState.practiceChallenges + 1;
           break;
         case PiMode.act:
-          professionalDone = modeDone();
-          maxProfessionalAnswer =
-              maxCorrectAnswer(archiveState.last.maxPracticeAnswer);
           //挑戦回数のカウントアップ
-          professionalChallenges = archiveState.last.professionalChallenges + 1;
-
+          realChallenges = piChallengeState.realChallenges + 1;
           break;
       }
 
       //ローカル及びRiverpodのステートを更新する
-      final archiveStateNotifier = ref.read(multiplicationProvider.notifier);
-      archiveStateNotifier.set(
-        id: 0,
-        beginnerDone: begginerDone,
-        professionalDone: professionalDone,
+      final piChallengeStateNotifier = ref.read(piArchivementProvider.notifier);
+      piChallengeStateNotifier.set(
         practiceChallenges: practiceChallenges,
-        beginnerChallenges: begginerChallenges,
-        professionalChallenges: professionalChallenges,
-        maxPracticeAnswer: maxPracticeAnswer,
-        maxBeginnerAnswer: maxBegginerAnswer,
-        maxProfessionalAnswer: maxProfessionalAnswer,
+        realChallenges: realChallenges,
       );
 
       //Record用の総挑戦回数も更新する
-      ref.read(multiplicationRecodeProvider.notifier).increment();
+      ref.read(piChallengesRecordProvider.notifier).increment();
+
+      //BestRecordListの最後の要素が一番値が大きいことが確約されている
+      final piBestRecordsListState = ref.read(piBestRecordsListProvider);
+      final int bestRecordByNow = piBestRecordsListState.last.bestRecord ?? 0;
+
+      //円周率が過去最高記録であれば更新する
+      if (widget.correctDigits > bestRecordByNow) {
+        ref
+            .read(piBestRecordsListProvider.notifier)
+            .update(bestRecord: widget.correctDigits);
+      }
     });
   }
 
