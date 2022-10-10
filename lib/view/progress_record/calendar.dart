@@ -205,7 +205,69 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
                           context: context,
                           date: DateTime(
                               firstDay.year, firstDay.month + month, 1)))),
-            )
+            ),
+
+            //下線
+            Container(
+              height: 15,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: const BoxDecoration(
+                border: Border(
+                    top: BorderSide(
+                        width: 0.5, color: Color.fromRGBO(33, 33, 33, 0.2))),
+              ),
+            ),
+
+            //現在の表示されているカレンダーの年月をListenする
+            ValueListenableBuilder<DateTime>(
+                valueListenable: viewDate,
+                builder: (context, value, _) {
+                  ///[yyyyMM]をに合致する月別のリストを取得
+                  final DateFormat format = DateFormat('yyyyMM');
+                  final List<TotalChallengesRecord> totalChallengesListByMonth =
+                      recordList
+                          .where((record) =>
+                              record.date!.contains(format.format(value)))
+                          .toList();
+
+                  return Column(
+                    children: totalChallengesListByMonth.map(
+                      (record) {
+                        //表示用の日付フォーマットに変換
+                        final DateTime date = DateTime.parse(record.date!);
+                        final DateFormat recordFormat = DateFormat('MM月dd日');
+                        final String recordDate = recordFormat.format(date);
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.only(
+                                  top: 9, bottom: 3, left: 6),
+                              child: Text(recordDate),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.only(
+                                  top: 3, bottom: 9, left: 6),
+                              child: Text(
+                                '${record.totalChallenges} 回',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline2
+                                    ?.copyWith(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ).toList(),
+                  );
+                }),
           ],
         ),
       ),
