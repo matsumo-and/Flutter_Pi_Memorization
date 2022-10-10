@@ -34,11 +34,6 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
     super.dispose();
   }
@@ -63,26 +58,26 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
 
       //コースをクリアしたか？
       bool? modeDone() {
-        bool? tmp;
+        bool? modeDone;
         if (questionState
                 .where((question) => question.isCorrect == true)
                 .length ==
             maxQuestionNum) {
-          tmp = true;
+          modeDone = true;
         }
-        return tmp;
+        return modeDone;
       }
 
       //最大正回数を更新するか？
       int? maxCorrectAnswer(int stateNum) {
-        int? tmp;
+        int? maxCorrectAnswer;
         final int maxStateAnswer = questionState
             .where((question) => question.isCorrect == true)
             .length;
         if (maxStateAnswer >= stateNum) {
-          tmp = maxStateAnswer;
+          maxCorrectAnswer = maxStateAnswer;
         }
-        return tmp;
+        return maxCorrectAnswer;
       }
 
       switch (widget.mode) {
@@ -130,6 +125,11 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
 
   @override
   Widget build(BuildContext context) {
+    const Color borderColor = Color.fromRGBO(33, 33, 33, 0.2);
+    const double borderWidth = 0.5;
+    const double iconSize = 24;
+    const double padding = 12;
+
     final questionState = ref.watch(calculationProvider);
     final timerState = ref.watch(timerProvider);
 
@@ -173,14 +173,14 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: padding),
 
                 TappableCard(
                     height: 160,
-                    margin: const EdgeInsets.all(8),
+                    margin: const EdgeInsets.all(padding),
                     onTap: null,
                     child: Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(padding),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -191,29 +191,49 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                               style: Theme.of(context).textTheme.headline1,
                             ),
                           ),
+
+                          const SizedBox(height: padding),
+
                           Row(
                             children: [
                               const Icon(
                                 Icons.check_circle_outline,
-                                size: 24,
+                                size: iconSize,
                                 color: Color.fromRGBO(81, 133, 213, 1),
                               ),
+                              const Padding(
+                                  padding: EdgeInsets.only(left: padding)),
                               Text(
                                 '正解数',
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               const Spacer(),
                               Text(
-                                  '${questionState.where((element) => element.isCorrect == true).toList().length} / $maxQuestionNum問')
+                                  '${questionState.where((element) => element.isCorrect == true).toList().length} / $maxQuestionNum問'),
                             ],
                           ),
+
+                          //underline
+                          Container(
+                            height: padding,
+                            margin:
+                                const EdgeInsets.only(left: iconSize + padding),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                  top: BorderSide(
+                                      width: borderWidth, color: borderColor)),
+                            ),
+                          ),
+
                           Row(
                             children: [
                               const Icon(
                                 Icons.watch_later_outlined,
-                                size: 24,
+                                size: iconSize,
                                 color: Color.fromRGBO(81, 133, 213, 1),
                               ),
+                              const Padding(
+                                  padding: EdgeInsets.only(left: padding)),
                               Text(
                                 'タイマー',
                                 style: Theme.of(context).textTheme.headline2,
@@ -223,6 +243,18 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                                 '${timerState.secElapsed} 秒',
                               ),
                             ],
+                          ),
+
+                          //underline
+                          Container(
+                            height: padding,
+                            margin:
+                                const EdgeInsets.only(left: iconSize + padding),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                  top: BorderSide(
+                                      width: borderWidth, color: borderColor)),
+                            ),
                           ),
                         ],
                       ),
@@ -268,7 +300,7 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                                               81, 133, 213, 1)
                                           : const Color.fromRGBO(
                                               224, 70, 45, 1),
-                                      size: 24,
+                                      size: iconSize,
                                     ),
                                   ),
                                   Container(
