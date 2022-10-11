@@ -58,7 +58,7 @@ class PiChartState extends ConsumerState<PiChart> {
     final double maxY = (lastRecord / 10 + 1).floorToDouble() * 10;
 
     //最高記録リストの長さによってスクロール可能な範囲を決定する
-    ///chart width = [bestRecordsState.length]+余白の両端二つ分に
+    ///chart width = [bestRecordsState.length]+余白の両端二つ分に点同士の距離をかけ、軸の[reservedSize]とContainerの[padding]を足し合わせたもの
     final double maxWidth = (bestRecordsState.length + 2) * 50 + 55;
     final double minWidth = MediaQuery.of(context).size.width - 55;
     final double lineWidth = minWidth > maxWidth ? minWidth : maxWidth;
@@ -145,6 +145,7 @@ class PiChartState extends ConsumerState<PiChart> {
               width: lineWidth,
               //軸のない上と右側にPaddingを設ける
               padding: const EdgeInsets.only(top: 15, right: 15),
+              margin: const EdgeInsets.only(top: 15),
               child: LineChart(LineChartData(
                 minX: minX,
                 minY: minY,
