@@ -85,7 +85,7 @@ class PiChartState extends ConsumerState<PiChart> {
 
     ///グラフ下にタイトルを描画する
     AxisTitles bottomTitles() {
-      ///前回の記録と年が違っていれば年から表記する
+      ///List indexを受け取って日付を返す
       String title(int value) {
         final DateTime date =
             DateTime.parse(bestRecordsState[value.toInt()].date!);
@@ -94,6 +94,7 @@ class PiChartState extends ConsumerState<PiChart> {
           preDate = DateTime.parse(bestRecordsState[value.toInt() - 1].date!);
         }
 
+        ///前回の記録と年が違っていれば年から表記する
         final DateFormat dateFormat = date.year == preDate?.year
             ? DateFormat('MM/dd')
             : DateFormat('yyyy/MM/dd');
