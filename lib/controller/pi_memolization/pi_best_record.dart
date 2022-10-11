@@ -22,8 +22,6 @@ class PiBestRecordState extends StateNotifier<List<PiBestRecord>> {
     if (fetchedList.isNotEmpty) {
       state = fetchedList;
     }
-
-    state = [PiBestRecord(date: '20221010', bestRecord: 10)];
   }
 
   void update({required int bestRecord}) async {
