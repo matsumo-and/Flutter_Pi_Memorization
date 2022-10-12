@@ -12,8 +12,6 @@ class PiChart extends ConsumerStatefulWidget {
 }
 
 class PiChartState extends ConsumerState<PiChart> {
-  static const gridColor = Color.fromRGBO(158, 158, 158, 1);
-  static const chartColor = Color.fromRGBO(81, 133, 213, 1);
   late ScrollController controller;
 
   @override
@@ -35,6 +33,9 @@ class PiChartState extends ConsumerState<PiChart> {
 
   @override
   Widget build(BuildContext context) {
+    const gridColor = Color.fromRGBO(158, 158, 158, 1);
+    const chartColor = Color.fromRGBO(81, 133, 213, 1);
+
     final bestRecordsState = ref.watch(piBestRecordsListProvider);
     final bool isListEmpty = bestRecordsState.isEmpty;
 
@@ -63,12 +64,21 @@ class PiChartState extends ConsumerState<PiChart> {
     final double minWidth = MediaQuery.of(context).size.width - 55;
     final double lineWidth = minWidth > maxWidth ? minWidth : maxWidth;
 
+    //chartのプロットの丸のスタイル
+    final FlDotData flDotData = FlDotData(
+      getDotPainter: (p0, p1, p2, p3) => FlDotCirclePainter(
+        color: Colors.white,
+        strokeColor: chartColor,
+        strokeWidth: 1,
+      ),
+    );
+
     ///グラフ左にタイトルを描画する
-    AxisTitles leftTitles({bool showTitles = true}) {
+    AxisTitles leftTitles() {
       return AxisTitles(
         sideTitles: SideTitles(
           reservedSize: 40,
-          showTitles: showTitles,
+          showTitles: true,
           getTitlesWidget: (value, meta) => Container(
               alignment: Alignment.centerRight,
               height: 30,
@@ -76,8 +86,7 @@ class PiChartState extends ConsumerState<PiChart> {
               margin: const EdgeInsets.only(right: 15),
               child: Text(
                 value.toInt().toString(),
-                style:
-                    Theme.of(context).textTheme.caption?.copyWith(fontSize: 12),
+                style: Theme.of(context).textTheme.caption,
               )),
         ),
       );
@@ -115,13 +124,10 @@ class PiChartState extends ConsumerState<PiChart> {
               child: Container(
                   alignment: Alignment.center,
                   height: 30,
-                  margin: const EdgeInsets.only(right: 15),
+                  margin: const EdgeInsets.only(top: 15),
                   child: Text(
                     title(value.toInt()),
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        ?.copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.caption,
                   )),
             );
           },
@@ -137,7 +143,7 @@ class PiChartState extends ConsumerState<PiChart> {
         Text('$lastRecord 桁', style: Theme.of(context).textTheme.headline1),
         Text(lastDateString, style: Theme.of(context).textTheme.caption),
 
-        //折れ線グラフ
+        //折れ線グラフを横方向にスクロールする
         SingleChildScrollView(
           controller: controller,
           scrollDirection: Axis.horizontal,
@@ -147,11 +153,15 @@ class PiChartState extends ConsumerState<PiChart> {
               //軸のない上と右側にPaddingを設ける
               padding: const EdgeInsets.only(top: 15, right: 15),
               margin: const EdgeInsets.only(top: 15),
+
+              //折れ線グラフ
               child: LineChart(LineChartData(
                 minX: minX,
                 minY: minY,
                 maxX: maxX,
                 maxY: maxY,
+
+                //実データ
                 lineBarsData: [
                   LineChartBarData(
                     barWidth: 2.0,
@@ -160,21 +170,35 @@ class PiChartState extends ConsumerState<PiChart> {
                         bestRecordsState.length,
                         (index) => FlSpot(index.toDouble(),
                             bestRecordsState[index].bestRecord!.toDouble())),
-                    dotData: FlDotData(
-                      getDotPainter: (p0, p1, p2, p3) => FlDotCirclePainter(
-                        color: Colors.white,
-                        strokeColor: chartColor,
-                        strokeWidth: 1,
-                      ),
-                    ),
+                    dotData: flDotData,
                   )
                 ],
+
+                //タップ時のツールチップ
+                lineTouchData: LineTouchData(
+                    getTouchedSpotIndicator: (barData, spotIndexes) =>
+                        List.generate(
+                            spotIndexes.length,
+                            (index) => TouchedSpotIndicatorData(
+                                FlLine(color: chartColor, strokeWidth: 2),
+                                flDotData)),
+                    touchTooltipData: LineTouchTooltipData(
+                        tooltipBgColor: gridColor.withOpacity(0.2),
+                        getTooltipItems: (list) => List.generate(
+                            list.length,
+                            (index) => LineTooltipItem(
+                                list[index].y.toInt().toString(),
+                                const TextStyle())))),
+
+                //上下左右の軸タイトル
                 titlesData: FlTitlesData(
                   topTitles: AxisTitles(),
                   bottomTitles: bottomTitles(),
                   rightTitles: AxisTitles(),
                   leftTitles: leftTitles(),
                 ),
+
+                //グラフ中のグリッド
                 gridData: FlGridData(
                   drawHorizontalLine: true,
                   drawVerticalLine: false,
@@ -183,6 +207,8 @@ class PiChartState extends ConsumerState<PiChart> {
                     strokeWidth: 0.5,
                   ),
                 ),
+
+                //グラフを囲う枠線
                 borderData: FlBorderData(
                     border: const Border.symmetric(
                         horizontal: BorderSide(color: gridColor, width: 0.5))),
