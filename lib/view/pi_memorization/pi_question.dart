@@ -95,14 +95,16 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
         widget.mode == PiMode.act ? Pi.fullDigits : piSubstr;
 
     ///入力された答えを[addListener]し、正答との末尾1文字を比較する
-    removeListener = ref.read(keyboardProvider.notifier).addListener((state) {
+    removeListener =
+        ref.read(keyboardProvider.notifier).addListener((state) async {
       if (state != "") {
         final String lastLetter = state.substring(state.length - 1);
-        final bool isCorrect = lastLetter ==
+        final bool isAnswerCorrect = lastLetter ==
             correctAnswer.substring(state.length - 1, state.length);
 
         //もし間違っていたらカウントを増加させて、入力を1文字戻す
-        if (!isCorrect) {
+        if (!isAnswerCorrect) {
+          await Future.delayed(const Duration(milliseconds: 100));
           ref.read(keyboardProvider.notifier).backSpace();
           failedAnswer.value++;
 
