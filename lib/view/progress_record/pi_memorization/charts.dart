@@ -124,7 +124,7 @@ class PiChartState extends ConsumerState<PiChart> {
               child: Container(
                   alignment: Alignment.center,
                   height: 30,
-                  margin: const EdgeInsets.only(top: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
                   child: Text(
                     title(value.toInt()),
                     style: Theme.of(context).textTheme.caption,
