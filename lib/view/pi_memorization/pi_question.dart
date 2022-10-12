@@ -108,20 +108,22 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
 
           //規定数を超過したらリザルト画面に遷移
           if (failedAnswer.value >= widget.mode.remainingLives) {
-            navigateToResult();
+            navigateToResult(correctDigits: state.length);
           }
         } else {
           //全部回答できたらリザルトに遷移
-          if (state.length == correctAnswer.length) navigateToResult();
+          if (state.length == correctAnswer.length) {
+            navigateToResult(correctDigits: state.length);
+          }
         }
       }
     });
   }
 
-  void navigateToResult() =>
+  void navigateToResult({required int correctDigits}) =>
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: ((context) => PiResult(
-                correctDigits: ref.read(keyboardProvider).length,
+                correctDigits: correctDigits,
                 mode: widget.mode,
               ))));
 
@@ -141,7 +143,8 @@ class PiQuestionState extends ConsumerState<PiQuestion> {
               actions: [
                 IconButton(
                     onPressed: (() {
-                      navigateToResult();
+                      navigateToResult(
+                          correctDigits: ref.read(keyboardProvider).length);
                     }),
                     icon: const Icon(Icons.arrow_forward_ios_outlined))
               ],
