@@ -5,6 +5,7 @@ import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../controller/pi_memolization/pi_challenges.dart';
 import '../../controller/pi_memolization/pickerController.dart';
@@ -101,6 +102,11 @@ class PiResultState extends ConsumerState<PiResult> {
         ? Pi.fullDigits.length
         : pickerState.digitsTo - pickerState.digitsFrom + 1;
 
+    final String bestRecordDate = piBestRecordsListState.isEmpty
+        ? ''
+        : DateFormat('yyyy年MM月dd日')
+            .format(DateTime.parse(piBestRecordsListState.last.date!));
+
     return Scaffold(
       appBar: AppBar(title: Text('${widget.mode.appBarTitle}$appBarSubTitle')),
       body: Stack(
@@ -128,7 +134,8 @@ class PiResultState extends ConsumerState<PiResult> {
                                     ))),
                                 Text(widget.correctDigits ==
                                         (piBestRecordsListState
-                                            .last.bestRecord!)
+                                                .last.bestRecord ??
+                                            0)
                                     ? '最高記録です！\nこの調子で頑張りましょう！'
                                     : 'お疲れ様でした！\nこの調子で頑張りましょう！'),
                               ]
@@ -199,6 +206,66 @@ class PiResultState extends ConsumerState<PiResult> {
                           ],
                         ),
                       )),
+
+                  Visibility(
+                    visible: widget.mode == PiMode.act,
+                    child: TappableCard(
+                        height: 160,
+                        margin: const EdgeInsets.all(8),
+                        onTap: null,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '最高記録',
+                                  style: Theme.of(context).textTheme.headline1,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    size: 24,
+                                    color: Color.fromRGBO(81, 133, 213, 1),
+                                  ),
+                                  Text(
+                                    '回答数',
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
+                                  ),
+                                  const Spacer(),
+
+                                  //ベストレコード更新のタイミングはWidget描画後のため、下のTextが描画されるタイミングでは今回を除く最高記録が入る
+                                  Text(
+                                      '${piBestRecordsListState.last.bestRecord ?? 0} 桁')
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.calendar_month_outlined,
+                                    size: 24,
+                                    color: Color.fromRGBO(81, 133, 213, 1),
+                                  ),
+                                  Text(
+                                    '日付',
+                                    style:
+                                        Theme.of(context).textTheme.headline2,
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    bestRecordDate,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
 
                   const SizedBox(height: 10),
 
