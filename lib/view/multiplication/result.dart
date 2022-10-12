@@ -7,6 +7,7 @@ import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../controller/numeric_keyboard_controller.dart';
 import '../../model/multiplication/calculation_state.dart';
 import '../../model/multiplication/course.dart';
 import '../../model/multiplication/calculation_mode.dart';
@@ -40,6 +41,11 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
 
   void storeResult() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      //タイマーを停止する
+      ref.read(timerProvider.notifier).stop();
+      //キーボードの入力内容を初期化する
+      ref.read(keyboardProvider.notifier).clear();
+
       //更新しないパラメータについてはNullになる
       bool? begginerDone;
       bool? professionalDone;
@@ -165,7 +171,7 @@ class MultiplicationResultState extends ConsumerState<MultiplicationResult> {
                                   width: 200,
                                   child: Image(
                                       image: AssetImage(
-                                    'assets/result.multiplication.png',
+                                    'assets/result.common.png',
                                   ))),
                               const Text('お疲れ様でした！\nこの調子で頑張りましょう！'),
                             ],

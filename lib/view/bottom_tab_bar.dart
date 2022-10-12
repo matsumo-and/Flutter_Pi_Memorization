@@ -63,8 +63,8 @@ class BottomBarState extends ConsumerState<BottomTabBar> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override

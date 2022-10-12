@@ -12,4 +12,13 @@ extension PiModeExtention on PiMode {
         return '本番モード';
     }
   }
+
+  int get remainingLives {
+    switch (this) {
+      case PiMode.excersize:
+        return 10;
+      case PiMode.act:
+        return 3;
+    }
+  }
 }
