@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/multiplication_record.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../controller/multiplication_store.dart';
+import '../../../controller/multiplication/multiplication_store.dart';
 import '../../../model/multiplication/calculation_mode.dart';
 import '../../../model/multiplication/course.dart';
 import '../../../model/multiplication/multiplication_archivement.dart';

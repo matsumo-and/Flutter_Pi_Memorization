@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/multiplication_store.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';

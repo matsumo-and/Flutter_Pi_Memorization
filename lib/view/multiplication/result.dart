@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/calculation_controller.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/multiplication_record.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/multiplication_store.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/view/multiplication/calculation.dart';
 import 'package:flutter_pi_memorization/view/multiplication/tappable_card.dart';

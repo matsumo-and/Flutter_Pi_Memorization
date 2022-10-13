@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/calculation_controller.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/calculation_controller.dart';
 import 'package:flutter_pi_memorization/controller/numeric_keyboard_controller.dart';
 import 'package:flutter_pi_memorization/controller/timer_controller.dart';
 import 'package:flutter_pi_memorization/view/multiplication/numeric_keyboard.dart';

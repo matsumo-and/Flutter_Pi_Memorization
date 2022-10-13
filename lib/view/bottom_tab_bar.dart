@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_store.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/multiplication_store.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_best_record.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_challenges.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_store.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_pi_memorization/model/tab.dart';
 import 'package:flutter_pi_memorization/view/multiplication/multiplication_home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../controller/multiplication_record.dart';
+import '../controller/multiplication/multiplication_record.dart';
 import 'pi_memorization/pi_memorization_home.dart';
 import 'progress_record/progress_record.dart';
 
