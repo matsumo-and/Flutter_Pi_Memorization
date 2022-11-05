@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_pi_memorization">
    <application
-        android:label="flutter_pi_memorization"
+        android:label="Mathpire"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
