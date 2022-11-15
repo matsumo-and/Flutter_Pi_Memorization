@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 
-import '../model/multiplication/multiplication_archivement.dart';
+import '../../model/multiplication/multiplication_archivement.dart';
 
 ///globalに宣言し、bottom_tab_bar.dartで初期化される
 final multiplicationProvider =

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pi_memorization/controller/multiplication_record.dart';
+import 'package:flutter_pi_memorization/controller/multiplication/multiplication_record.dart';
 import 'package:flutter_pi_memorization/controller/pi_memolization/pi_challenges.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';

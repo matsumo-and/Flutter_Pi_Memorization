@@ -113,7 +113,7 @@ class PiChartState extends ConsumerState<PiChart> {
 
       return AxisTitles(
         sideTitles: SideTitles(
-          reservedSize: 50,
+          reservedSize: 60,
           interval: 1,
           showTitles: !isListEmpty,
           getTitlesWidget: (value, meta) {
@@ -123,8 +123,7 @@ class PiChartState extends ConsumerState<PiChart> {
               angle: -0.5,
               child: Container(
                   alignment: Alignment.center,
-                  height: 30,
-                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  height: 50,
                   child: Text(
                     title(value.toInt()),
                     style: Theme.of(context).textTheme.caption,
