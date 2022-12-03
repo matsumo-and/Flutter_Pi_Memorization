@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_pi_memorization">
+    package="com.spirallab.mathpire">
    <application
         android:label="Mathpire"
         android:name="${applicationName}"

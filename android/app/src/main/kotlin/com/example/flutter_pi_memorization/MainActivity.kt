@@ -1,4 +1,4 @@
-package com.example.flutter_pi_memorization
+package com.spirallab.mathpire
 
 import io.flutter.embedding.android.FlutterActivity
 
