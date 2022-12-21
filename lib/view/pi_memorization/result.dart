@@ -95,13 +95,15 @@ class PiResultState extends ConsumerState<PiResult> {
     final timerState = ref.watch(timerProvider);
     final pickerState = ref.watch(pickerProvider);
     final piBestRecordsListState = ref.watch(piBestRecordsListProvider);
+    final piBestRecord = piBestRecordsListState.isEmpty
+        ? 0
+        : piBestRecordsListState.last.bestRecord ?? 0;
     final appBarSubTitle = widget.mode == PiMode.excersize
         ? ' (${pickerState.digitsFrom} ~ ${pickerState.digitsTo})'
         : '';
     final goalDigits = widget.mode == PiMode.act
         ? Pi.fullDigits.length
         : pickerState.digitsTo - pickerState.digitsFrom + 1;
-
     final String bestRecordDate = piBestRecordsListState.isEmpty
         ? ''
         : DateFormat('yyyy年MM月dd日')
@@ -111,51 +113,101 @@ class PiResultState extends ConsumerState<PiResult> {
       appBar: AppBar(title: Text('${widget.mode.appBarTitle}$appBarSubTitle')),
       body: Stack(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: widget.mode == PiMode.act
-                            ? [
-                                const SizedBox(
-                                    height: 200,
-                                    width: 200,
-                                    child: Image(
-                                        image: AssetImage(
-                                      'assets/result.pi.act.png',
-                                    ))),
-                                Text(widget.correctDigits ==
-                                        (piBestRecordsListState
-                                                .last.bestRecord ??
-                                            0)
-                                    ? '最高記録です！\nこの調子で頑張りましょう！'
-                                    : 'お疲れ様でした！\nこの調子で頑張りましょう！'),
-                              ]
-                            : [
-                                const SizedBox(
-                                    height: 200,
-                                    width: 200,
-                                    child: Image(
-                                        image: AssetImage(
-                                      'assets/result.common.png',
-                                    ))),
-                                const Text('お疲れ様でした！\nこの調子で頑張りましょう！'),
-                              ],
-                      ),
+          SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 300,
+                  color: Colors.white,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: widget.mode == PiMode.act
+                          ? [
+                              const SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Image(
+                                      image: AssetImage(
+                                    'assets/result.pi.act.png',
+                                  ))),
+                              Text(widget.correctDigits == piBestRecord
+                                  ? '最高記録です！\nこの調子で頑張りましょう！'
+                                  : 'お疲れ様でした！\nこの調子で頑張りましょう！'),
+                            ]
+                          : [
+                              const SizedBox(
+                                  height: 200,
+                                  width: 200,
+                                  child: Image(
+                                      image: AssetImage(
+                                    'assets/result.common.png',
+                                  ))),
+                              const Text('お疲れ様でした！\nこの調子で頑張りましょう！'),
+                            ],
                     ),
                   ),
+                ),
 
-                  const SizedBox(height: 10),
+                const SizedBox(height: 10),
 
-                  TappableCard(
+                TappableCard(
+                    height: 160,
+                    margin: const EdgeInsets.all(8),
+                    onTap: null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '結果発表',
+                              style: Theme.of(context).textTheme.headline1,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.check_circle_outline,
+                                size: 24,
+                                color: Color.fromRGBO(81, 133, 213, 1),
+                              ),
+                              Text(
+                                '回答数',
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              const Spacer(),
+                              Text('${widget.correctDigits} / $goalDigits 桁')
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.watch_later_outlined,
+                                size: 24,
+                                color: Color.fromRGBO(81, 133, 213, 1),
+                              ),
+                              Text(
+                                'タイマー',
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                              const Spacer(),
+                              Text(
+                                '${timerState.secElapsed} 秒',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )),
+
+                Visibility(
+                  visible: widget.mode == PiMode.act,
+                  child: TappableCard(
                       height: 160,
                       margin: const EdgeInsets.all(8),
                       onTap: null,
@@ -167,7 +219,7 @@ class PiResultState extends ConsumerState<PiResult> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                '結果発表',
+                                '最高記録',
                                 style: Theme.of(context).textTheme.headline1,
                               ),
                             ),
@@ -183,96 +235,38 @@ class PiResultState extends ConsumerState<PiResult> {
                                   style: Theme.of(context).textTheme.headline2,
                                 ),
                                 const Spacer(),
-                                Text('${widget.correctDigits} / $goalDigits 桁')
+
+                                //ベストレコード更新のタイミングはWidget描画後のため、下のTextが描画されるタイミングでは今回を除く最高記録が入る
+                                Text('$piBestRecord 桁')
                               ],
                             ),
                             Row(
                               children: [
                                 const Icon(
-                                  Icons.watch_later_outlined,
+                                  Icons.calendar_month_outlined,
                                   size: 24,
                                   color: Color.fromRGBO(81, 133, 213, 1),
                                 ),
                                 Text(
-                                  'タイマー',
+                                  '日付',
                                   style: Theme.of(context).textTheme.headline2,
                                 ),
                                 const Spacer(),
                                 Text(
-                                  '${timerState.secElapsed} 秒',
+                                  bestRecordDate,
                                 ),
                               ],
                             ),
                           ],
                         ),
                       )),
+                ),
 
-                  Visibility(
-                    visible: widget.mode == PiMode.act,
-                    child: TappableCard(
-                        height: 160,
-                        margin: const EdgeInsets.all(8),
-                        onTap: null,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  '最高記録',
-                                  style: Theme.of(context).textTheme.headline1,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.check_circle_outline,
-                                    size: 24,
-                                    color: Color.fromRGBO(81, 133, 213, 1),
-                                  ),
-                                  Text(
-                                    '回答数',
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
-                                  ),
-                                  const Spacer(),
+                const SizedBox(height: 10),
 
-                                  //ベストレコード更新のタイミングはWidget描画後のため、下のTextが描画されるタイミングでは今回を除く最高記録が入る
-                                  Text(
-                                      '${piBestRecordsListState.last.bestRecord ?? 0} 桁')
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.calendar_month_outlined,
-                                    size: 24,
-                                    color: Color.fromRGBO(81, 133, 213, 1),
-                                  ),
-                                  Text(
-                                    '日付',
-                                    style:
-                                        Theme.of(context).textTheme.headline2,
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    bestRecordDate,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  //最後までスクロールするためにSafeAreaとStackボタン分の高さを確保する
-                  SizedBox(height: MediaQuery.of(context).padding.bottom + 80),
-                ],
-              ),
+                //最後までスクロールするためにSafeAreaとStackボタン分の高さを確保する
+                SizedBox(height: MediaQuery.of(context).padding.bottom + 80),
+              ],
             ),
           ),
 
