@@ -92,7 +92,7 @@ class MultiplicationDetailRecords extends StatelessWidget {
 
   ///コースごと・モードごとにクリアしたかの実績を表示するカード
   Widget detailCourseCard({required BuildContext context, required int id}) {
-    const double height = 120;
+    const double height = 125;
     final double width = MediaQuery.of(context).size.width;
     const double iconSize = 50;
     const EdgeInsets padding =

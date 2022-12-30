@@ -37,6 +37,8 @@ class ModeSelect extends ConsumerWidget {
         title: Text(course.title),
       ),
       body: Column(children: [
+        /** 初版リリースにはチュートリアルを含めないためコメントアウト*/
+        /**
         Padding(
           padding: padding,
           child: Align(
@@ -72,6 +74,8 @@ class ModeSelect extends ConsumerWidget {
         ),
 
         const SizedBox(height: 30),
+
+        */
 
         Padding(
           padding: padding,
