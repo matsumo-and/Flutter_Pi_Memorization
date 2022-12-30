@@ -44,6 +44,9 @@ class Course {
       multiplierList: List<int>.generate(9, (index) => 10 + index),
       multiplicandList: List<int>.generate(9, (index) => 10 + index),
     ));
+
+    ///初版リリースのためコメントアウト
+    /*
     tmpList.add(Course(
       id: 1002,
       title: '90台の数同士',
@@ -69,6 +72,8 @@ class Course {
       multiplicandList: List<int>.generate(10, (index) => 45 + index),
     ));
 
+    */
+
     tmpList.add(Course(
       id: 1005,
       title: '10の位が等しく、1の位が足して10',
@@ -85,6 +90,8 @@ class Course {
       multiplicandList: <int>[(10 - random1) * 10 + random2],
     ));
 
+    ///初版リリースのためコメントアウト
+    /*
     tmpList.add(Course(
       id: 1007,
       title: 'かける数が25',
@@ -100,6 +107,21 @@ class Course {
       multiplierList: List<int>.generate(49, (index) => index * 2),
       multiplicandList: List<int>.generate(9, (index) => index * 10 + 5),
     ));
+    */
+
+    ///11~20 x 11から
+    ///11~20 x 20までを生成
+    ///[id]= [1009 ~ 1017]まで発番
+    for (int multiplicandCnt = 0; multiplicandCnt < 9; multiplicandCnt++) {
+      tmpList.add(Course(
+        id: 1009 + multiplicandCnt,
+        title: '11~20 x ${11 + multiplicandCnt}',
+        caption:
+            '11x${11 + multiplicandCnt}     12x${11 + multiplicandCnt}     13x${11 + multiplicandCnt}',
+        multiplierList: List<int>.generate(9, (index) => 11 + index),
+        multiplicandList: <int>[11 + multiplicandCnt],
+      ));
+    }
 
     return tmpList;
   }

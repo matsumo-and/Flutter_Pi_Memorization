@@ -337,13 +337,14 @@ class ProgressCalendarState extends ConsumerState<ProgressCalendar> {
                   decoration: BoxDecoration(
                       color: circlueColor,
                       borderRadius: BorderRadius.circular(24)),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      day,
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
+                  //child:
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    day,
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ],
