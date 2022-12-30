@@ -63,6 +63,9 @@ dependencies:
   #app icon
   flutter_launcher_icons: ^0.10.0
 
+  #Web View
+  webview_flutter: ^4.0.1
+
 flutter_icons:
   image_path: "assets/mathpire.png"
   ios: true

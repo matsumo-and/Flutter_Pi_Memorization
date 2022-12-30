@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/view/setting/setting_page.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
@@ -12,9 +13,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: title,
       leading: IconButton(
-        onPressed: () {
-          //TODO implement Menu
-        },
+        onPressed: () => Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: ((context) => const SettingPage()))),
         icon: const Icon(Icons.menu),
       ),
       bottom: bottom,
