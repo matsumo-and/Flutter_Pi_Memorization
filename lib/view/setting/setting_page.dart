@@ -33,9 +33,7 @@ class SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('設定'),
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
           child: Column(
         children: [
