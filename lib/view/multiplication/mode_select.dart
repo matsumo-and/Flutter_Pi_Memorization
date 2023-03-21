@@ -54,9 +54,8 @@ class ModeSelect extends ConsumerWidget {
         TappableCard(
           border: border,
           margin: cardMargin,
-          onTap: () {
-            //TODO チュートリアル
-          },
+          onTap: () => Navigator.of(context, rootNavigator: true)
+              .push(MaterialPageRoute(builder: (context) => course.tutorial)),
           height: 60,
           child: Align(
             alignment: Alignment.centerLeft,

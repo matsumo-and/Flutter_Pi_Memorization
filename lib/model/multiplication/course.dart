@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pi_memorization/view/multiplication/tutorial/tutorial_1001.dart';
+import 'package:flutter_pi_memorization/view/multiplication/tutorial/tutorial_base.dart';
 
 @immutable
 class Course {
@@ -9,6 +11,8 @@ class Course {
   final String caption;
   final List<int> multiplierList;
   final List<int> multiplicandList;
+  //チュートリアル文章用
+  final Widget tutorial;
 
   const Course({
     required this.id,
@@ -16,6 +20,7 @@ class Course {
     required this.caption,
     required this.multiplierList,
     required this.multiplicandList,
+    required this.tutorial,
   });
 
   //本番用のかけ算コース
@@ -25,6 +30,10 @@ class Course {
     caption: '11x18     99x14     32x32',
     multiplierList: List<int>.generate(99, (index) => index),
     multiplicandList: List<int>.generate(99, (index) => index),
+    tutorial: const Tutorial1001(
+      title: '99x99までのランダムなかけ算',
+      example: '12x16',
+    ),
   );
 
   //演習用のかけ算コース
@@ -43,6 +52,10 @@ class Course {
       caption: '10x10     14x15     19x19',
       multiplierList: List<int>.generate(9, (index) => 10 + index),
       multiplicandList: List<int>.generate(9, (index) => 10 + index),
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     ///初版リリースのためコメントアウト
@@ -53,6 +66,10 @@ class Course {
       caption: '90x90     94x95     99x99',
       multiplierList: List<int>.generate(9, (index) => 90 + index),
       multiplicandList: List<int>.generate(9, (index) => 90 + index),
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     tmpList.add(Course(
@@ -62,6 +79,10 @@ class Course {
       multiplierList: List<int>.generate(9, (index) => random1 * 10 + index),
       multiplicandList:
           List<int>.generate(9, (index) => (random1 + 1) * 10 + index),
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     tmpList.add(Course(
@@ -70,6 +91,10 @@ class Course {
       caption: '46x53     53x54     48x49',
       multiplierList: List<int>.generate(10, (index) => 45 + index),
       multiplicandList: List<int>.generate(10, (index) => 45 + index),
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     */
@@ -80,6 +105,10 @@ class Course {
       caption: '17x13     24x26     78x72',
       multiplierList: <int>[random1 * 10 + random2],
       multiplicandList: <int>[random1 * 10 + (10 - random2)],
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     tmpList.add(Course(
@@ -88,6 +117,10 @@ class Course {
       caption: '17x23     24x35     78x89',
       multiplierList: <int>[random1 * 10 + random2],
       multiplicandList: <int>[(10 - random1) * 10 + random2],
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     ///初版リリースのためコメントアウト
@@ -98,6 +131,10 @@ class Course {
       caption: '17x25     24x25     78x25',
       multiplierList: List<int>.generate(99, (index) => index),
       multiplicandList: const <int>[25],
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
 
     tmpList.add(Course(
@@ -106,6 +143,10 @@ class Course {
       caption: '18x25     24x25     78x25',
       multiplierList: List<int>.generate(49, (index) => index * 2),
       multiplicandList: List<int>.generate(9, (index) => index * 10 + 5),
+      tutorial: const Tutorial1001(
+        title: '99x99までのランダムなかけ算',
+        example: '12x16',
+      ),
     ));
     */
 
@@ -133,11 +174,17 @@ class Course {
       default:
         return exercise().firstWhere((element) => element.id == id,
             orElse: () => const Course(
-                id: 0,
-                title: 'title',
-                caption: 'caption',
-                multiplierList: [],
-                multiplicandList: []));
+                  id: 0,
+                  title: 'title',
+                  caption: 'caption',
+                  multiplierList: [],
+                  multiplicandList: [],
+                  tutorial: TutorialBase(
+                    title: 'title',
+                    example: 'example',
+                    steps: [],
+                  ),
+                ));
     }
   }
 }
